@@ -1,0 +1,146 @@
+---
+title: "glm-teaching-snippets"
+format: html
+---
+
+# Multiple Regression
+
+```{r}
+x1 <- rnorm(100)
+x2 <- rnorm(100)
+x3 <- rnorm(100)
+
+y <- 0.3 + 0.2*x1 + 0*x2 + 0.7*x3 + rnorm(100)
+```
+
+## Studentized Residuals
+
+```{r}
+# manually studentized residuals
+# the main idea of studentized residuals is using
+# a sigma value that is not inflated from the
+# observation
+
+# if an observation has a large residual, sigma is
+# larger
+
+
+dat <- data.frame(y, x1, x2, x3)
+
+full <- lm(y ~ x1 + x2 + x3, data = dat)
+hii <- hatvalues(full)
+
+ri <- rep(0, nrow(dat))
+
+for(i in 1:nrow(dat)){
+    # fitting model without observation i
+    fit <- lm(y ~ x1 + x2 + x3, data = dat[-i, ])
+    
+    # getting the fitted value of observation i
+    mi <- predict(fit, newdata = dat[i, ])
+    
+    # getting sigma estimated without observation i
+    si <- sigma(fit)
+    
+    # computing the studentized residual using the hatvalue
+    # from the full model
+    ri[i] <- (dat$y[i] - mi) / si * sqrt(1 - hii[i])
+}
+
+cbind(rstudent(full)[1:10], ri[1:10]) |> 
+    round(4)
+```
+
+## Collinearity
+
+```{r}
+S <- 0 + diag(1 - 0, 2)
+X <- MASS::mvrnorm(100, mu = c(0, 0), S, empirical = TRUE)
+y <- 0.5 + 0.7 * X[, 1] + 0 * X[, 2] + rnorm(100)
+
+fit <- lm(y ~ X[, 1] + X[, 2])
+
+summary(fit)
+
+performance::multicollinearity(fit)
+```
+
+# Exponential Dispersion Models
+
+$$
+\mathcal{P}(y;\theta,\phi) = a(y, \phi)\exp\left\{\frac{y\theta - \kappa(\theta)}{\phi}\right\}
+$$ {#eq-emd}
+
+Where:
+
+- $\theta$ is the *canonical parameter*
+- $\kappa(\theta)$ is a known function called *cumulant function*
+- $\phi > 0$ is the *dispersion* parameter
+- $a(y, \phi)$ is a normalizing parameter such as @eq-emd is a probability function
+
+Thus when $y \sim EDM(\mu, \phi)$ means that the response variable $y$ comes from a distribution of the EDM family with mean $\mu$ and dispersion parameter $\phi$.
+
+As an example with the normal distribution:
+
+$$
+\mathcal{P}(y;\mu,\sigma^2) = \frac{1}{\sqrt{2\pi\sigma^2}} e^{-\frac{(x-\mu)^2}{2\sigma^2}}
+$$
+
+$$
+\mathcal{P}(y;\mu,\sigma^2) = \frac{1}{\sqrt{2\pi\sigma^2}} \exp \left\{   \frac{y\mu - (\frac{\mu^2}{2})}{\sigma^2} - \frac{y^2}{2\sigma^2}\right\}
+$$
+
+Thus:
+
+- $\theta = \mu$
+- $\kappa(\theta) = \mu^2/2 = \theta^2/2$
+
+# Gamma Distribution
+
+```{r}
+gamma_params <- function(shape = NULL, scale = NULL, rate = 1/scale,
+                         mean = NULL, sd = NULL){
+  if(is.null(shape) & is.null(scale)){
+    var <- sd^2
+    shape <- mean^2 / var
+    scale <- mean / shape
+  } else if(is.null(mean) & is.null(sd)){
+    mean <- shape * scale
+    var <- shape * scale^2
+    sd <- sqrt(var)
+  }else{
+    stop("when shape and scale are provided, mean and sd need to be NULL (and viceversa)")
+  }
+  out <- list(shape = shape, scale = scale, rate = rate, mean = mean, var = var, sd = sd)
+  # coefficient of variation
+  out$cv <- 1/sqrt(shape)
+  return(out)
+}
+
+
+
+gamma_params(mean = 10, variance = 10)
+```
+
+We predict the mean $E(y_i) = \alpha_i\beta_i$ where $\alpha$ is the **shape** parameter and $\beta$ is the **scale** parameter. In fact, we assume that $\alpha$ (**shape**) is the same for all the observations and we are focused in estimating $\beta$ (**scale**).
+
+In this terms, variations in $y_i$ is due to $\mu_i = \beta_i\alpha$, thus only $\beta_i$ is relevant. The **shape** $\alpha$ is a constant that is the inverse of the *dispersion* parameter $\phi$. 
+
+## Gamma with $\mu$ and $\sigma$ parametrization
+
+```{r}
+n <- 1e4
+b0 <- log(100)
+b1 <- log(1.02)
+sd <- 100
+x <- runif(n, 18, 60)
+lp <- exp(b0 + b1 * x)
+gm <- gamma_params(mean = lp, sd = sd)
+y <- rgamma(n, shape = gm$shape, scale = gm$scale)
+fit <- glm(y ~ x, family = Gamma(link = "log"))
+summary(fit)
+```
+
+
+
+

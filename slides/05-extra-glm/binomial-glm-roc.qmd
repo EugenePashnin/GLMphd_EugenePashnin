@@ -1,0 +1,592 @@
+---
+title: ROC and GLM
+institute: "\\@event | Place"
+author: 
+  - name: "Filippo Gambarota"
+    email: filippo.gambarota@unipd.it
+    github: filippogambarota
+format: 
+  quarto-slides-revealjs:
+    slide-number: true
+    incremental: false
+    code-link: true
+    code-line-numbers: false
+    html-math-method: mathjax
+    margin: 0
+    filters:
+      - nutshell
+      - code-fullscreen
+from: markdown+emoji
+date: last-modified
+final-slide: true
+df-print: default
+bibliography: "`r filor::fil()$bib`"
+csl: "`r filor::fil()$csl`"
+toc: true
+toc-title: Contents
+toc-depth: 1
+engine: knitr
+---
+
+```{r}
+#| label: setup
+#| include: false
+knitr::opts_chunk$set(echo = TRUE,
+                      dev = "svg",
+                      fig.width = 7,
+                      fig.asp = 0.618,
+                      fig.align = "center",
+                      comment = "#>")
+```
+
+```{r}
+#| label: packages
+#| include: false
+library(gt)
+library(ggplot2)
+library(viridis)
+library(dplyr)
+library(kableExtra)
+library(pROC)
+devtools::load_all()
+```
+
+```{r}
+#| label: ggplot2
+#| include: false
+mtheme <- function(size = 15){
+  theme_minimal(base_size = size, 
+                base_family = "sans") +
+  theme(legend.position = "bottom",
+        plot.title = element_text(hjust = 0.5),
+        strip.text = element_text(face = "bold"),
+        panel.grid.minor = element_blank())
+}
+
+theme_set(mtheme())
+
+# palettes
+options(ggplot2.continuous.colour="viridis")
+options(ggplot2.continuous.fill = "viridis")
+scale_colour_discrete <- scale_colour_viridis_d
+scale_fill_discrete <- scale_fill_viridis_d
+```
+
+```{r}
+#| label: gt
+#| include: false
+qtab <- function(data, digits = 3){
+  data |> 
+    gt() |> 
+    gt::cols_align(align = "center") |> 
+    tab_style(
+      style = cell_text(weight = "bold"),
+      locations = cells_column_labels()
+    ) |> 
+    fmt_number(decimals = digits)
+}
+```
+
+```{r}
+#| include: false
+files <- list.files("R", full.names = TRUE)
+funs <- filor::get_funs(files)
+```
+
+## Binomial GLM - ROC analysis 
+
+- The ROC curve is a tool to assess the performance of a classifier (e.g., binomial regression). The idea is to use several different threshold to create the 0/1 predictions (instead of 0.5 as in the previous slides) and find the optimal value.
+
+- The Binomial GLM can predict 0-1 values and we can compare the predictions with the real response $y$. The match between predictions and truth is an index on how well the model works.
+
+- This is very common in machine learning but we need to take care about overfitting (beyond the scope of this presentation) in terms of train-test splitting of original data.
+
+## ROC analysis: an example
+
+- We want to validate a new questionnaire that implement an updated and shorter form of another questionnaire (*gold-standard*).
+
+- We collect $n$ people with the *gold-standard* (i.e., the "truth") and with the new questionnaire.
+
+- We calibrate the new questionnaire to maximize the ability to correctly classify a person having or not having a certain condition.
+
+## Binomial GLM - ROC analysis 
+
+Let's simulate some data for a Binomial GLM:
+
+```{r echo = FALSE}
+dat <- sim_design(50, nx = list(x = runif(50)))
+dat <- sim_data(dat, plogis(qlogis(0.01) + 8*x))
+dat |>
+  ggplot(aes(x = x)) +
+  geom_density(aes(color = factor(y), fill = factor(y)), alpha = 0.4) +
+  geom_rug(aes(color = factor(y)), show.legend = FALSE)
+```
+
+## Binomial GLM - ROC analysis 
+
+The $x$ variable is the new questionnaire and the $y$ variable is the classification based on the gold-standard. In this case we consider $y$ the **truth**.
+
+Now, to classify people based on the new questionnaire we need to choose a **threshold** $t$. In terms that $\hat y = 1$ when $x > t$ and $\hat y = 0$ otherwise. We can then summarize everthing in a contingency table (aka confusion matrix): 
+
+```{r}
+t <- 0.75
+pi <- ifelse(dat$x > t, 1, 0)
+yi <- dat$y
+
+# confusion matrix
+table(pi, yi)
+```
+
+## Contingency tables (CT)
+
+CTs are tables that summarize 2 or more categorical variables using absolute or relative frequencies.
+
+```{r}
+#| echo: false
+knitr::include_graphics("img/contingency-table.svg")
+```
+
+## Contingency tables (CT)
+
+```{r}
+#| echo: false
+x <- rbinom(150, 1, 0.5)
+y <- rbinom(150, 1, 0.5)
+
+x <- factor(x, levels = c(1, 0))
+y <- factor(y, levels = c(1, 0))
+
+xy_tab <- xtabs(~ x + y)
+sjPlot::tab_xtab(x, y, show.summary = FALSE, show.cell.prc = TRUE)
+```
+
+## Contingency tables (CT)
+
+Regardless of the content, contingency tables can be expressed with a common nomenclature.
+
+```{r}
+#| echo: false
+dd <- data.frame(
+  stringsAsFactors = FALSE,
+                V1 = c("Prediction", "Prediction"),
+                V2 = c(1L, 0L),
+                V3 = c("True Positive (TP)", "False Negative (FN)"),
+                V4 = c("False Positive (FP)", "True Negative (TN)")
+      ) 
+
+dd$V3 <- cell_spec(dd$V3, background = ifelse(dd$V3 == "True Positive (TP)", "lightgreen", "#FC8D8D"))
+dd$V4 <- cell_spec(dd$V4, background = ifelse(dd$V4 == "True Negative (TN)", "lightgreen", "#FC8D8D"))
+
+dd |> 
+  kable(col.names = c("", "", "", ""),
+        align = "c",
+        escape = FALSE) |> 
+  kable_styling() |>
+  column_spec(1:2, bold = TRUE) |> 
+  add_header_above(c(" " = 2, 1, 0)) |> 
+  add_header_above(c(" " = 2, "Truth" = 2)) |> 
+  collapse_rows(1)
+```
+
+## Contingency tables (CT)
+
+There are a lot of metrics that can be calculated from a simple contingency tables:
+
+```{r}
+#| echo: false
+knitr::include_url("https://en.wikipedia.org/wiki/Confusion_matrix")
+```
+
+## Binomial GLM - ROC analysis 
+
+There are several metrics to compute in a confusion matrix (see [here](https://en.wikipedia.org/wiki/Confusion_matrix)). The most important are the **True Positive Rate** (TPR, also called *sensitivity*) representing the proportion of $\hat y = 1$ when $y = 1$ using a specific threshold value and the **False Positive Rate** (FPR, also called *1 - specificity*) representing one minus the proportion of $\hat y = 1$ when $y = 0$. We could use the `classify(fit, th = )` function to compute relevant metrics from a fitted model and a given threshold:
+
+```{r}
+fit <- glm(y ~ x, data = dat, family = binomial(link = "logit"))
+classify(dat, y, x, 0.5)
+```
+
+## Contingency tables (CT) metrics
+
+The most important (and used) measures are:
+
+- the **Sensitivity** (aka **True Positive Rate** TPR or *recall*) is $\frac{TP}{(TP + FN)}$
+- the **Specificity** (aka **True Negative Rate** TNR) is $\frac{TN}{(FP + TN)}$
+- the **Accuracy** is $\frac{(TP + TN)}{(TP + TN + FP + FN)}$
+- the **Positive Predictive Value** is $\frac{TP}{TP + FP}$ or $\frac{TPR \times \rho}{TPR \times \rho + (1 - TPR) \times (1 - \rho)}$ where $\rho$ is the prevalence i.e. $TP + FP$
+- Area Under the Curve (AUC) is the area under the ROC curve that represent classification performance
+
+## Contingency tables (CT) metrics
+
+```{r}
+#| echo: false
+#| results: asis
+dd <- data.frame(
+  stringsAsFactors = FALSE,
+  V1 = c("Test", "Test", "", ""),
+  V2 = c(1L, 0L, "", ""),
+  V3 = c("True Positive (TP)", "False Negative (FN)", "$Sensitivity = \\frac{TP}{TP + FN}$", "$\\rho = \\frac{TP + FN}{N}$"),
+  V4 = c("False Positive (FP)", "True Negative (TN)", "$Specificity = \\frac{TN}{TN + FP}$", "$1 - \\rho = \\frac{FP + TN}{N}$"),
+  V5 = c("$PPV = \\frac{TP}{TP + FP}$", "$NPV = \\frac{TN}{TN + FN}$", "$N = TP + FP + FN + TN$", "$N = TP + FP + FN + TN$")
+) 
+
+dd$V3 <- cell_spec(dd$V3, 
+                   background = dplyr::case_when(
+                     dd$V3 == "True Positive (TP)" ~ "lightgreen",
+                     dd$V3 == "False Negative (FN)" ~ "#FC8D8D",
+                     TRUE ~ "white")
+)
+
+dd$V4 <- cell_spec(dd$V4, 
+                   background = dplyr::case_when(
+                     dd$V4 == "True Negative (TN)" ~ "lightgreen",
+                     dd$V4 == "False Positive (FP)" ~ "#FC8D8D",
+                   TRUE ~ "white")
+)
+
+tab <- dd |> 
+  kable(col.names = c("", "", "", "", ""),
+        align = "c",
+        escape = FALSE) |> 
+  kable_styling() |>
+  column_spec(1:2, bold = TRUE) |> 
+  add_header_above(c(" " = 2, 1, 0, "")) |> 
+  add_header_above(c(" " = 2, "Truth" = 2, "")) |> 
+  collapse_rows(c(1,5))
+
+cat(tab)
+```
+
+## Contingency tables (CT) metrics
+
+```{r}
+#| echo: false
+#| results: asis
+
+dd <- data.frame(
+  stringsAsFactors = FALSE,
+  V1 = c("Test", "Test", "", ""),
+  V2 = c(1L, 0L, "", ""),
+  V3 = c("$Sensitivity \\times \\rho$", "$(1 - Sensitivity) \\times \\rho$", "$Sensitivity = \\frac{TP}{TP + FN}$", "$\\rho$"),
+  V4 = c("$(1 - Specificity) \\times (1 - \\rho)$", "$Specificity \\times (1 - \\rho)$", "$Specificity = \\frac{TN}{TN + FP}$", "$1 - \\rho$"),
+  V5 = c("$PPV = \\frac{Sensitivity \\times \\rho}{Sensitivity \\times \\rho + (1 - Sensitivity) \\times (1 - \\rho)}$", "$NPV = \\frac{Specificity \\times (1 - \\rho)}{(1 - Sensitivity) \\times \\rho + Specificity \\times (1 - \\rho)}$", "1", "1")
+)
+
+dd |> 
+  kable(col.names = c("", "", "", "", ""),
+        align = "c",
+        escape = FALSE) |> 
+  kable_styling(font_size = 23) |>
+  column_spec(1:2, bold = TRUE) |> 
+  add_header_above(c(" " = 2, 1, 0, "")) |> 
+  add_header_above(c(" " = 2, "Truth" = 2, "")) |> 
+  collapse_rows(c(1,5))  |>
+  cat()
+```
+
+## Sensitivity and Specificity
+
+To better understand the *sensitivity* and *specificity* we can use several formulations. *Sensitivity* and *Specificity* (and also other metrics) are essentially conditional probabilities.
+
+$$
+Sensitivity = p(T^+|S^+) = \frac{p(S^+|T^+)p(T^+)}{p(S^+)} = \frac{\frac{TP}{TP + FP}\frac{TP + FP}{N}}{\frac{TP + FN}{N}} = \frac{PPVp(T^+)}{\rho}
+$$
+
+$$
+Specificity = p(T^-|S^-) = \frac{p(S^-|T^-)p(T^-)}{p(S^-)} = \frac{\frac{TN}{TN + FN}\frac{TN + FN}{N}}{\frac{FP + TN}{N}} = \frac{NPVp(T^-)}{1 -\rho}
+$$
+
+## Positive Predictive Value (PPV)
+
+The PPV is the probability of having a diseases given that my test is positive. While sensitivity and specificity are generally stable regardless the prevalence [but see @Brenner1997-yq], PPV is strongly affected by the disease prevalence.
+
+Let's write a function to calculate the PPV:
+
+```{r}
+#| results: asis
+#| echo: false
+filor::print_fun(funs$ppv)
+```
+
+## Positive Predictive Value (PPV)
+
+Now we can calculate the PPV, fixing *sensitivity* and *specificity* by changing the **prevalence**:
+
+```{r}
+# let's vary the prevalence
+prevalence <- seq(0, 1, 0.01)
+
+# computing ppv for each prevalence, fixing the specificity and sensitivity
+ppvs <- ppv(sensitivity = 0.9, specificity = 0.8, prevalence = prevalence)
+```
+
+```{r}
+#| echo: false
+plot(prevalence*100, ppvs, 
+     type = "l", 
+     xlab = "Prevalence (%)", 
+     ylab = "PPV",
+     cex.lab = 1.2,
+     main = "Sensitivity = 0.9, Specificity = 0.8")
+```
+
+## Youden's J, disclaimer
+
+The Youden's J is just an option among several alternatives for choosing the best threshold. For example the `cutpointr` package:
+
+```{r}
+#| echo: false
+
+knitr::include_url("https://cran.r-project.org/web/packages/cutpointr/vignettes/cutpointr.html#:~:text=in%20both%20classes-,Metric%20functions,-The%20included%20metrics")
+```
+
+## Back to the example...
+
+In our example, we can try different thresholds $t$ and se what happen to our classification metrics:
+
+```{r}
+# total
+nrow(dat)
+
+# prevalence
+table(dat$y)
+table(dat$y) / nrow(dat)
+
+# difference in the test between the two groups
+tapply(dat$x, dat$y, mean)
+```
+
+## Back to the example...
+
+Intuitively, as the mean difference (on the predictor) between the two groups increase the two groups are easy to discriminate:
+
+```{r}
+#| echo: false
+dat_ex_50 <- sim_bin_class(auc = 0.5, n = 1e4, prevalence = 0.5, var.names = c(x = "test", y = "state"))
+dat_ex_70 <- sim_bin_class(auc = 0.7, n = 1e4, prevalence = 0.5, var.names = c(x = "test", y = "state"))
+dat_ex_90 <- sim_bin_class(auc = 0.9, n = 1e4, prevalence = 0.5, var.names = c(x = "test", y = "state"))
+
+dat_ex_all <- dplyr::bind_rows(dat_ex_50, dat_ex_70, dat_ex_90, .id = "auc")
+dat_ex_all$state <- factor(dat_ex_all$state, levels = c(1, 0), labels = c("0", "1"))
+
+dat_ex_all |> 
+  mutate(auc = dplyr::case_when(
+    auc == "1" ~ "No Discrimination",
+    auc == "2" ~ "Hard Discrimination",
+    auc == "3" ~ "Easy Discrimination"
+  )) |> 
+  ggplot(aes(x = test, 
+             fill = state, 
+             color = state)) +
+  geom_density(alpha = 0.3) +
+  geom_rug(alpha = 0.2) +
+  facet_wrap(~auc) +
+  theme(legend.position = "bottom",
+        legend.title = element_blank()) +
+  ylab("Density")
+```
+
+## ROC Curve
+
+We can start by plotting the specificity and sensitivity for a given threshold:
+
+```{r}
+cmat <- classify(dat_ex_90, state, test, c = 0)
+cmat
+```
+
+. . .
+
+```{r}
+#| echo: false
+#| out-width: "80%"
+
+cmat |> 
+  ggplot(aes(x = tnr, y = tpr)) +
+  ylim(c(0, 1)) +
+  scale_x_reverse(limits = c(1, 0)) +
+  coord_fixed() +
+  geom_point(size = 3, color = "firebrick") +
+  theme_minimal(15) +
+  xlab("Specificity") +
+  ylab("Sensitivity") +
+  annotate("label", x = 0.8, y = 1, label = paste("Threshold =", cmat$c),
+           size = 7)
+```
+
+## ROC
+
+When evaluating **sensitivity** and **specificity** with multiple thresholds we obtain the ROC curve:
+
+. . .
+
+```{r}
+#| echo: false
+#| out-width: "50%"
+knitr::include_graphics("img/roc-anim.gif")
+```
+
+## ROC
+
+The Area Under the Curve (AUC) range between 0.5 (null classification) and 1 (perfect classification):
+
+```{r}
+#| echo: false
+perfect_roc <- sim_bin_class(auc = 0.999, 
+              n = 1e5, 
+              prevalence = 0.5) |>
+  classify(y, x, seq(-5, 5, 0.1)) |> 
+  ggROC(fill = TRUE) +
+  ggtitle("Perfect Classification")
+
+realistic_roc <- sim_bin_class(auc = 0.7, 
+              n = 1e5, 
+              prevalence = 0.5) |>
+  classify(y, x, seq(-5, 5, 0.1)) |> 
+  ggROC(fill = TRUE) +
+  ggtitle("Realistic Classification")
+
+null_roc <- sim_bin_class(auc = 0.5, 
+              n = 1e5, 
+              prevalence = 0.5) |>
+  classify(y, x, seq(-5, 5, 0.1)) |> 
+  ggROC(fill = TRUE) +
+  ggtitle("Null Classification")
+
+cowplot::plot_grid(perfect_roc, realistic_roc, null_roc, nrow = 1)
+```
+
+## Youden's J
+
+Given the trade-off between sensitivity and specificity, the choice of the best threshold ($c$) is not straightforward. An option is using the Youden's J:
+
+$$
+J = sensitivity + specificity - 1
+$$
+Thus taking the maximum of $J_i$ calculated on all threshold give us the threshold that maximize the sum between sensitivity and specificity.
+
+## Youden's J
+
+```{r}
+set.seed(104)
+dat_ex <- sim_bin_class(auc = 0.8, n = 100, prevalence = 0.5)
+fit_roc <- roc(y ~ x, data = dat_ex)
+J <- coords(fit_roc, "best", best.method = "youden")
+J$J <- J$specificity + J$sensitivity - 1
+Js <- fit_roc$sensitivities + fit_roc$specificities - 1
+```
+
+```{r}
+#| code-fold: true
+par(mfrow = c(1,2))
+plot(fit_roc, main = "ROC curve")
+points(x = J$specificity, y = J$sensitivity, pch = 19, col = "firebrick", cex = 1.4)
+
+plot(fit_roc$thresholds, Js, type = "l", xlab = "Thresholds", ylab = "Youden's J",
+     main = "Youden's J")
+points(J$threshold, max(Js), pch = 19, col = "firebrick", cex = 1.4)
+text(x = 0.6, y = 0.45, labels = sprintf("Cutoff = %.2f", J$threshold))
+```
+
+## Back to our example..
+
+We can plot the ROC curve for our our example. Clearly the performance are above-chance.
+
+```{r}
+th <- c(-Inf, seq(-2, 2, 0.01), Inf)
+cmat <- classify(dat_ex, y, x, th)
+plot(cmat$fpr, cmat$tpr, type = "l", xlab = "1 - Specificity", ylab = "Sensitivity")
+```
+
+## Back to our example..
+
+We can calculate the AUC:
+
+```{r}
+pROC::auc(fit$data$y, predict(fit, type = "response"))
+```
+
+## Data simulation {.extra}
+
+All the example so far are based on simulated data. I wrote a little function (`sim_bin_class()`) that simulate a binary classifier assuming a latent probit model. You can play around to check what happens changing the parameters.
+
+```{r, results='asis', echo=FALSE}
+filor::print_fun(funs$sim_bin_class)
+```
+
+## Data simulation {.extra}
+
+Let's make an example simulating a binary classifier with an AUC of 0.7:
+
+```{r}
+dat <- sim_bin_class(auc = 0.7, n = 100, prevalence = 0.5)
+head(dat)
+```
+
+## Data simulation {.extra}
+
+Let's see some useful descriptive plots:
+
+```{r}
+plot_class(dat, y, x)
+```
+
+## Data simulation {.extra}
+
+The `plot_class()` function is a shortcut to produce the dotplot-density combination that is useful when plotting a binary classifier:
+
+```{r}
+#| results: asis
+#| echo: false
+filor::print_fun(funs$plot_class)
+```
+
+## Data Simulation {.extra}
+
+```{r}
+fit_roc <- pROC::roc(y ~ x, data = dat)
+fit_roc
+```
+
+```{r}
+#| code-fold: true
+fit_roc |> 
+  pROC::ggroc() + 
+  geom_abline(intercept = 1, color = "darkgrey") +
+  coord_fixed() +
+  theme_minimal(15) +
+  xlab("Specificity") +
+  ylab("Sensitivity")
+```
+
+## Data Simulation {.extra}
+
+Or manually using the `classify()` function that compute common classification metrics given one or more thresholds $c_i$:
+
+```{r}
+#| results: asis
+#| echo: false
+filor::print_fun(funs$classify)
+```
+
+## Data Simulation {.extra}
+
+```{r}
+classify(dat, y, x, 0)
+classify(dat, y, x, c(-1, 0, 1))
+
+# ~ full roc curve
+cs <- c(-Inf, seq(-4, 4, 0.1), Inf)
+car::some(classify(dat, y, x, cs))
+```
+
+## Data Simulation {.extra}
+
+```{r}
+cr <- seq(-3, 3, 0.1) # vector of thresholds
+cmat <- classify(dat, y, x, cr)
+
+plot(cmat$tnr, cmat$tpr, xlim = rev(range(cmat$tpr)), type = "l",
+     xlab = "Specificity",
+     ylab = "Sensitivity")
+```

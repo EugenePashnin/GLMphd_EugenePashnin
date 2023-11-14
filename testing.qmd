@@ -1,0 +1,26 @@
+---
+title: "testing"
+format: 
+  revealjs:
+    code-fold: true
+---
+
+```{r}
+#| label: setup
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+## Ciao
+
+```{r}
+#| code-fold: false
+rbinom(1,1, 0.5)
+```
+
+## Ciao
+
+```{r}
+rnorm(100) |> hist()
+```
+
