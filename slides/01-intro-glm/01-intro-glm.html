@@ -17,7 +17,7 @@
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" rel="stylesheet">
 <meta name="generator" content="quarto-1.3.450">
 <meta name="author" content="Filippo Gambarota">
-<meta name="dcterms.date" content="2023-11-12">
+<meta name="dcterms.date" content="2023-01-01">
 <title>Generalized Linear Models</title>
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -410,7 +410,6 @@
       margin-right: 0; 
     }
   </style>
-<script src="01-intro-glm_files/libs/kePrint-0.0.1/kePrint.js"></script><link href="01-intro-glm_files/libs/lightable-0.0.1/lightable.css" rel="stylesheet">
 </head>
 <body class="quarto-light">
   <div class="reveal">
@@ -420,15 +419,7 @@
   <p class="subtitle">Introduction</p>
   <p class="author">Filippo Gambarota</p>
   <p class="institute">University of Padova</p>
-  <p class="date">2023-11-12</p>
-</section><section class="slide level2"><div class="cell" data-layout-align="center">
-<details><summary>Code</summary><div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mytheme</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">size</span> <span class="op">=</span> <span class="fl">15</span><span class="op">)</span><span class="op">{</span></span>
-<span>  <span class="fu">theme_minimal</span><span class="op">(</span><span class="va">size</span><span class="op">)</span></span>
-<span><span class="op">}</span></span>
-<span></span>
-<span><span class="fu">theme_set</span><span class="op">(</span><span class="fu">mytheme</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-</div>
+  <p class="date">2023</p>
 </section><section><section id="beyond-the-gaussian-distribution" class="title-slide slide level1 section center"><h1>Beyond the Gaussian distribution</h1>
 
 </section><section id="quick-recap-about-gaussian-distribution" class="slide level2"><h2>Quick recap about Gaussian distribution</h2>
@@ -448,9 +439,9 @@ f(x, \mu, \sigma) = \frac{1}{\sigma\sqrt{2\pi}} e^{-\frac{1}{2}(\frac{x - \mu}{\
 </div>
 </section><section id="quick-recap-about-gaussian-distribution-1" class="slide level2"><h2>Quick recap about Gaussian distribution</h2>
 
-<img data-src="01-intro-glm_files/figure-revealjs/unnamed-chunk-3-1.svg" width="576" class="r-stretch quarto-figure-center"></section><section id="quick-recap-about-gaussian-distribution-2" class="slide level2"><h2>Quick recap about Gaussian distribution</h2>
+<img data-src="01-intro-glm_files/figure-revealjs/unnamed-chunk-4-1.svg" width="576" class="r-stretch quarto-figure-center"></section><section id="quick-recap-about-gaussian-distribution-2" class="slide level2"><h2>Quick recap about Gaussian distribution</h2>
 
-<img data-src="01-intro-glm_files/figure-revealjs/unnamed-chunk-4-1.svg" width="576" class="r-stretch quarto-figure-center"></section><section id="but" class="slide level2"><h2>But…</h2>
+<img data-src="01-intro-glm_files/figure-revealjs/unnamed-chunk-5-1.svg" width="576" class="r-stretch quarto-figure-center"></section><section id="but" class="slide level2"><h2>But…</h2>
 <p>In Psychology, variables do not always satisfy the properties of the Gaussian distribution. For example:</p>
 <ul>
 <li class="fragment">Reaction times</li>
@@ -461,13 +452,13 @@ f(x, \mu, \sigma) = \frac{1}{\sigma\sqrt{2\pi}} e^{-\frac{1}{2}(\frac{x - \mu}{\
 </ul></section><section id="reaction-times" class="slide level2"><h2>Reaction times</h2>
 <p>Non-negative and probably skewed data:</p>
 
-<img data-src="01-intro-glm_files/figure-revealjs/unnamed-chunk-5-1.svg" width="576" class="r-stretch quarto-figure-center"></section><section id="binary-outcomes" class="slide level2"><h2>Binary outcomes</h2>
+<img data-src="01-intro-glm_files/figure-revealjs/unnamed-chunk-6-1.svg" width="576" class="r-stretch quarto-figure-center"></section><section id="binary-outcomes" class="slide level2"><h2>Binary outcomes</h2>
 <p>A series of binary (i.e., <em>bernoulli</em>) trials with two possible outcomes:</p>
 
-<img data-src="01-intro-glm_files/figure-revealjs/unnamed-chunk-6-1.svg" width="576" class="r-stretch quarto-figure-center"></section><section id="counts" class="slide level2"><h2>Counts</h2>
+<img data-src="01-intro-glm_files/figure-revealjs/unnamed-chunk-7-1.svg" width="576" class="r-stretch quarto-figure-center"></section><section id="counts" class="slide level2"><h2>Counts</h2>
 <p>Number of symptoms for a group of patients during the last month:</p>
 
-<img data-src="01-intro-glm_files/figure-revealjs/unnamed-chunk-7-1.svg" width="576" class="r-stretch quarto-figure-center"></section></section><section><section id="should-we-use-a-linear-model-for-these-variables" class="title-slide slide level1 question center"><h1>Should we use a linear model for these variables?</h1>
+<img data-src="01-intro-glm_files/figure-revealjs/unnamed-chunk-8-1.svg" width="576" class="r-stretch quarto-figure-center"></section></section><section><section id="should-we-use-a-linear-model-for-these-variables" class="title-slide slide level1 question center"><h1>Should we use a linear model for these variables?</h1>
 
 </section><section id="should-we-use-a-linear-model-for-these-variables-1" class="slide level2"><h2>Should we use a linear model for these variables?</h2>
 <p>Example: probability of passing the exam as a function of hours of study:</p>
@@ -476,67 +467,513 @@ f(x, \mu, \sigma) = \frac{1}{\sigma\sqrt{2\pi}} e^{-\frac{1}{2}(\frac{x - \mu}{\
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 
-<table data-quarto-disable-processing="true" class="table table-condensed table-striped" style="font-size: 25px; width: auto !important; margin-left: auto; margin-right: auto;">
-<thead><tr>
-<th style="text-align:center;"> id </th>
-   <th style="text-align:center;"> studyh </th>
-   <th style="text-align:center;"> passed </th>
-  </tr></thead>
-<tbody>
+<div id="ymkoepdgog" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#ymkoepdgog table {
+  font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#ymkoepdgog thead, #ymkoepdgog tbody, #ymkoepdgog tfoot, #ymkoepdgog tr, #ymkoepdgog td, #ymkoepdgog th {
+  border-style: none;
+}
+
+#ymkoepdgog p {
+  margin: 0;
+  padding: 0;
+}
+
+#ymkoepdgog .gt_table {
+  display: table;
+  border-collapse: collapse;
+  line-height: normal;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  background-color: #FFFFFF;
+  width: auto;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+#ymkoepdgog .gt_caption {
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+#ymkoepdgog .gt_title {
+  color: #333333;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+#ymkoepdgog .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 3px;
+  padding-bottom: 5px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+#ymkoepdgog .gt_heading {
+  background-color: #FFFFFF;
+  text-align: center;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#ymkoepdgog .gt_bottom_border {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#ymkoepdgog .gt_col_headings {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#ymkoepdgog .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+#ymkoepdgog .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+#ymkoepdgog .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+#ymkoepdgog .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+#ymkoepdgog .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+#ymkoepdgog .gt_spanner_row {
+  border-bottom-style: hidden;
+}
+
+#ymkoepdgog .gt_group_heading {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  text-align: left;
+}
+
+#ymkoepdgog .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#ymkoepdgog .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+#ymkoepdgog .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+#ymkoepdgog .gt_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#ymkoepdgog .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#ymkoepdgog .gt_stub_row_group {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+  vertical-align: top;
+}
+
+#ymkoepdgog .gt_row_group_first td {
+  border-top-width: 2px;
+}
+
+#ymkoepdgog .gt_row_group_first th {
+  border-top-width: 2px;
+}
+
+#ymkoepdgog .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#ymkoepdgog .gt_first_summary_row {
+  border-top-style: solid;
+  border-top-color: #D3D3D3;
+}
+
+#ymkoepdgog .gt_first_summary_row.thick {
+  border-top-width: 2px;
+}
+
+#ymkoepdgog .gt_last_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#ymkoepdgog .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#ymkoepdgog .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+#ymkoepdgog .gt_last_grand_summary_row_top {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: double;
+  border-bottom-width: 6px;
+  border-bottom-color: #D3D3D3;
+}
+
+#ymkoepdgog .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+#ymkoepdgog .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#ymkoepdgog .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#ymkoepdgog .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#ymkoepdgog .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#ymkoepdgog .gt_sourcenote {
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#ymkoepdgog .gt_left {
+  text-align: left;
+}
+
+#ymkoepdgog .gt_center {
+  text-align: center;
+}
+
+#ymkoepdgog .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#ymkoepdgog .gt_font_normal {
+  font-weight: normal;
+}
+
+#ymkoepdgog .gt_font_bold {
+  font-weight: bold;
+}
+
+#ymkoepdgog .gt_font_italic {
+  font-style: italic;
+}
+
+#ymkoepdgog .gt_super {
+  font-size: 65%;
+}
+
+#ymkoepdgog .gt_footnote_marks {
+  font-size: 75%;
+  vertical-align: 0.4em;
+  position: initial;
+}
+
+#ymkoepdgog .gt_asterisk {
+  font-size: 100%;
+  vertical-align: 0;
+}
+
+#ymkoepdgog .gt_indent_1 {
+  text-indent: 5px;
+}
+
+#ymkoepdgog .gt_indent_2 {
+  text-indent: 10px;
+}
+
+#ymkoepdgog .gt_indent_3 {
+  text-indent: 15px;
+}
+
+#ymkoepdgog .gt_indent_4 {
+  text-indent: 20px;
+}
+
+#ymkoepdgog .gt_indent_5 {
+  text-indent: 25px;
+}
+</style>
+<table class="gt_table" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
+<thead><tr class="gt_col_headings">
+<th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" style="font-weight: bold;" scope="col" id="id">id</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" style="font-weight: bold;" scope="col" id="studyh">studyh</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" style="font-weight: bold;" scope="col" id="passed">passed</th>
+    </tr></thead>
+<tbody class="gt_table_body">
 <tr>
-<td style="text-align:center;"> 1 </td>
-   <td style="text-align:center;"> 79 </td>
-   <td style="text-align:center;"> 0 </td>
-  </tr>
+<td headers="id" class="gt_row gt_center">1</td>
+<td headers="studyh" class="gt_row gt_center">2</td>
+<td headers="passed" class="gt_row gt_center">0</td>
+</tr>
 <tr>
-<td style="text-align:center;"> 2 </td>
-   <td style="text-align:center;"> 63 </td>
-   <td style="text-align:center;"> 1 </td>
-  </tr>
+<td headers="id" class="gt_row gt_center">2</td>
+<td headers="studyh" class="gt_row gt_center">5</td>
+<td headers="passed" class="gt_row gt_center">0</td>
+</tr>
 <tr>
-<td style="text-align:center;"> 3 </td>
-   <td style="text-align:center;"> 17 </td>
-   <td style="text-align:center;"> 0 </td>
-  </tr>
+<td headers="id" class="gt_row gt_center">3</td>
+<td headers="studyh" class="gt_row gt_center">73</td>
+<td headers="passed" class="gt_row gt_center">1</td>
+</tr>
 <tr>
-<td style="text-align:center;"> 4 </td>
-   <td style="text-align:center;"> 12 </td>
-   <td style="text-align:center;"> 0 </td>
-  </tr>
+<td headers="id" class="gt_row gt_center">4</td>
+<td headers="studyh" class="gt_row gt_center">8</td>
+<td headers="passed" class="gt_row gt_center">0</td>
+</tr>
 <tr>
-<td style="text-align:center;"> ... </td>
-   <td style="text-align:center;"> ... </td>
-   <td style="text-align:center;"> ... </td>
-  </tr>
+<td headers="id" class="gt_row gt_center">...</td>
+<td headers="studyh" class="gt_row gt_center">...</td>
+<td headers="passed" class="gt_row gt_center">...</td>
+</tr>
 <tr>
-<td style="text-align:center;"> 47 </td>
-   <td style="text-align:center;"> 93 </td>
-   <td style="text-align:center;"> 1 </td>
-  </tr>
+<td headers="id" class="gt_row gt_center">47</td>
+<td headers="studyh" class="gt_row gt_center">88</td>
+<td headers="passed" class="gt_row gt_center">1</td>
+</tr>
 <tr>
-<td style="text-align:center;"> 48 </td>
-   <td style="text-align:center;"> 91 </td>
-   <td style="text-align:center;"> 1 </td>
-  </tr>
+<td headers="id" class="gt_row gt_center">48</td>
+<td headers="studyh" class="gt_row gt_center">88</td>
+<td headers="passed" class="gt_row gt_center">1</td>
+</tr>
 <tr>
-<td style="text-align:center;"> 49 </td>
-   <td style="text-align:center;"> 43 </td>
-   <td style="text-align:center;"> 0 </td>
-  </tr>
+<td headers="id" class="gt_row gt_center">49</td>
+<td headers="studyh" class="gt_row gt_center">45</td>
+<td headers="passed" class="gt_row gt_center">0</td>
+</tr>
 <tr>
-<td style="text-align:center;"> 50 </td>
-   <td style="text-align:center;"> 19 </td>
-   <td style="text-align:center;"> 0 </td>
-  </tr>
+<td headers="id" class="gt_row gt_center">50</td>
+<td headers="studyh" class="gt_row gt_center">44</td>
+<td headers="passed" class="gt_row gt_center">0</td>
+</tr>
 </tbody>
 </table>
 </div>
 </div>
+</div>
 </div><div class="column">
 <div class="cell" data-layout-align="center">
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">dat</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu">summarise</span><span class="op">(</span>n <span class="op">=</span> <span class="fu">n</span><span class="op">(</span><span class="op">)</span>,</span>
+<span>            npass <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="va">passed</span><span class="op">)</span>,</span>
+<span>            nfail <span class="op">=</span> <span class="va">n</span> <span class="op">-</span> <span class="va">npass</span>,</span>
+<span>            ppass <span class="op">=</span> <span class="va">npass</span> <span class="op">/</span> <span class="va">n</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>##    n npass nfail ppass
-## 1 50    20    30   0.4</code></pre>
+<pre><code>#&gt;    n npass nfail ppass
+#&gt; 1 50    18    32  0.36</code></pre>
 </div>
 </div>
 </div>
@@ -544,93 +981,534 @@ f(x, \mu, \sigma) = \frac{1}{\sigma\sqrt{2\pi}} e^{-\frac{1}{2}(\frac{x - \mu}{\
 </section><section id="should-we-use-a-linear-model-for-these-variables-2" class="slide level2"><h2>Should we use a linear model for these variables?</h2>
 <p>Let’s plot the data:</p>
 
-<img data-src="01-intro-glm_files/figure-revealjs/unnamed-chunk-10-1.svg" width="576" class="r-stretch quarto-figure-center"></section><section id="should-we-use-a-linear-model-for-these-variables-3" class="slide level2"><h2>Should we use a linear model for these variables?</h2>
+<img data-src="01-intro-glm_files/figure-revealjs/unnamed-chunk-11-1.svg" width="576" class="r-stretch quarto-figure-center"></section><section id="should-we-use-a-linear-model-for-these-variables-3" class="slide level2"><h2>Should we use a linear model for these variables?</h2>
 <p>Let’s fit a linear model <code>passing ~ study_hours</code> using <code>lm</code>:</p>
 
-<img data-src="01-intro-glm_files/figure-revealjs/unnamed-chunk-11-1.svg" width="576" class="r-stretch quarto-figure-center"><div class="fragment">
-<p>Do you see something strange?</p>
+<img data-src="01-intro-glm_files/figure-revealjs/unnamed-chunk-12-1.svg" width="576" class="r-stretch quarto-figure-center"><div class="fragment">
+<p><strong>Do you see something strange?</strong></p>
 </div>
 </section><section id="should-we-use-a-linear-model-for-these-variables-4" class="slide level2"><h2>Should we use a linear model for these variables?</h2>
 <p>A little <strong>spoiler</strong>, the relationship should be probably like this:</p>
 
-<img data-src="01-intro-glm_files/figure-revealjs/unnamed-chunk-12-1.svg" width="576" class="r-stretch quarto-figure-center"></section><section id="should-we-use-a-linear-model-for-these-variables-5" class="slide level2"><h2>Should we use a linear model for these variables?</h2>
+<img data-src="01-intro-glm_files/figure-revealjs/unnamed-chunk-13-1.svg" width="576" class="r-stretch quarto-figure-center"></section><section id="should-we-use-a-linear-model-for-these-variables-5" class="slide level2"><h2>Should we use a linear model for these variables?</h2>
 <p>Another example, the number of solved exercises in a semester as a function of the number of attended lectures (<span class="math inline">\(N = 100\)</span>):</p>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 
-<table data-quarto-disable-processing="true" class="table table-condensed table-striped" style="font-size: 25px; width: auto !important; margin-left: auto; margin-right: auto;">
-<thead><tr>
-<th style="text-align:center;"> id </th>
-   <th style="text-align:center;"> nattended </th>
-   <th style="text-align:center;"> nsolved </th>
-  </tr></thead>
-<tbody>
+<div id="toxlegnrgv" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#toxlegnrgv table {
+  font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#toxlegnrgv thead, #toxlegnrgv tbody, #toxlegnrgv tfoot, #toxlegnrgv tr, #toxlegnrgv td, #toxlegnrgv th {
+  border-style: none;
+}
+
+#toxlegnrgv p {
+  margin: 0;
+  padding: 0;
+}
+
+#toxlegnrgv .gt_table {
+  display: table;
+  border-collapse: collapse;
+  line-height: normal;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  background-color: #FFFFFF;
+  width: auto;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+#toxlegnrgv .gt_caption {
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+#toxlegnrgv .gt_title {
+  color: #333333;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+#toxlegnrgv .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 3px;
+  padding-bottom: 5px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+#toxlegnrgv .gt_heading {
+  background-color: #FFFFFF;
+  text-align: center;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#toxlegnrgv .gt_bottom_border {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#toxlegnrgv .gt_col_headings {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#toxlegnrgv .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+#toxlegnrgv .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+#toxlegnrgv .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+#toxlegnrgv .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+#toxlegnrgv .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+#toxlegnrgv .gt_spanner_row {
+  border-bottom-style: hidden;
+}
+
+#toxlegnrgv .gt_group_heading {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  text-align: left;
+}
+
+#toxlegnrgv .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#toxlegnrgv .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+#toxlegnrgv .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+#toxlegnrgv .gt_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#toxlegnrgv .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#toxlegnrgv .gt_stub_row_group {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+  vertical-align: top;
+}
+
+#toxlegnrgv .gt_row_group_first td {
+  border-top-width: 2px;
+}
+
+#toxlegnrgv .gt_row_group_first th {
+  border-top-width: 2px;
+}
+
+#toxlegnrgv .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#toxlegnrgv .gt_first_summary_row {
+  border-top-style: solid;
+  border-top-color: #D3D3D3;
+}
+
+#toxlegnrgv .gt_first_summary_row.thick {
+  border-top-width: 2px;
+}
+
+#toxlegnrgv .gt_last_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#toxlegnrgv .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#toxlegnrgv .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+#toxlegnrgv .gt_last_grand_summary_row_top {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: double;
+  border-bottom-width: 6px;
+  border-bottom-color: #D3D3D3;
+}
+
+#toxlegnrgv .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+#toxlegnrgv .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#toxlegnrgv .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#toxlegnrgv .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#toxlegnrgv .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#toxlegnrgv .gt_sourcenote {
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#toxlegnrgv .gt_left {
+  text-align: left;
+}
+
+#toxlegnrgv .gt_center {
+  text-align: center;
+}
+
+#toxlegnrgv .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#toxlegnrgv .gt_font_normal {
+  font-weight: normal;
+}
+
+#toxlegnrgv .gt_font_bold {
+  font-weight: bold;
+}
+
+#toxlegnrgv .gt_font_italic {
+  font-style: italic;
+}
+
+#toxlegnrgv .gt_super {
+  font-size: 65%;
+}
+
+#toxlegnrgv .gt_footnote_marks {
+  font-size: 75%;
+  vertical-align: 0.4em;
+  position: initial;
+}
+
+#toxlegnrgv .gt_asterisk {
+  font-size: 100%;
+  vertical-align: 0;
+}
+
+#toxlegnrgv .gt_indent_1 {
+  text-indent: 5px;
+}
+
+#toxlegnrgv .gt_indent_2 {
+  text-indent: 10px;
+}
+
+#toxlegnrgv .gt_indent_3 {
+  text-indent: 15px;
+}
+
+#toxlegnrgv .gt_indent_4 {
+  text-indent: 20px;
+}
+
+#toxlegnrgv .gt_indent_5 {
+  text-indent: 25px;
+}
+</style>
+<table class="gt_table" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
+<thead><tr class="gt_col_headings">
+<th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" style="font-weight: bold;" scope="col" id="id">id</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" style="font-weight: bold;" scope="col" id="nattended">nattended</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" style="font-weight: bold;" scope="col" id="nsolved">nsolved</th>
+    </tr></thead>
+<tbody class="gt_table_body">
 <tr>
-<td style="text-align:center;"> 1 </td>
-   <td style="text-align:center;"> 60 </td>
-   <td style="text-align:center;"> 18 </td>
-  </tr>
+<td headers="id" class="gt_row gt_center">1</td>
+<td headers="nattended" class="gt_row gt_center">44</td>
+<td headers="nsolved" class="gt_row gt_center">10</td>
+</tr>
 <tr>
-<td style="text-align:center;"> 2 </td>
-   <td style="text-align:center;"> 14 </td>
-   <td style="text-align:center;"> 2 </td>
-  </tr>
+<td headers="id" class="gt_row gt_center">2</td>
+<td headers="nattended" class="gt_row gt_center">37</td>
+<td headers="nsolved" class="gt_row gt_center">8</td>
+</tr>
 <tr>
-<td style="text-align:center;"> 3 </td>
-   <td style="text-align:center;"> 47 </td>
-   <td style="text-align:center;"> 10 </td>
-  </tr>
+<td headers="id" class="gt_row gt_center">3</td>
+<td headers="nattended" class="gt_row gt_center">54</td>
+<td headers="nsolved" class="gt_row gt_center">15</td>
+</tr>
 <tr>
-<td style="text-align:center;"> 4 </td>
-   <td style="text-align:center;"> 16 </td>
-   <td style="text-align:center;"> 4 </td>
-  </tr>
+<td headers="id" class="gt_row gt_center">4</td>
+<td headers="nattended" class="gt_row gt_center">54</td>
+<td headers="nsolved" class="gt_row gt_center">19</td>
+</tr>
 <tr>
-<td style="text-align:center;"> ... </td>
-   <td style="text-align:center;"> ... </td>
-   <td style="text-align:center;"> ... </td>
-  </tr>
+<td headers="id" class="gt_row gt_center">...</td>
+<td headers="nattended" class="gt_row gt_center">...</td>
+<td headers="nsolved" class="gt_row gt_center">...</td>
+</tr>
 <tr>
-<td style="text-align:center;"> 97 </td>
-   <td style="text-align:center;"> 57 </td>
-   <td style="text-align:center;"> 20 </td>
-  </tr>
+<td headers="id" class="gt_row gt_center">97</td>
+<td headers="nattended" class="gt_row gt_center">23</td>
+<td headers="nsolved" class="gt_row gt_center">4</td>
+</tr>
 <tr>
-<td style="text-align:center;"> 98 </td>
-   <td style="text-align:center;"> 46 </td>
-   <td style="text-align:center;"> 16 </td>
-  </tr>
+<td headers="id" class="gt_row gt_center">98</td>
+<td headers="nattended" class="gt_row gt_center">56</td>
+<td headers="nsolved" class="gt_row gt_center">16</td>
+</tr>
 <tr>
-<td style="text-align:center;"> 99 </td>
-   <td style="text-align:center;"> 1 </td>
-   <td style="text-align:center;"> 0 </td>
-  </tr>
+<td headers="id" class="gt_row gt_center">99</td>
+<td headers="nattended" class="gt_row gt_center">42</td>
+<td headers="nsolved" class="gt_row gt_center">10</td>
+</tr>
 <tr>
-<td style="text-align:center;"> 100 </td>
-   <td style="text-align:center;"> 8 </td>
-   <td style="text-align:center;"> 1 </td>
-  </tr>
+<td headers="id" class="gt_row gt_center">100</td>
+<td headers="nattended" class="gt_row gt_center">11</td>
+<td headers="nsolved" class="gt_row gt_center">2</td>
+</tr>
 </tbody>
 </table>
 </div>
 </div>
+</div>
 </section><section id="should-we-use-a-linear-model-for-these-variables-6" class="slide level2"><h2>Should we use a linear model for these variables?</h2>
 
-<img data-src="01-intro-glm_files/figure-revealjs/unnamed-chunk-14-1.svg" width="576" class="r-stretch quarto-figure-center"></section><section id="should-we-use-a-linear-model-for-these-variables-7" class="slide level2"><h2>Should we use a linear model for these variables?</h2>
+<img data-src="01-intro-glm_files/figure-revealjs/unnamed-chunk-15-1.svg" width="576" class="r-stretch quarto-figure-center"></section><section id="should-we-use-a-linear-model-for-these-variables-7" class="slide level2"><h2>Should we use a linear model for these variables?</h2>
 
-<img data-src="01-intro-glm_files/figure-revealjs/unnamed-chunk-15-1.svg" width="576" class="r-stretch quarto-figure-center"></section><section id="should-we-use-a-linear-model-for-these-variables-8" class="slide level2"><h2>Should we use a linear model for these variables?</h2>
+<img data-src="01-intro-glm_files/figure-revealjs/unnamed-chunk-16-1.svg" width="576" class="r-stretch quarto-figure-center"></section><section id="should-we-use-a-linear-model-for-these-variables-8" class="slide level2"><h2>Should we use a linear model for these variables?</h2>
 <p>Again, fitting the linear model seems partially appropriate but there are some problems:</p>
 
-<img data-src="01-intro-glm_files/figure-revealjs/unnamed-chunk-16-1.svg" width="576" class="r-stretch quarto-figure-center"></section><section id="should-we-use-a-linear-model-for-these-variables-9" class="slide level2"><h2>Should we use a linear model for these variables?</h2>
+<img data-src="01-intro-glm_files/figure-revealjs/unnamed-chunk-17-1.svg" width="576" class="r-stretch quarto-figure-center"></section><section id="should-we-use-a-linear-model-for-these-variables-9" class="slide level2"><h2>Should we use a linear model for these variables?</h2>
 <p>Again, fitting the linear model seems partially appropriate but there are some problems:</p>
 
-<img data-src="01-intro-glm_files/figure-revealjs/unnamed-chunk-17-1.svg" width="576" class="r-stretch quarto-figure-center"></section><section id="should-we-use-a-linear-model-for-these-variables-10" class="slide level2"><h2>Should we use a linear model for these variables?</h2>
+<img data-src="01-intro-glm_files/figure-revealjs/unnamed-chunk-18-1.svg" width="576" class="r-stretch quarto-figure-center"></section><section id="should-we-use-a-linear-model-for-these-variables-10" class="slide level2"><h2>Should we use a linear model for these variables?</h2>
 <p>Also the residuals are quite problematic:</p>
 
-<img data-src="01-intro-glm_files/figure-revealjs/unnamed-chunk-18-1.svg" width="576" class="r-stretch quarto-figure-center"></section><section id="should-we-use-a-linear-model-for-these-variables-11" class="slide level2"><h2>Should we use a linear model for these variables?</h2>
+<img data-src="01-intro-glm_files/figure-revealjs/unnamed-chunk-19-1.svg" width="576" class="r-stretch quarto-figure-center"></section><section id="should-we-use-a-linear-model-for-these-variables-11" class="slide level2"><h2>Should we use a linear model for these variables?</h2>
 <p>Another little spoiler, the model should consider both the support of the <code>y</code> variable and the non-linear pattern. Probably something like this:</p>
 
-<img data-src="01-intro-glm_files/figure-revealjs/unnamed-chunk-19-1.svg" width="576" class="r-stretch quarto-figure-center"></section><section id="so-what" class="slide level2"><h2>So what?</h2>
+<img data-src="01-intro-glm_files/figure-revealjs/unnamed-chunk-20-1.svg" width="576" class="r-stretch quarto-figure-center"></section><section id="so-what" class="slide level2"><h2>So what?</h2>
 <p>Both linear models <strong>somehow capture the expected relationship</strong> but there are <strong>serious fitting problems</strong>:</p>
 <ul>
 <li class="fragment">impossible predictions</li>
@@ -703,12 +1581,12 @@ f(x, \mu, \sigma) = \frac{1}{\sigma\sqrt{2\pi}} e^{-\frac{1}{2}(\frac{x - \mu}{\
 </ul></section><section id="random-component" class="slide level2"><h2>Random Component</h2>
 <p>The <strong>random component</strong> of a GLM identify the response variable <span class="math inline">\(y\)</span> coming from a certain probability distribution.</p>
 
-<img data-src="01-intro-glm_files/figure-revealjs/unnamed-chunk-26-1.svg" style="width:50.0%" class="r-stretch quarto-figure-center"></section><section id="systematic-component" class="slide level2"><h2>Systematic Component</h2>
+<img data-src="01-intro-glm_files/figure-revealjs/unnamed-chunk-27-1.svg" style="width:50.0%" class="r-stretch quarto-figure-center"></section><section id="systematic-component" class="slide level2"><h2>Systematic Component</h2>
 <p>The <strong>systematic component</strong> or <em>linear predictor</em> (<span class="math inline">\(\eta\)</span>) of a GLM is <span class="math inline">\(\beta_0 + \beta_1x_{1i} + ... + \beta_px_{pi}\)</span>.</p>
 <p><span class="math display">\[\begin{align*}
 \eta = \beta_0 + \beta_1x_1 + ... + \beta_px_p
 \end{align*}\]</span></p>
-<p>This part is invariant to the type of model and is the combination of explanatory variables to predict the expected value <span class="math inline">\(\mu\)</span> (i.e.&nbsp;mean) of the distribution.</p>
+<p>This part is invariant to the type of model and is the combination of explanatory variables to predict the expected value <span class="math inline">\(\mu\)</span> (i.e.&nbsp;the mean) of the distribution.</p>
 </section><section id="link-function" class="slide level2"><h2>Link Function</h2>
 <p>The <strong>link function</strong> <span class="math inline">\(g(\mu)\)</span> is an <strong>invertible</strong> function that connects the mean <span class="math inline">\(\mu\)</span> of the random component with the <em>linear combination</em> of predictors <span class="math inline">\(g(\mu) = \beta_0 + \beta_1x_{1i} + ... + \beta_px_{pi}\)</span>. The inverse of the link function <span class="math inline">\(g^{-1}\)</span> map the linear predictor (<span class="math inline">\(\eta\)</span>) into the original scale.</p>
 <p><span class="math display">\[
@@ -720,78 +1598,486 @@ g(\mu) = \eta = \beta_0 + \beta_1x_{1i} + ... + \beta_px_{pi}
 <p>Thus, the relationship between <span class="math inline">\(\mu\)</span> and <span class="math inline">\(\eta\)</span> is linear only when the <strong>link function </strong> is applied i.e.&nbsp;<span class="math inline">\(g(\mu) = \eta\)</span>.</p>
 </section><section id="link-function-1" class="slide level2"><h2>Link function</h2>
 <p>The simplest <strong>link function</strong> is the <strong>identity link</strong> where <span class="math inline">\(g(\mu) = \mu\)</span> and correspond to the standard linear model. In fact, the linear regression is just a GLM with a <strong>Gaussian random component</strong> and the <strong>identity</strong> link function.</p>
-<div class="cell" data-layout-align="center" data-tbl-cap="Main distributions and link functions">
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
 
-<table data-quarto-disable-processing="true" class="table table-condensed table-striped" style="font-size: 25px; width: auto !important; margin-left: auto; margin-right: auto;">
-<thead><tr>
-<th style="text-align:center;">
-Family
-</th>
-<th style="text-align:center;">
-Link
-</th>
-<th style="text-align:center;">
-Range
-</th>
-</tr></thead>
-<tbody>
+<div id="kamonuxups" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#kamonuxups table {
+  font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#kamonuxups thead, #kamonuxups tbody, #kamonuxups tfoot, #kamonuxups tr, #kamonuxups td, #kamonuxups th {
+  border-style: none;
+}
+
+#kamonuxups p {
+  margin: 0;
+  padding: 0;
+}
+
+#kamonuxups .gt_table {
+  display: table;
+  border-collapse: collapse;
+  line-height: normal;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  background-color: #FFFFFF;
+  width: auto;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+#kamonuxups .gt_caption {
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+#kamonuxups .gt_title {
+  color: #333333;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+#kamonuxups .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 3px;
+  padding-bottom: 5px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+#kamonuxups .gt_heading {
+  background-color: #FFFFFF;
+  text-align: center;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#kamonuxups .gt_bottom_border {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#kamonuxups .gt_col_headings {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#kamonuxups .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+#kamonuxups .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+#kamonuxups .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+#kamonuxups .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+#kamonuxups .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+#kamonuxups .gt_spanner_row {
+  border-bottom-style: hidden;
+}
+
+#kamonuxups .gt_group_heading {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  text-align: left;
+}
+
+#kamonuxups .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#kamonuxups .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+#kamonuxups .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+#kamonuxups .gt_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#kamonuxups .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#kamonuxups .gt_stub_row_group {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+  vertical-align: top;
+}
+
+#kamonuxups .gt_row_group_first td {
+  border-top-width: 2px;
+}
+
+#kamonuxups .gt_row_group_first th {
+  border-top-width: 2px;
+}
+
+#kamonuxups .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#kamonuxups .gt_first_summary_row {
+  border-top-style: solid;
+  border-top-color: #D3D3D3;
+}
+
+#kamonuxups .gt_first_summary_row.thick {
+  border-top-width: 2px;
+}
+
+#kamonuxups .gt_last_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#kamonuxups .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#kamonuxups .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+#kamonuxups .gt_last_grand_summary_row_top {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: double;
+  border-bottom-width: 6px;
+  border-bottom-color: #D3D3D3;
+}
+
+#kamonuxups .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+#kamonuxups .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#kamonuxups .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#kamonuxups .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#kamonuxups .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#kamonuxups .gt_sourcenote {
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#kamonuxups .gt_left {
+  text-align: left;
+}
+
+#kamonuxups .gt_center {
+  text-align: center;
+}
+
+#kamonuxups .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#kamonuxups .gt_font_normal {
+  font-weight: normal;
+}
+
+#kamonuxups .gt_font_bold {
+  font-weight: bold;
+}
+
+#kamonuxups .gt_font_italic {
+  font-style: italic;
+}
+
+#kamonuxups .gt_super {
+  font-size: 65%;
+}
+
+#kamonuxups .gt_footnote_marks {
+  font-size: 75%;
+  vertical-align: 0.4em;
+  position: initial;
+}
+
+#kamonuxups .gt_asterisk {
+  font-size: 100%;
+  vertical-align: 0;
+}
+
+#kamonuxups .gt_indent_1 {
+  text-indent: 5px;
+}
+
+#kamonuxups .gt_indent_2 {
+  text-indent: 10px;
+}
+
+#kamonuxups .gt_indent_3 {
+  text-indent: 15px;
+}
+
+#kamonuxups .gt_indent_4 {
+  text-indent: 20px;
+}
+
+#kamonuxups .gt_indent_5 {
+  text-indent: 25px;
+}
+</style>
+<table class="gt_table" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
+<caption><p>Main distributions and link functions</p></caption>
+  <thead><tr class="gt_col_headings">
+<th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" style="font-weight: bold;" scope="col" id="Family">Family</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" style="font-weight: bold;" scope="col" id="Link">Link</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" style="font-weight: bold;" scope="col" id="Range">Range</th>
+    </tr></thead>
+<tbody class="gt_table_body">
 <tr>
-<td style="text-align:center;">
-<code>gaussian</code>
-</td>
-<td style="text-align:center;">
-identity
-</td>
-<td style="text-align:center;">
-<span class="math inline">\((-\infty,+\infty)\)</span>
-</td>
+<td headers="Family" class="gt_row gt_center">`gaussian`</td>
+<td headers="Link" class="gt_row gt_center">identity</td>
+<td headers="Range" class="gt_row gt_center">$$(-\infty,+\infty)$$</td>
 </tr>
 <tr>
-<td style="text-align:center;">
-<code>gamma</code>
-</td>
-<td style="text-align:center;">
-log
-</td>
-<td style="text-align:center;">
-<span class="math inline">\((0,+\infty)\)</span>
-</td>
+<td headers="Family" class="gt_row gt_center">`gamma`</td>
+<td headers="Link" class="gt_row gt_center">log</td>
+<td headers="Range" class="gt_row gt_center">$$(0,+\infty)$$</td>
 </tr>
 <tr>
-<td style="text-align:center;">
-<code>binomial</code>
-</td>
-<td style="text-align:center;">
-logit
-</td>
-<td style="text-align:center;">
-<span class="math inline">\(\frac{0, 1, ..., n_{i}}{n_{i}}\)</span>
-</td>
+<td headers="Family" class="gt_row gt_center">`binomial`</td>
+<td headers="Link" class="gt_row gt_center">logit</td>
+<td headers="Range" class="gt_row gt_center">$$\frac{0, 1, ..., n_{i}}{n_{i}}$$</td>
 </tr>
 <tr>
-<td style="text-align:center;">
-<code>binomial</code>
-</td>
-<td style="text-align:center;">
-probit
-</td>
-<td style="text-align:center;">
-<span class="math inline">\(\frac{0, 1, ..., n_{i}}{n_{i}}\)</span>
-</td>
+<td headers="Family" class="gt_row gt_center">`binomial`</td>
+<td headers="Link" class="gt_row gt_center">probit</td>
+<td headers="Range" class="gt_row gt_center">$$\frac{0, 1, ..., n_{i}}{n_{i}}$$</td>
 </tr>
 <tr>
-<td style="text-align:center;">
-<code>poisson</code>
-</td>
-<td style="text-align:center;">
-log
-</td>
-<td style="text-align:center;">
-<span class="math inline">\(0, 1, 2, ...\)</span>
-</td>
+<td headers="Family" class="gt_row gt_center">`poisson`</td>
+<td headers="Link" class="gt_row gt_center">log</td>
+<td headers="Range" class="gt_row gt_center">$$0, 1, 2, ...$$</td>
 </tr>
 </tbody>
 </table>
+</div>
+</div>
 </div>
 </section></section><section><section id="relevant-distributions" class="title-slide slide level1 section center"><h1>Relevant distributions</h1>
 
@@ -814,16 +2100,16 @@ f(n, k, p)= \binom{n}{k} p^k(1 - p)^{n - k}
 <span><span class="va">p</span> <span class="op">&lt;-</span> <span class="fl">0.7</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/stats/Binomial.html">rbinom</a></span><span class="op">(</span><span class="fl">1</span>, <span class="va">n</span>, <span class="va">p</span><span class="op">)</span> <span class="co"># a single bernoulli trial</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>## [1] 0</code></pre>
+<pre><code>#&gt; [1] 1</code></pre>
 </div>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">n</span> <span class="op">&lt;-</span> <span class="fl">10</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/stats/Binomial.html">rbinom</a></span><span class="op">(</span><span class="fl">10</span>, <span class="fl">1</span>, <span class="va">p</span><span class="op">)</span> <span class="co"># n bernoulli trials</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>##  [1] 0 1 1 1 1 1 1 1 0 1</code></pre>
+<pre><code>#&gt;  [1] 1 1 1 0 1 1 0 0 1 1</code></pre>
 </div>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/Binomial.html">rbinom</a></span><span class="op">(</span><span class="fl">1</span>, <span class="va">n</span>, <span class="va">p</span><span class="op">)</span> <span class="co"># binomial version</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>## [1] 9</code></pre>
+<pre><code>#&gt; [1] 7</code></pre>
 </div>
 </div>
 </section><section id="binomial" class="slide level2"><h2>Binomial</h2>
@@ -842,40 +2128,31 @@ f(n, k, p)= \binom{n}{k} p^k(1 - p)^{n - k}
 <span>    <span class="fu">ggtitle</span><span class="op">(</span><span class="fu">latex2exp</span><span class="fu">::</span><span class="fu"><a href="https://www.stefanom.io/latex2exp/reference/TeX.html">TeX</a></span><span class="op">(</span><span class="st">"$n = 30$, $p = 0.7$"</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
-<img data-src="01-intro-glm_files/figure-revealjs/unnamed-chunk-29-1.svg" width="576" class="r-stretch quarto-figure-center"></section><section id="binomial-in-r" class="slide level2"><h2>Binomial in R</h2>
+<img data-src="01-intro-glm_files/figure-revealjs/unnamed-chunk-30-1.svg" width="576" class="r-stretch quarto-figure-center"></section><section id="binomial-in-r" class="slide level2"><h2>Binomial in R</h2>
 <div class="cell" data-layout-align="center">
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># generate k (success)</span></span>
 <span><span class="va">n</span> <span class="op">&lt;-</span> <span class="fl">50</span> <span class="co"># number of trials</span></span>
 <span><span class="va">p</span> <span class="op">&lt;-</span> <span class="fl">0.7</span> <span class="co"># probability of success</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/stats/Binomial.html">rbinom</a></span><span class="op">(</span><span class="fl">1</span>, <span class="va">n</span>, <span class="va">p</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>## [1] 31</code></pre>
-</div>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># let's do several experiments (e.g., participants)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/stats/Binomial.html">rbinom</a></span><span class="op">(</span><span class="fl">10</span>, <span class="va">n</span>, <span class="va">p</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>##  [1] 32 34 37 34 37 33 37 36 37 34</code></pre>
-</div>
-</div>
-<div class="cell" data-layout-align="center">
-<details><summary>Code</summary><div class="sourceCode" id="cb14"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># calculate the probability density given k successes</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/stats/Binomial.html">rbinom</a></span><span class="op">(</span><span class="fl">1</span>, <span class="va">n</span>, <span class="va">p</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] 24</span></span>
+<span></span>
+<span><span class="co"># let's do several experiments (e.g., participants)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/stats/Binomial.html">rbinom</a></span><span class="op">(</span><span class="fl">10</span>, <span class="va">n</span>, <span class="va">p</span><span class="op">)</span></span>
+<span><span class="co">#&gt;  [1] 31 33 36 37 36 35 35 33 37 39</span></span>
+<span></span>
+<span><span class="co"># calculate the probability density given k successes</span></span>
 <span><span class="va">n</span> <span class="op">&lt;-</span> <span class="fl">50</span></span>
 <span><span class="va">k</span> <span class="op">&lt;-</span> <span class="fl">25</span></span>
 <span><span class="va">p</span> <span class="op">&lt;-</span> <span class="fl">0.5</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/stats/Binomial.html">dbinom</a></span><span class="op">(</span><span class="va">k</span>, <span class="va">n</span>, <span class="va">p</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details><div class="cell-output cell-output-stdout">
-<pre><code>## [1] 0.1122752</code></pre>
-</div>
-</div>
-<div class="cell" data-layout-align="center">
-<details><summary>Code</summary><div class="sourceCode" id="cb16"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># calculate the probability of doing 0, 1, 2, up to k successes</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/stats/Binomial.html">dbinom</a></span><span class="op">(</span><span class="va">k</span>, <span class="va">n</span>, <span class="va">p</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] 0.1122752</span></span>
+<span></span>
+<span><span class="co"># calculate the probability of doing 0, 1, 2, up to k successes</span></span>
 <span><span class="va">n</span> <span class="op">&lt;-</span> <span class="fl">50</span></span>
 <span><span class="va">k</span> <span class="op">&lt;-</span> <span class="fl">25</span></span>
 <span><span class="va">p</span> <span class="op">&lt;-</span> <span class="fl">0.5</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/stats/Binomial.html">pbinom</a></span><span class="op">(</span><span class="va">k</span>, <span class="va">n</span>, <span class="va">p</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details><div class="cell-output cell-output-stdout">
-<pre><code>## [1] 0.5561376</code></pre>
-</div>
+<span><span class="fu"><a href="https://rdrr.io/r/stats/Binomial.html">pbinom</a></span><span class="op">(</span><span class="va">k</span>, <span class="va">n</span>, <span class="va">p</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] 0.5561376</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section><section id="binomial-glm" class="slide level2"><h2>Binomial GLM</h2>
 <p>The Bernoulli distributions is used as <strong>random component</strong> when we have a binary dependent variable or the number of successes over the total number of trials:</p>
@@ -883,12 +2160,35 @@ f(n, k, p)= \binom{n}{k} p^k(1 - p)^{n - k}
 <li class="fragment">Accuracy on a cognitive task</li>
 <li class="fragment">Patients recovered or not after a treatment</li>
 <li class="fragment">People passing or not the exam</li>
-</ul></section><section id="binomial-glm-1" class="slide level2"><h2>Binomial GLM</h2>
-<p>The Bernoulli distributions is used as <strong>random component</strong> when we have a binary dependent variable or the number of successes over the total number of trials:</p>
+</ul>
+<div class="fragment">
+<p>The Bernoulli or the Binomial distributions can be used as <strong>random component</strong> when we have a binary dependent variable or the number of successes over the total number of trials.</p>
+</div>
 <div class="fragment">
 <p>When fitting a GLM with the binomial distribution we are including linear predictors on the expected value <span class="math inline">\(\mu\)</span> i.e.&nbsp;the probability of success.</p>
 </div>
-</section><section id="poisson-distribution" class="slide level2"><h2>Poisson distribution</h2>
+</section><section id="binomial-glm-1" class="slide level2"><h2>Binomial GLM</h2>
+<p>Most of the GLM models deal with a mean-variance relationship:</p>
+<div class="cell" data-layout-align="center">
+<details><summary>Code</summary><div class="sourceCode" id="cb11"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">p</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span>, <span class="fl">0.01</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/par.html">par</a></span><span class="op">(</span>mfrow <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">2</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/curve.html">curve</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/Logistic.html">plogis</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>, </span>
+<span>      <span class="op">-</span><span class="fl">4</span>, <span class="fl">4</span>, </span>
+<span>      ylab <span class="op">=</span> <span class="st">"Probability"</span>, </span>
+<span>      xlab <span class="op">=</span> <span class="st">"x"</span>, </span>
+<span>      lwd <span class="op">=</span> <span class="fl">2</span>,</span>
+<span>      main <span class="op">=</span> <span class="st">"Logistic Distribution"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">p</span>, </span>
+<span>     <span class="va">p</span> <span class="op">*</span> <span class="op">(</span><span class="fl">1</span> <span class="op">-</span> <span class="va">p</span><span class="op">)</span>, </span>
+<span>     xlim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span><span class="op">)</span>,</span>
+<span>     xlab <span class="op">=</span> <span class="fu">latex</span><span class="op">(</span><span class="st">"\\mu = p"</span><span class="op">)</span>, </span>
+<span>     ylab <span class="op">=</span> <span class="fu">latex</span><span class="op">(</span><span class="st">"V = p(1 - p)"</span><span class="op">)</span>,</span>
+<span>     type <span class="op">=</span> <span class="st">"l"</span>,</span>
+<span>     lwd <span class="op">=</span> <span class="fl">2</span>,</span>
+<span>     main <span class="op">=</span> <span class="st">"Mean-Variance Relationship"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<img data-src="01-intro-glm_files/figure-revealjs/unnamed-chunk-32-1.svg" width="960" class="r-stretch quarto-figure-center"></section><section id="poisson-distribution" class="slide level2"><h2>Poisson distribution</h2>
 <p>The number of events <span class="math inline">\(k\)</span> during a fixed time interval (e.g., number of new users on a website in 1 week) is:</p>
 <p><span class="math display">\[\begin{align*}
 f(k,\lambda) = Pr(X = k) = \frac{\lambda^k e^{-\lambda}}{k!}
@@ -899,32 +2199,41 @@ f(k,\lambda) = Pr(X = k) = \frac{\lambda^k e^{-\lambda}}{k!}
 <img data-src="01-intro-glm_files/figure-revealjs/unnamed-chunk-33-1.svg" width="576" class="r-stretch quarto-figure-center"><p>As <span class="math inline">\(\lambda\)</span> increases, the distribution is well approximated by a Gaussian distribution, but the Poisson is discrete.</p>
 </section><section id="poisson-distribution-in-r" class="slide level2"><h2>Poisson distribution in R</h2>
 <div class="cell" data-layout-align="center">
-<details><summary>Code</summary><div class="sourceCode" id="cb18"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">n</span> <span class="op">&lt;-</span> <span class="fl">1000</span></span>
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">n</span> <span class="op">&lt;-</span> <span class="fl">1000</span></span>
 <span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Poisson.html">rpois</a></span><span class="op">(</span><span class="va">n</span>, lambda <span class="op">=</span> <span class="fl">30</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details><div class="cell-output cell-output-stdout">
-<pre><code>## [1] 29.79</code></pre>
+<div class="cell-output cell-output-stdout">
+<pre><code>#&gt; [1] 30.052</code></pre>
 </div>
-<details><summary>Code</summary><div class="sourceCode" id="cb20"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/cor.html">var</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details><div class="cell-output cell-output-stdout">
-<pre><code>## [1] 30.05596</code></pre>
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/cor.html">var</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>#&gt; [1] 28.83813</code></pre>
 </div>
 </div>
 <p>We can also use all the other functions such as the <code><a href="https://rdrr.io/r/stats/Poisson.html">dpois()</a></code>, <code><a href="https://rdrr.io/r/stats/Poisson.html">qpois()</a></code> and <code><a href="https://rdrr.io/r/stats/Poisson.html">ppois()</a></code></p>
-</section><section id="gamma-distribution" class="slide level2"><h2>Gamma distribution</h2>
+</section><section id="poisson-distribution-in-r-1" class="slide level2"><h2>Poisson distribution in R</h2>
+<p>The mean-variance relationship can be easily seen with a continuous predictor:</p>
+<div class="cell" data-layout-align="center">
+<details><summary>Code</summary><div class="sourceCode" id="cb16"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html">rnorm</a></span><span class="op">(</span><span class="fl">1000</span><span class="op">)</span></span>
+<span><span class="va">y</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Poisson.html">rpois</a></span><span class="op">(</span><span class="fl">1000</span>, <span class="fu"><a href="https://rdrr.io/r/base/Log.html">exp</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html">log</a></span><span class="op">(</span><span class="fl">10</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html">log</a></span><span class="op">(</span><span class="fl">1.8</span><span class="op">)</span><span class="op">*</span><span class="va">x</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span>, pch <span class="op">=</span> <span class="fl">19</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<img data-src="01-intro-glm_files/figure-revealjs/unnamed-chunk-35-1.svg" width="576" class="r-stretch quarto-figure-center"></section><section id="gamma-distribution" class="slide level2"><h2>Gamma distribution</h2>
 <p>The Gamma distribution has several <a href="https://en.wikipedia.org/wiki/Gamma_distribution">:parametrizations</a>. One of the most common is the <strong>shape-scale</strong> parametrization:</p>
 <p><span class="math display">\[
 f(x;k,\theta )={\frac {x^{k-1}e^{-x/\theta }}{\theta ^{k}\Gamma (k)}}
 \]</span> Where <span class="math inline">\(\theta\)</span> is the <strong>scale</strong> parameter and <span class="math inline">\(k\)</span> is the <strong>shape</strong> parameter.</p>
 </section><section id="gamma-distribution-1" class="slide level2"><h2>Gamma distribution</h2>
 <div class="cell" data-layout-align="center">
-<details><summary>Code</summary><div class="sourceCode" id="cb22"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">ggamma</span><span class="op">(</span>mean <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">10</span>, <span class="fl">20</span>, <span class="fl">30</span><span class="op">)</span>, sd <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">10</span>, <span class="fl">10</span>, <span class="fl">10</span><span class="op">)</span>, show <span class="op">=</span> <span class="st">"ss"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<details><summary>Code</summary><div class="sourceCode" id="cb17"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">ggamma</span><span class="op">(</span>mean <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">10</span>, <span class="fl">20</span>, <span class="fl">30</span><span class="op">)</span>, sd <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">10</span>, <span class="fl">10</span>, <span class="fl">10</span><span class="op">)</span>, show <span class="op">=</span> <span class="st">"ss"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
-<img data-src="01-intro-glm_files/figure-revealjs/unnamed-chunk-35-1.svg" width="576" class="r-stretch quarto-figure-center"></section><section id="gamma-mu-and-sigma2" class="slide level2"><h2>Gamma <span class="math inline">\(\mu\)</span> and <span class="math inline">\(\sigma^2\)</span>
+<img data-src="01-intro-glm_files/figure-revealjs/unnamed-chunk-36-1.svg" width="576" class="r-stretch quarto-figure-center"></section><section id="gamma-mu-and-sigma2" class="slide level2"><h2>Gamma <span class="math inline">\(\mu\)</span> and <span class="math inline">\(\sigma^2\)</span>
 </h2>
-<p>The expected value and variance are defined as:</p>
+<p>The mean and variance are defined as:</p>
 <ul>
 <li class="fragment">
 <span class="math inline">\(\mu = k \theta\)</span> and <span class="math inline">\(\sigma^2 = k \theta^2\)</span> with the <strong>shape-scale</strong> parametrization</li>
@@ -934,10 +2243,16 @@ f(x;k,\theta )={\frac {x^{k-1}e^{-x/\theta }}{\theta ^{k}\Gamma (k)}}
 <div class="fragment">
 <p>Another important quantity is the <strong>coefficient of variation</strong> defined as <span class="math inline">\(\frac{\sigma}{\mu}\)</span> or <span class="math inline">\(\frac{1}{\sqrt{k}}\)</span> (or <span class="math inline">\(\frac{1}{\sqrt{\alpha}}\)</span>).</p>
 </div>
-</section><section id="gamma-parametrization" class="slide level2"><h2>Gamma parametrization</h2>
+</section><section id="gamma-distribution-2" class="slide level2"><h2>Gamma distribution</h2>
+<p>Again, we can see the mean-variance relationship:</p>
+<div class="cell" data-layout-align="center">
+<details><summary>Code</summary><div class="sourceCode" id="cb18"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">ggamma</span><span class="op">(</span>shape <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">5</span>, <span class="fl">5</span><span class="op">)</span>, scale <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">10</span>, <span class="fl">20</span><span class="op">)</span>, show <span class="op">=</span> <span class="st">"ss"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<img data-src="01-intro-glm_files/figure-revealjs/unnamed-chunk-37-1.svg" width="576" class="r-stretch quarto-figure-center"></section><section id="gamma-parametrization" class="slide level2"><h2>Gamma parametrization</h2>
 <p>To convert between different parametrizations, you can use the <code>gamma_params()</code> function:</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">gamma_params</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">shape</span> <span class="op">=</span> <span class="cn">NULL</span>, <span class="va">scale</span> <span class="op">=</span> <span class="fl">1</span><span class="op">/</span><span class="va">rate</span>, <span class="va">rate</span> <span class="op">=</span> <span class="fl">1</span>,</span>
+<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">gamma_params</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">shape</span> <span class="op">=</span> <span class="cn">NULL</span>, <span class="va">scale</span> <span class="op">=</span> <span class="fl">1</span><span class="op">/</span><span class="va">rate</span>, <span class="va">rate</span> <span class="op">=</span> <span class="fl">1</span>,</span>
 <span>                         <span class="va">mean</span> <span class="op">=</span> <span class="cn">NULL</span>, <span class="va">sd</span> <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>                         <span class="va">eqs</span> <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span><span class="op">{</span></span>
 <span>  <span class="kw">if</span><span class="op">(</span><span class="va">eqs</span><span class="op">)</span><span class="op">{</span></span>
@@ -971,28 +2286,27 @@ f(x;k,\theta )={\frac {x^{k-1}e^{-x/\theta }}{\theta ^{k}\Gamma (k)}}
 </div>
 </section><section id="gamma-parametrization-1" class="slide level2"><h2>Gamma parametrization</h2>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">gm</span> <span class="op">&lt;-</span> <span class="fu">gamma_params</span><span class="op">(</span>mean <span class="op">=</span> <span class="fl">30</span>, sd <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span>
+<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">gm</span> <span class="op">&lt;-</span> <span class="fu">gamma_params</span><span class="op">(</span>mean <span class="op">=</span> <span class="fl">30</span>, sd <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/unlist.html">unlist</a></span><span class="op">(</span><span class="va">gm</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>##       shape       scale        rate        mean         var          sd 
-##   9.0000000   3.3333333   0.3000000  30.0000000 100.0000000  10.0000000 
-##          cv 
-##   0.3333333</code></pre>
+<pre><code>#&gt;       shape       scale        rate        mean         var          sd 
+#&gt;   9.0000000   3.3333333   0.3000000  30.0000000 100.0000000  10.0000000 
+#&gt;          cv 
+#&gt;   0.3333333</code></pre>
 </div>
-<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">y</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/GammaDist.html">rgamma</a></span><span class="op">(</span><span class="fl">1000</span>, shape <span class="op">=</span> <span class="va">gm</span><span class="op">$</span><span class="va">shape</span>, scale <span class="op">=</span> <span class="va">gm</span><span class="op">$</span><span class="va">scale</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">y</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/GammaDist.html">rgamma</a></span><span class="op">(</span><span class="fl">1000</span>, shape <span class="op">=</span> <span class="va">gm</span><span class="op">$</span><span class="va">shape</span>, scale <span class="op">=</span> <span class="va">gm</span><span class="op">$</span><span class="va">scale</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section><section id="gamma-parametrization-2" class="slide level2"><h2>Gamma parametrization</h2>
 
-<img data-src="01-intro-glm_files/figure-revealjs/unnamed-chunk-38-1.svg" width="576" class="r-stretch quarto-figure-center"></section><section id="glm-in-r" class="slide level2"><h2>GLM in R</h2>
+<img data-src="01-intro-glm_files/figure-revealjs/unnamed-chunk-40-1.svg" width="576" class="r-stretch quarto-figure-center"></section><section id="glm-in-r" class="slide level2"><h2>GLM in R</h2>
 <p>Is not always easy to work with link functions. In R we can use the <code>distribution(link = )</code> function to have several useful information. For example:</p>
 <div class="cell" data-layout-align="center">
-<details><summary>Code</summary><div class="sourceCode" id="cb27"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">fam</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/family.html">binomial</a></span><span class="op">(</span>link <span class="op">=</span> <span class="st">"logit"</span><span class="op">)</span></span>
+<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">fam</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/family.html">binomial</a></span><span class="op">(</span>link <span class="op">=</span> <span class="st">"logit"</span><span class="op">)</span></span>
 <span><span class="va">fam</span><span class="op">$</span><span class="fu">linkfun</span><span class="op">(</span><span class="op">)</span> <span class="co"># link function, from probability to eta</span></span>
 <span><span class="va">fam</span><span class="op">$</span><span class="fu">linkinv</span><span class="op">(</span><span class="op">)</span> <span class="co"># inverse of the link function, from eta to probability</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
 </div>
 <p>We are going to see the specific arguments, but this tricks works for any family and links, even if you do not remember the specific function or formula.</p>
-</section><section id="references" class="slide level2 smaller scrollable"><h2>References</h2>
+</section><section id="references" class="slide level2 refs smaller scrollable"><h2>References</h2>
 <div class="footer footer-default">
 
 </div>

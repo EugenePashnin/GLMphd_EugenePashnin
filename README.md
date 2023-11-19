@@ -42,3 +42,5 @@ folder) you can use `devtools::load_all()`. This is the same as doing
 | 05-extra-glm/binomial-glm-sdt   | [qmd](05-extra-glm/binomial-glm-sdt.qmd)   | [html](05-extra-glm/binomial-glm-sdt.html)   |
 
 ## Data
+
+The `data/` folder contains several datasets used during the course.

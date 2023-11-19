@@ -17,7 +17,7 @@
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" rel="stylesheet">
 <meta name="generator" content="quarto-1.3.450">
 <meta name="author" content="Filippo Gambarota">
-<meta name="dcterms.date" content="2023-11-13">
+<meta name="dcterms.date" content="2023-11-15">
 <title>Title</title>
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -410,7 +410,6 @@
       margin-right: 0; 
     }
   </style>
-<script src="03-poisson-glm_files/libs/kePrint-0.0.1/kePrint.js"></script><link href="03-poisson-glm_files/libs/lightable-0.0.1/lightable.css" rel="stylesheet">
 </head>
 <body class="quarto-light">
   <div class="reveal">
@@ -420,7 +419,7 @@
   <p class="subtitle">Subtitle</p>
   <p class="author">Filippo Gambarota</p>
   <p class="institute">@event | Place</p>
-  <p class="date">2023-11-13</p>
+  <p class="date">2023-11-15</p>
 </section><section id="poisson-glm" class="slide level2"><h2>Poisson GLM</h2>
 <p>Everything that we discussed for the binomial GLM is also relevant for the Poisson GLM. We are gonna focus on specificity of the Poisson model in particular:</p>
 <ul>
@@ -439,12 +438,12 @@ p(y; \lambda) = \frac{\lambda^y e^{-\lambda}}{y!}
 \]</span> Where the mean is <span class="math inline">\(\lambda\)</span> and the variance is <span class="math inline">\(\lambda\)</span></p>
 </section><section id="poisson-distribution-2" class="slide level2"><h2>Poisson distribution</h2>
 
-<img data-src="03-poisson-glm_files/figure-revealjs/unnamed-chunk-2-1.svg" width="576" class="r-stretch quarto-figure-center"></section><section id="poisson-distribution-3" class="slide level2"><h2>Poisson distribution</h2>
+<img data-src="03-poisson-glm_files/figure-revealjs/unnamed-chunk-4-1.svg" width="576" class="r-stretch quarto-figure-center"></section><section id="poisson-distribution-3" class="slide level2"><h2>Poisson distribution</h2>
 <p>As the mean increases also the variance increase and the distributions is approximately normal:</p>
 
-<img data-src="03-poisson-glm_files/figure-revealjs/unnamed-chunk-3-1.svg" width="576" class="r-stretch quarto-figure-center"></section><section id="poisson-distribution-4" class="slide level2"><h2>Poisson distribution</h2>
+<img data-src="03-poisson-glm_files/figure-revealjs/unnamed-chunk-5-1.svg" width="576" class="r-stretch quarto-figure-center"></section><section id="poisson-distribution-4" class="slide level2"><h2>Poisson distribution</h2>
 
-<img data-src="03-poisson-glm_files/figure-revealjs/unnamed-chunk-4-1.svg" width="576" class="r-stretch quarto-figure-center"></section><section id="link-function" class="slide level2"><h2>Link function</h2>
+<img data-src="03-poisson-glm_files/figure-revealjs/unnamed-chunk-6-1.svg" width="576" class="r-stretch quarto-figure-center"></section><section id="link-function" class="slide level2"><h2>Link function</h2>
 <p>The common (and default in R) link function (<span class="math inline">\(g(\lambda)\)</span>) for the Poisson distribution is the <strong>log</strong> link function and the inverse of link function is the exponential.</p>
 <p><span class="math display">\[\begin{align*}
 log(\lambda) = \beta_0 + \beta_{1}X_{1} + ...\beta_pX_p \\
@@ -457,60 +456,501 @@ log(\lambda) = \beta_0 + \beta_{1}X_{1} + ...\beta_pX_p \\
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 
-<table data-quarto-disable-processing="true" class="table table-condensed table-striped" style="font-size: 25px; width: auto !important; margin-left: auto; margin-right: auto;">
-<thead><tr>
-<th style="text-align:center;"> id </th>
-   <th style="text-align:center;"> studyh </th>
-   <th style="text-align:center;"> solved </th>
-  </tr></thead>
-<tbody>
+<div id="qzhrrrlasc" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#qzhrrrlasc table {
+  font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#qzhrrrlasc thead, #qzhrrrlasc tbody, #qzhrrrlasc tfoot, #qzhrrrlasc tr, #qzhrrrlasc td, #qzhrrrlasc th {
+  border-style: none;
+}
+
+#qzhrrrlasc p {
+  margin: 0;
+  padding: 0;
+}
+
+#qzhrrrlasc .gt_table {
+  display: table;
+  border-collapse: collapse;
+  line-height: normal;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  background-color: #FFFFFF;
+  width: auto;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+#qzhrrrlasc .gt_caption {
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+#qzhrrrlasc .gt_title {
+  color: #333333;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+#qzhrrrlasc .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 3px;
+  padding-bottom: 5px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+#qzhrrrlasc .gt_heading {
+  background-color: #FFFFFF;
+  text-align: center;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#qzhrrrlasc .gt_bottom_border {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#qzhrrrlasc .gt_col_headings {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#qzhrrrlasc .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+#qzhrrrlasc .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+#qzhrrrlasc .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+#qzhrrrlasc .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+#qzhrrrlasc .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+#qzhrrrlasc .gt_spanner_row {
+  border-bottom-style: hidden;
+}
+
+#qzhrrrlasc .gt_group_heading {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  text-align: left;
+}
+
+#qzhrrrlasc .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#qzhrrrlasc .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+#qzhrrrlasc .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+#qzhrrrlasc .gt_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#qzhrrrlasc .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#qzhrrrlasc .gt_stub_row_group {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+  vertical-align: top;
+}
+
+#qzhrrrlasc .gt_row_group_first td {
+  border-top-width: 2px;
+}
+
+#qzhrrrlasc .gt_row_group_first th {
+  border-top-width: 2px;
+}
+
+#qzhrrrlasc .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#qzhrrrlasc .gt_first_summary_row {
+  border-top-style: solid;
+  border-top-color: #D3D3D3;
+}
+
+#qzhrrrlasc .gt_first_summary_row.thick {
+  border-top-width: 2px;
+}
+
+#qzhrrrlasc .gt_last_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#qzhrrrlasc .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#qzhrrrlasc .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+#qzhrrrlasc .gt_last_grand_summary_row_top {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: double;
+  border-bottom-width: 6px;
+  border-bottom-color: #D3D3D3;
+}
+
+#qzhrrrlasc .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+#qzhrrrlasc .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#qzhrrrlasc .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#qzhrrrlasc .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#qzhrrrlasc .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#qzhrrrlasc .gt_sourcenote {
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#qzhrrrlasc .gt_left {
+  text-align: left;
+}
+
+#qzhrrrlasc .gt_center {
+  text-align: center;
+}
+
+#qzhrrrlasc .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#qzhrrrlasc .gt_font_normal {
+  font-weight: normal;
+}
+
+#qzhrrrlasc .gt_font_bold {
+  font-weight: bold;
+}
+
+#qzhrrrlasc .gt_font_italic {
+  font-style: italic;
+}
+
+#qzhrrrlasc .gt_super {
+  font-size: 65%;
+}
+
+#qzhrrrlasc .gt_footnote_marks {
+  font-size: 75%;
+  vertical-align: 0.4em;
+  position: initial;
+}
+
+#qzhrrrlasc .gt_asterisk {
+  font-size: 100%;
+  vertical-align: 0;
+}
+
+#qzhrrrlasc .gt_indent_1 {
+  text-indent: 5px;
+}
+
+#qzhrrrlasc .gt_indent_2 {
+  text-indent: 10px;
+}
+
+#qzhrrrlasc .gt_indent_3 {
+  text-indent: 15px;
+}
+
+#qzhrrrlasc .gt_indent_4 {
+  text-indent: 20px;
+}
+
+#qzhrrrlasc .gt_indent_5 {
+  text-indent: 25px;
+}
+</style>
+<table class="gt_table" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
+<thead><tr class="gt_col_headings">
+<th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" style="font-weight: bold;" scope="col" id="id">id</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" style="font-weight: bold;" scope="col" id="studyh">studyh</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" style="font-weight: bold;" scope="col" id="solved">solved</th>
+    </tr></thead>
+<tbody class="gt_table_body">
 <tr>
-<td style="text-align:center;"> 1 </td>
-   <td style="text-align:center;"> 85 </td>
-   <td style="text-align:center;"> 68 </td>
-  </tr>
+<td headers="id" class="gt_row gt_center">1</td>
+<td headers="studyh" class="gt_row gt_center">28</td>
+<td headers="solved" class="gt_row gt_center">15</td>
+</tr>
 <tr>
-<td style="text-align:center;"> 2 </td>
-   <td style="text-align:center;"> 58 </td>
-   <td style="text-align:center;"> 31 </td>
-  </tr>
+<td headers="id" class="gt_row gt_center">2</td>
+<td headers="studyh" class="gt_row gt_center">86</td>
+<td headers="solved" class="gt_row gt_center">39</td>
+</tr>
 <tr>
-<td style="text-align:center;"> 3 </td>
-   <td style="text-align:center;"> 23 </td>
-   <td style="text-align:center;"> 22 </td>
-  </tr>
+<td headers="id" class="gt_row gt_center">3</td>
+<td headers="studyh" class="gt_row gt_center">66</td>
+<td headers="solved" class="gt_row gt_center">42</td>
+</tr>
 <tr>
-<td style="text-align:center;"> 4 </td>
-   <td style="text-align:center;"> 95 </td>
-   <td style="text-align:center;"> 62 </td>
-  </tr>
+<td headers="id" class="gt_row gt_center">4</td>
+<td headers="studyh" class="gt_row gt_center">28</td>
+<td headers="solved" class="gt_row gt_center">19</td>
+</tr>
 <tr>
-<td style="text-align:center;"> ... </td>
-   <td style="text-align:center;"> ... </td>
-   <td style="text-align:center;"> ... </td>
-  </tr>
+<td headers="id" class="gt_row gt_center">...</td>
+<td headers="studyh" class="gt_row gt_center">...</td>
+<td headers="solved" class="gt_row gt_center">...</td>
+</tr>
 <tr>
-<td style="text-align:center;"> 97 </td>
-   <td style="text-align:center;"> 45 </td>
-   <td style="text-align:center;"> 29 </td>
-  </tr>
+<td headers="id" class="gt_row gt_center">97</td>
+<td headers="studyh" class="gt_row gt_center">32</td>
+<td headers="solved" class="gt_row gt_center">21</td>
+</tr>
 <tr>
-<td style="text-align:center;"> 98 </td>
-   <td style="text-align:center;"> 28 </td>
-   <td style="text-align:center;"> 18 </td>
-  </tr>
+<td headers="id" class="gt_row gt_center">98</td>
+<td headers="studyh" class="gt_row gt_center">31</td>
+<td headers="solved" class="gt_row gt_center">23</td>
+</tr>
 <tr>
-<td style="text-align:center;"> 99 </td>
-   <td style="text-align:center;"> 42 </td>
-   <td style="text-align:center;"> 25 </td>
-  </tr>
+<td headers="id" class="gt_row gt_center">99</td>
+<td headers="studyh" class="gt_row gt_center">2</td>
+<td headers="solved" class="gt_row gt_center">6</td>
+</tr>
 <tr>
-<td style="text-align:center;"> 100 </td>
-   <td style="text-align:center;"> 13 </td>
-   <td style="text-align:center;"> 12 </td>
-  </tr>
+<td headers="id" class="gt_row gt_center">100</td>
+<td headers="studyh" class="gt_row gt_center">33</td>
+<td headers="solved" class="gt_row gt_center">20</td>
+</tr>
 </tbody>
 </table>
+</div>
 </div>
 </div>
 </section><section id="an-example-1" class="slide level2"><h2>An example…</h2>
@@ -519,7 +959,7 @@ log(\lambda) = \beta_0 + \beta_{1}X_{1} + ...\beta_pX_p \\
 <li>The both the mean and variance increase as a function of the predictor</li>
 </ul>
 
-<img data-src="03-poisson-glm_files/figure-revealjs/unnamed-chunk-6-1.svg" width="576" class="r-stretch quarto-figure-center"></section><section id="model-fitting" class="slide level2"><h2>Model fitting</h2>
+<img data-src="03-poisson-glm_files/figure-revealjs/unnamed-chunk-8-1.svg" width="576" class="r-stretch quarto-figure-center"></section><section id="model-fitting" class="slide level2"><h2>Model fitting</h2>
 <p>We can fit the model using the <code>glm</code> function in R setting the appropriate <strong>random component</strong> (<code>family</code>) and the <strong>link function</strong> (<code>link</code>):</p>
 <div class="cell" data-layout-align="center">
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">fit</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/glm.html">glm</a></span><span class="op">(</span><span class="va">solved</span> <span class="op">~</span> <span class="va">studyh</span>, family <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/family.html">poisson</a></span><span class="op">(</span>link <span class="op">=</span> <span class="st">"log"</span><span class="op">)</span>, data <span class="op">=</span> <span class="va">dat</span><span class="op">)</span></span>
@@ -533,55 +973,55 @@ log(\lambda) = \beta_0 + \beta_{1}X_{1} + ...\beta_pX_p \\
 ## 
 ## Coefficients:
 ##              Estimate Std. Error z value Pr(&gt;|z|)    
-## (Intercept) 2.3145914  0.0482453   47.98   &lt;2e-16 ***
-## studyh      0.0196996  0.0006573   29.97   &lt;2e-16 ***
+## (Intercept) 2.2961565  0.0441474   52.01   &lt;2e-16 ***
+## studyh      0.0200588  0.0006272   31.98   &lt;2e-16 ***
 ## ---
 ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ## 
 ## (Dispersion parameter for poisson family taken to be 1)
 ## 
-##     Null deviance: 1069.093  on 99  degrees of freedom
-## Residual deviance:   86.758  on 98  degrees of freedom
-## AIC: 610.24
+##     Null deviance: 1217.71  on 99  degrees of freedom
+## Residual deviance:  128.07  on 98  degrees of freedom
+## AIC: 635.42
 ## 
 ## Number of Fisher Scoring iterations: 4</code></pre>
 </div>
 </div>
 </section><section id="parameters-intepretation-1" class="slide level2"><h2>Parameters intepretation</h2>
 <ul>
-<li>The <code>(Intercept)</code> <span class="math inline">\(2.315\)</span> is the log of the expected number of solved exercises for a student with 0 hours of studying. Taking the exponential we obtain the estimation on the response scale <span class="math inline">\(10.121\)</span>
+<li>The <code>(Intercept)</code> <span class="math inline">\(2.296\)</span> is the log of the expected number of solved exercises for a student with 0 hours of studying. Taking the exponential we obtain the estimation on the response scale <span class="math inline">\(9.936\)</span>
 </li>
 <li>the <code>studyh</code> <span class="math inline">\(0.020\)</span> is the increase in the expected increase of (log) solved exercises for a unit increase in hours of studying. Taking the exponential we obtain the ratio of increase of the number of solved exercises <span class="math inline">\(1.020\)</span>
 </li>
 </ul></section><section id="parameters-intepretation-2" class="slide level2"><h2>Parameters intepretation</h2>
 <p>Again, as in the binomial model, the effects are linear on the log scale but non-linear on the response scale.</p>
 
-<img data-src="03-poisson-glm_files/figure-revealjs/unnamed-chunk-9-1.svg" width="576" class="r-stretch quarto-figure-center"></section><section id="parameters-intepretation-3" class="slide level2"><h2>Parameters intepretation</h2>
+<img data-src="03-poisson-glm_files/figure-revealjs/unnamed-chunk-11-1.svg" width="576" class="r-stretch quarto-figure-center"></section><section id="parameters-intepretation-3" class="slide level2"><h2>Parameters intepretation</h2>
 <p>The non-linearity can be easily seen using the <code><a href="https://rdrr.io/r/stats/predict.html">predict()</a></code> function:</p>
 <div class="cell" data-layout-align="center">
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">linear</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span><span class="va">fit</span>, newdata <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span>studyh <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">10</span>, <span class="fl">11</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/diff.html">diff</a></span><span class="op">(</span><span class="va">linear</span><span class="op">)</span> <span class="co"># same as the beta0</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>##          2 
-## 0.01969964</code></pre>
+## 0.02005881</code></pre>
 </div>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">nonlinear</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html">exp</a></span><span class="op">(</span><span class="va">linear</span><span class="op">)</span> <span class="co"># or predict(..., type = "response")</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/diff.html">diff</a></span><span class="op">(</span><span class="va">nonlinear</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>##         2 
-## 0.2451951</code></pre>
+## 0.2460314</code></pre>
 </div>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># ratio of increase when using the response scale</span></span>
 <span><span class="va">nonlinear</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span><span class="op">/</span><span class="va">nonlinear</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>##        2 
-## 1.019895</code></pre>
+## 1.020261</code></pre>
 </div>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># equivalent to exp(beta1)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/Log.html">exp</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/coef.html">coef</a></span><span class="op">(</span><span class="va">fit</span><span class="op">)</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>##   studyh 
-## 1.019895</code></pre>
+## 1.020261</code></pre>
 </div>
 </div>
 </section><section id="parameters-intepretation---categorical-variable" class="slide level2"><h2>Parameters intepretation - Categorical variable</h2>
@@ -589,75 +1029,516 @@ log(\lambda) = \beta_0 + \beta_{1}X_{1} + ...\beta_pX_p \\
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 
-<table data-quarto-disable-processing="true" class="table table-condensed table-striped" style="font-size: 25px; width: auto !important; margin-left: auto; margin-right: auto;">
-<thead><tr>
-<th style="text-align:center;"> id </th>
-   <th style="text-align:center;"> class </th>
-   <th style="text-align:center;"> class_c </th>
-   <th style="text-align:center;"> solved </th>
-  </tr></thead>
-<tbody>
+<div id="vvtlzlhkke" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#vvtlzlhkke table {
+  font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#vvtlzlhkke thead, #vvtlzlhkke tbody, #vvtlzlhkke tfoot, #vvtlzlhkke tr, #vvtlzlhkke td, #vvtlzlhkke th {
+  border-style: none;
+}
+
+#vvtlzlhkke p {
+  margin: 0;
+  padding: 0;
+}
+
+#vvtlzlhkke .gt_table {
+  display: table;
+  border-collapse: collapse;
+  line-height: normal;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  background-color: #FFFFFF;
+  width: auto;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+#vvtlzlhkke .gt_caption {
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+#vvtlzlhkke .gt_title {
+  color: #333333;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+#vvtlzlhkke .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 3px;
+  padding-bottom: 5px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+#vvtlzlhkke .gt_heading {
+  background-color: #FFFFFF;
+  text-align: center;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#vvtlzlhkke .gt_bottom_border {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#vvtlzlhkke .gt_col_headings {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#vvtlzlhkke .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+#vvtlzlhkke .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+#vvtlzlhkke .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+#vvtlzlhkke .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+#vvtlzlhkke .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+#vvtlzlhkke .gt_spanner_row {
+  border-bottom-style: hidden;
+}
+
+#vvtlzlhkke .gt_group_heading {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  text-align: left;
+}
+
+#vvtlzlhkke .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#vvtlzlhkke .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+#vvtlzlhkke .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+#vvtlzlhkke .gt_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#vvtlzlhkke .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#vvtlzlhkke .gt_stub_row_group {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+  vertical-align: top;
+}
+
+#vvtlzlhkke .gt_row_group_first td {
+  border-top-width: 2px;
+}
+
+#vvtlzlhkke .gt_row_group_first th {
+  border-top-width: 2px;
+}
+
+#vvtlzlhkke .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#vvtlzlhkke .gt_first_summary_row {
+  border-top-style: solid;
+  border-top-color: #D3D3D3;
+}
+
+#vvtlzlhkke .gt_first_summary_row.thick {
+  border-top-width: 2px;
+}
+
+#vvtlzlhkke .gt_last_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#vvtlzlhkke .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#vvtlzlhkke .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+#vvtlzlhkke .gt_last_grand_summary_row_top {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: double;
+  border-bottom-width: 6px;
+  border-bottom-color: #D3D3D3;
+}
+
+#vvtlzlhkke .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+#vvtlzlhkke .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#vvtlzlhkke .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#vvtlzlhkke .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#vvtlzlhkke .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#vvtlzlhkke .gt_sourcenote {
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#vvtlzlhkke .gt_left {
+  text-align: left;
+}
+
+#vvtlzlhkke .gt_center {
+  text-align: center;
+}
+
+#vvtlzlhkke .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#vvtlzlhkke .gt_font_normal {
+  font-weight: normal;
+}
+
+#vvtlzlhkke .gt_font_bold {
+  font-weight: bold;
+}
+
+#vvtlzlhkke .gt_font_italic {
+  font-style: italic;
+}
+
+#vvtlzlhkke .gt_super {
+  font-size: 65%;
+}
+
+#vvtlzlhkke .gt_footnote_marks {
+  font-size: 75%;
+  vertical-align: 0.4em;
+  position: initial;
+}
+
+#vvtlzlhkke .gt_asterisk {
+  font-size: 100%;
+  vertical-align: 0;
+}
+
+#vvtlzlhkke .gt_indent_1 {
+  text-indent: 5px;
+}
+
+#vvtlzlhkke .gt_indent_2 {
+  text-indent: 10px;
+}
+
+#vvtlzlhkke .gt_indent_3 {
+  text-indent: 15px;
+}
+
+#vvtlzlhkke .gt_indent_4 {
+  text-indent: 20px;
+}
+
+#vvtlzlhkke .gt_indent_5 {
+  text-indent: 25px;
+}
+</style>
+<table class="gt_table" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
+<thead><tr class="gt_col_headings">
+<th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" style="font-weight: bold;" scope="col" id="id">id</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" style="font-weight: bold;" scope="col" id="class">class</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" style="font-weight: bold;" scope="col" id="class_c">class_c</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" style="font-weight: bold;" scope="col" id="solved">solved</th>
+    </tr></thead>
+<tbody class="gt_table_body">
 <tr>
-<td style="text-align:center;"> 1 </td>
-   <td style="text-align:center;"> online </td>
-   <td style="text-align:center;"> 0 </td>
-   <td style="text-align:center;"> 4 </td>
-  </tr>
+<td headers="id" class="gt_row gt_center">1</td>
+<td headers="class" class="gt_row gt_center">online</td>
+<td headers="class_c" class="gt_row gt_center">0</td>
+<td headers="solved" class="gt_row gt_center">19</td>
+</tr>
 <tr>
-<td style="text-align:center;"> 2 </td>
-   <td style="text-align:center;"> inperson </td>
-   <td style="text-align:center;"> 1 </td>
-   <td style="text-align:center;"> 8 </td>
-  </tr>
+<td headers="id" class="gt_row gt_center">2</td>
+<td headers="class" class="gt_row gt_center">inperson</td>
+<td headers="class_c" class="gt_row gt_center">1</td>
+<td headers="solved" class="gt_row gt_center">14</td>
+</tr>
 <tr>
-<td style="text-align:center;"> 3 </td>
-   <td style="text-align:center;"> online </td>
-   <td style="text-align:center;"> 0 </td>
-   <td style="text-align:center;"> 9 </td>
-  </tr>
+<td headers="id" class="gt_row gt_center">3</td>
+<td headers="class" class="gt_row gt_center">online</td>
+<td headers="class_c" class="gt_row gt_center">0</td>
+<td headers="solved" class="gt_row gt_center">13</td>
+</tr>
 <tr>
-<td style="text-align:center;"> 4 </td>
-   <td style="text-align:center;"> inperson </td>
-   <td style="text-align:center;"> 1 </td>
-   <td style="text-align:center;"> 16 </td>
-  </tr>
+<td headers="id" class="gt_row gt_center">4</td>
+<td headers="class" class="gt_row gt_center">inperson</td>
+<td headers="class_c" class="gt_row gt_center">1</td>
+<td headers="solved" class="gt_row gt_center">16</td>
+</tr>
 <tr>
-<td style="text-align:center;"> ... </td>
-   <td style="text-align:center;"> ... </td>
-   <td style="text-align:center;"> ... </td>
-   <td style="text-align:center;"> ... </td>
-  </tr>
+<td headers="id" class="gt_row gt_center">...</td>
+<td headers="class" class="gt_row gt_center">...</td>
+<td headers="class_c" class="gt_row gt_center">...</td>
+<td headers="solved" class="gt_row gt_center">...</td>
+</tr>
 <tr>
-<td style="text-align:center;"> 97 </td>
-   <td style="text-align:center;"> online </td>
-   <td style="text-align:center;"> 0 </td>
-   <td style="text-align:center;"> 19 </td>
-  </tr>
+<td headers="id" class="gt_row gt_center">97</td>
+<td headers="class" class="gt_row gt_center">online</td>
+<td headers="class_c" class="gt_row gt_center">0</td>
+<td headers="solved" class="gt_row gt_center">10</td>
+</tr>
 <tr>
-<td style="text-align:center;"> 98 </td>
-   <td style="text-align:center;"> inperson </td>
-   <td style="text-align:center;"> 1 </td>
-   <td style="text-align:center;"> 16 </td>
-  </tr>
+<td headers="id" class="gt_row gt_center">98</td>
+<td headers="class" class="gt_row gt_center">inperson</td>
+<td headers="class_c" class="gt_row gt_center">1</td>
+<td headers="solved" class="gt_row gt_center">15</td>
+</tr>
 <tr>
-<td style="text-align:center;"> 99 </td>
-   <td style="text-align:center;"> online </td>
-   <td style="text-align:center;"> 0 </td>
-   <td style="text-align:center;"> 9 </td>
-  </tr>
+<td headers="id" class="gt_row gt_center">99</td>
+<td headers="class" class="gt_row gt_center">online</td>
+<td headers="class_c" class="gt_row gt_center">0</td>
+<td headers="solved" class="gt_row gt_center">12</td>
+</tr>
 <tr>
-<td style="text-align:center;"> 100 </td>
-   <td style="text-align:center;"> inperson </td>
-   <td style="text-align:center;"> 1 </td>
-   <td style="text-align:center;"> 17 </td>
-  </tr>
+<td headers="id" class="gt_row gt_center">100</td>
+<td headers="class" class="gt_row gt_center">inperson</td>
+<td headers="class_c" class="gt_row gt_center">1</td>
+<td headers="solved" class="gt_row gt_center">15</td>
+</tr>
 </tbody>
 </table>
 </div>
 </div>
+</div>
 </section><section id="parameters-intepretation---categorical-variable-1" class="slide level2"><h2>Parameters intepretation - Categorical variable</h2>
 
-<img data-src="03-poisson-glm_files/figure-revealjs/unnamed-chunk-12-1.svg" width="576" class="r-stretch quarto-figure-center"></section><section id="parameters-intepretation---categorical-variable-2" class="slide level2"><h2>Parameters intepretation - Categorical variable</h2>
+<img data-src="03-poisson-glm_files/figure-revealjs/unnamed-chunk-14-1.svg" width="576" class="r-stretch quarto-figure-center"></section><section id="parameters-intepretation---categorical-variable-2" class="slide level2"><h2>Parameters intepretation - Categorical variable</h2>
 <p>R by default set the categorical variables using <strong>dummy-coding</strong>. In this case we set the reference category to <code>online</code>.</p>
 <div class="cell" data-layout-align="center">
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">fit</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/glm.html">glm</a></span><span class="op">(</span><span class="va">solved</span> <span class="op">~</span> <span class="va">class</span>, family <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/family.html">poisson</a></span><span class="op">(</span>link <span class="op">=</span> <span class="st">"log"</span><span class="op">)</span>, data <span class="op">=</span> <span class="va">dat</span><span class="op">)</span></span>
@@ -670,16 +1551,16 @@ log(\lambda) = \beta_0 + \beta_{1}X_{1} + ...\beta_pX_p \\
 ## 
 ## Coefficients:
 ##               Estimate Std. Error z value Pr(&gt;|z|)    
-## (Intercept)    2.36085    0.04344   54.35  &lt; 2e-16 ***
-## classinperson  0.33242    0.05692    5.84 5.22e-09 ***
+## (Intercept)    2.31055    0.04454  51.872  &lt; 2e-16 ***
+## classinperson  0.40547    0.05751   7.051 1.78e-12 ***
 ## ---
 ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ## 
 ## (Dispersion parameter for poisson family taken to be 1)
 ## 
-##     Null deviance: 150.02  on 99  degrees of freedom
-## Residual deviance: 115.44  on 98  degrees of freedom
-## AIC: 552.4
+##     Null deviance: 175.07  on 99  degrees of freedom
+## Residual deviance: 124.33  on 98  degrees of freedom
+## AIC: 559.11
 ## 
 ## Number of Fisher Scoring iterations: 4</code></pre>
 </div>
@@ -687,18 +1568,18 @@ log(\lambda) = \beta_0 + \beta_{1}X_{1} + ...\beta_pX_p \\
 </section><section id="parameters-intepretation---categorical-variable-3" class="slide level2"><h2>Parameters intepretation - Categorical variable</h2>
 <ul>
 <li>Similarly to the previous example, the intercept is the expected number of solved exercises when the <code>class</code> is 0. Thus the expected number of solved exercises for online students.</li>
-<li>the <code>classinperson</code> is the difference in log solved exercises between online and in person classes. In the response scale is the expected increase in the ratio of solved exercises. People doing in person classes solve 139.4339623 of the exercises of people doing online classes</li>
+<li>the <code>classinperson</code> is the difference in log solved exercises between online and in person classes. In the response scale is the expected increase in the ratio of solved exercises. People doing in person classes solve 150 of the exercises of people doing online classes</li>
 </ul>
 <div class="cell" data-layout-align="center">
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/coef.html">coef</a></span><span class="op">(</span><span class="va">fit</span><span class="op">)</span><span class="op">[</span><span class="st">"(Intercept)"</span><span class="op">]</span>, <span class="fu"><a href="https://rdrr.io/r/base/Log.html">exp</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/coef.html">coef</a></span><span class="op">(</span><span class="va">fit</span><span class="op">)</span><span class="op">[</span><span class="st">"(Intercept)"</span><span class="op">]</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>## (Intercept) (Intercept) 
-##    2.360854   10.600000</code></pre>
+##    2.310553   10.080000</code></pre>
 </div>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/coef.html">coef</a></span><span class="op">(</span><span class="va">fit</span><span class="op">)</span><span class="op">[</span><span class="st">"classinperson"</span><span class="op">]</span>, <span class="fu"><a href="https://rdrr.io/r/base/Log.html">exp</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/coef.html">coef</a></span><span class="op">(</span><span class="va">fit</span><span class="op">)</span><span class="op">[</span><span class="st">"classinperson"</span><span class="op">]</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>## classinperson classinperson 
-##     0.3324209     1.3943396</code></pre>
+##     0.4054651     1.5000000</code></pre>
 </div>
 </div>
 </section></section><section><section id="overdispersion" class="title-slide slide level1 section center"><h1>Overdispersion</h1>
@@ -717,7 +1598,7 @@ log(\lambda) = \beta_0 + \beta_{1}X_{1} + ...\beta_pX_p \\
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">P</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/residuals.html">residuals</a></span><span class="op">(</span><span class="va">fit</span>, type <span class="op">=</span> <span class="st">"pearson"</span><span class="op">)</span><span class="op">^</span><span class="fl">2</span><span class="op">)</span></span>
 <span><span class="va">P</span> <span class="op">/</span> <span class="fu"><a href="https://rdrr.io/r/stats/df.residual.html">df.residual</a></span><span class="op">(</span><span class="va">fit</span><span class="op">)</span> <span class="co"># nrow(fit$dat) - length(fit_p$coefficients)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>## [1] 1.18194</code></pre>
+<pre><code>## [1] 1.233533</code></pre>
 </div>
 </div>
 </section><section id="testing-overdispersion" class="slide level2"><h2>Testing overdispersion</h2>
@@ -727,9 +1608,9 @@ log(\lambda) = \beta_0 + \beta_{1}X_{1} + ...\beta_pX_p \\
 <div class="cell-output cell-output-stdout">
 <pre><code>## # Overdispersion test
 ## 
-##        dispersion ratio =   1.182
-##   Pearson's Chi-Squared = 115.830
-##                 p-value =   0.106</code></pre>
+##        dispersion ratio =   1.234
+##   Pearson's Chi-Squared = 120.886
+##                 p-value =   0.058</code></pre>
 </div>
 </div>
 <!-- ref("Regression and Multilevel Models, (Gelman and Hill, 2007)", 6, "114-115") -->
@@ -743,10 +1624,10 @@ V(\hat y_i) = \sqrt{\hat y_i}
 </section><section id="overdispersion-plot-1" class="slide level2"><h2>Overdispersion plot</h2>
 
 <!-- ref("Regression and Multilevel Models, (Gelman \\& Hill, 2007)", 6, 114) -->
-<img data-src="03-poisson-glm_files/figure-revealjs/unnamed-chunk-18-1.svg" width="576" class="r-stretch quarto-figure-center"></section><section id="variance-mean-relationship" class="slide level2"><h2>Variance-mean relationship</h2>
+<img data-src="03-poisson-glm_files/figure-revealjs/unnamed-chunk-20-1.svg" width="576" class="r-stretch quarto-figure-center"></section><section id="variance-mean-relationship" class="slide level2"><h2>Variance-mean relationship</h2>
 <p>The overdispersion can be expressed also in terms of variance-mean ratio. In fact, when the ratio is 1, there is no evidence of overdispersion.</p>
 
-<img data-src="03-poisson-glm_files/figure-revealjs/unnamed-chunk-19-1.svg" width="576" class="r-stretch quarto-figure-center"></section><section id="causes-of-overdispersion" class="slide level2"><h2>Causes of overdispersion</h2>
+<img data-src="03-poisson-glm_files/figure-revealjs/unnamed-chunk-21-1.svg" width="576" class="r-stretch quarto-figure-center"></section><section id="causes-of-overdispersion" class="slide level2"><h2>Causes of overdispersion</h2>
 <p>There could be multiple causes for overdispersion:</p>
 <ul>
 <li>the <strong>phenomenon itself</strong> cannot be modelled with a Poisson distribution</li>
@@ -757,7 +1638,7 @@ V(\hat y_i) = \sqrt{\hat y_i}
 </ul></section><section id="outliers-or-anomalous-data" class="slide level2"><h2>Outliers or anomalous data</h2>
 <p>This (simulated) dataset contains <span class="math inline">\(n = 30\)</span> observations coming from a poisson model in the form <span class="math inline">\(y = 1 + 2x\)</span> and <span class="math inline">\(n = 7\)</span> observations coming from a model <span class="math inline">\(y = 1 + 10x\)</span>.</p>
 
-<img data-src="03-poisson-glm_files/figure-revealjs/unnamed-chunk-20-1.svg" width="576" class="r-stretch quarto-figure-center"></section><section id="outliers-or-anomalous-data-1" class="slide level2"><h2>Outliers or anomalous data</h2>
+<img data-src="03-poisson-glm_files/figure-revealjs/unnamed-chunk-22-1.svg" width="576" class="r-stretch quarto-figure-center"></section><section id="outliers-or-anomalous-data-1" class="slide level2"><h2>Outliers or anomalous data</h2>
 <p>Clearly the sum of squared pearson residuals is inflated by these values producing more variance compared to what should be expected.</p>
 <div class="cell" data-layout-align="center">
 <div class="sourceCode" id="cb21"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span>mean <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">datout</span><span class="op">$</span><span class="va">y</span><span class="op">)</span>, var <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/cor.html">var</a></span><span class="op">(</span><span class="va">datout</span><span class="op">$</span><span class="va">y</span><span class="op">)</span><span class="op">)</span> <span class="co"># mean and variance should be similar</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -779,96 +1660,537 @@ V(\hat y_i) = \sqrt{\hat y_i}
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 
-<table data-quarto-disable-processing="true" class="table table-condensed table-striped" style="font-size: 25px; width: auto !important; margin-left: auto; margin-right: auto;">
-<thead><tr>
-<th style="text-align:center;"> id </th>
-   <th style="text-align:center;"> class </th>
-   <th style="text-align:center;"> studyh </th>
-   <th style="text-align:center;"> class_c </th>
-   <th style="text-align:center;"> lp </th>
-   <th style="text-align:center;"> solved </th>
-  </tr></thead>
-<tbody>
+<div id="hpqpruoaru" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#hpqpruoaru table {
+  font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#hpqpruoaru thead, #hpqpruoaru tbody, #hpqpruoaru tfoot, #hpqpruoaru tr, #hpqpruoaru td, #hpqpruoaru th {
+  border-style: none;
+}
+
+#hpqpruoaru p {
+  margin: 0;
+  padding: 0;
+}
+
+#hpqpruoaru .gt_table {
+  display: table;
+  border-collapse: collapse;
+  line-height: normal;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  background-color: #FFFFFF;
+  width: auto;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+#hpqpruoaru .gt_caption {
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+#hpqpruoaru .gt_title {
+  color: #333333;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+#hpqpruoaru .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 3px;
+  padding-bottom: 5px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+#hpqpruoaru .gt_heading {
+  background-color: #FFFFFF;
+  text-align: center;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#hpqpruoaru .gt_bottom_border {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#hpqpruoaru .gt_col_headings {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#hpqpruoaru .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+#hpqpruoaru .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+#hpqpruoaru .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+#hpqpruoaru .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+#hpqpruoaru .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+#hpqpruoaru .gt_spanner_row {
+  border-bottom-style: hidden;
+}
+
+#hpqpruoaru .gt_group_heading {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  text-align: left;
+}
+
+#hpqpruoaru .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#hpqpruoaru .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+#hpqpruoaru .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+#hpqpruoaru .gt_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#hpqpruoaru .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#hpqpruoaru .gt_stub_row_group {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+  vertical-align: top;
+}
+
+#hpqpruoaru .gt_row_group_first td {
+  border-top-width: 2px;
+}
+
+#hpqpruoaru .gt_row_group_first th {
+  border-top-width: 2px;
+}
+
+#hpqpruoaru .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#hpqpruoaru .gt_first_summary_row {
+  border-top-style: solid;
+  border-top-color: #D3D3D3;
+}
+
+#hpqpruoaru .gt_first_summary_row.thick {
+  border-top-width: 2px;
+}
+
+#hpqpruoaru .gt_last_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#hpqpruoaru .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#hpqpruoaru .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+#hpqpruoaru .gt_last_grand_summary_row_top {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: double;
+  border-bottom-width: 6px;
+  border-bottom-color: #D3D3D3;
+}
+
+#hpqpruoaru .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+#hpqpruoaru .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#hpqpruoaru .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#hpqpruoaru .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#hpqpruoaru .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#hpqpruoaru .gt_sourcenote {
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#hpqpruoaru .gt_left {
+  text-align: left;
+}
+
+#hpqpruoaru .gt_center {
+  text-align: center;
+}
+
+#hpqpruoaru .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#hpqpruoaru .gt_font_normal {
+  font-weight: normal;
+}
+
+#hpqpruoaru .gt_font_bold {
+  font-weight: bold;
+}
+
+#hpqpruoaru .gt_font_italic {
+  font-style: italic;
+}
+
+#hpqpruoaru .gt_super {
+  font-size: 65%;
+}
+
+#hpqpruoaru .gt_footnote_marks {
+  font-size: 75%;
+  vertical-align: 0.4em;
+  position: initial;
+}
+
+#hpqpruoaru .gt_asterisk {
+  font-size: 100%;
+  vertical-align: 0;
+}
+
+#hpqpruoaru .gt_indent_1 {
+  text-indent: 5px;
+}
+
+#hpqpruoaru .gt_indent_2 {
+  text-indent: 10px;
+}
+
+#hpqpruoaru .gt_indent_3 {
+  text-indent: 15px;
+}
+
+#hpqpruoaru .gt_indent_4 {
+  text-indent: 20px;
+}
+
+#hpqpruoaru .gt_indent_5 {
+  text-indent: 25px;
+}
+</style>
+<table class="gt_table" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
+<thead><tr class="gt_col_headings">
+<th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" style="font-weight: bold;" scope="col" id="id">id</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" style="font-weight: bold;" scope="col" id="class">class</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" style="font-weight: bold;" scope="col" id="studyh">studyh</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" style="font-weight: bold;" scope="col" id="class_c">class_c</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" style="font-weight: bold;" scope="col" id="lp">lp</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" style="font-weight: bold;" scope="col" id="solved">solved</th>
+    </tr></thead>
+<tbody class="gt_table_body">
 <tr>
-<td style="text-align:center;"> 1 </td>
-   <td style="text-align:center;"> online </td>
-   <td style="text-align:center;"> 82 </td>
-   <td style="text-align:center;"> 0 </td>
-   <td style="text-align:center;"> 22.613 </td>
-   <td style="text-align:center;"> 24 </td>
-  </tr>
+<td headers="id" class="gt_row gt_center">1</td>
+<td headers="class" class="gt_row gt_center">online</td>
+<td headers="studyh" class="gt_row gt_center">82</td>
+<td headers="class_c" class="gt_row gt_center">0</td>
+<td headers="lp" class="gt_row gt_center">22.613</td>
+<td headers="solved" class="gt_row gt_center">24</td>
+</tr>
 <tr>
-<td style="text-align:center;"> 2 </td>
-   <td style="text-align:center;"> inperson </td>
-   <td style="text-align:center;"> 65 </td>
-   <td style="text-align:center;"> 1 </td>
-   <td style="text-align:center;"> 47.734 </td>
-   <td style="text-align:center;"> 50 </td>
-  </tr>
+<td headers="id" class="gt_row gt_center">2</td>
+<td headers="class" class="gt_row gt_center">inperson</td>
+<td headers="studyh" class="gt_row gt_center">65</td>
+<td headers="class_c" class="gt_row gt_center">1</td>
+<td headers="lp" class="gt_row gt_center">47.734</td>
+<td headers="solved" class="gt_row gt_center">50</td>
+</tr>
 <tr>
-<td style="text-align:center;"> 3 </td>
-   <td style="text-align:center;"> online </td>
-   <td style="text-align:center;"> 12 </td>
-   <td style="text-align:center;"> 0 </td>
-   <td style="text-align:center;"> 11.268 </td>
-   <td style="text-align:center;"> 15 </td>
-  </tr>
+<td headers="id" class="gt_row gt_center">3</td>
+<td headers="class" class="gt_row gt_center">online</td>
+<td headers="studyh" class="gt_row gt_center">12</td>
+<td headers="class_c" class="gt_row gt_center">0</td>
+<td headers="lp" class="gt_row gt_center">11.268</td>
+<td headers="solved" class="gt_row gt_center">15</td>
+</tr>
 <tr>
-<td style="text-align:center;"> 4 </td>
-   <td style="text-align:center;"> inperson </td>
-   <td style="text-align:center;"> 54 </td>
-   <td style="text-align:center;"> 1 </td>
-   <td style="text-align:center;"> 42.785 </td>
-   <td style="text-align:center;"> 50 </td>
-  </tr>
+<td headers="id" class="gt_row gt_center">4</td>
+<td headers="class" class="gt_row gt_center">inperson</td>
+<td headers="studyh" class="gt_row gt_center">54</td>
+<td headers="class_c" class="gt_row gt_center">1</td>
+<td headers="lp" class="gt_row gt_center">42.785</td>
+<td headers="solved" class="gt_row gt_center">50</td>
+</tr>
 <tr>
-<td style="text-align:center;"> ... </td>
-   <td style="text-align:center;"> ... </td>
-   <td style="text-align:center;"> ... </td>
-   <td style="text-align:center;"> ... </td>
-   <td style="text-align:center;"> ... </td>
-   <td style="text-align:center;"> ... </td>
-  </tr>
+<td headers="id" class="gt_row gt_center">...</td>
+<td headers="class" class="gt_row gt_center">...</td>
+<td headers="studyh" class="gt_row gt_center">...</td>
+<td headers="class_c" class="gt_row gt_center">...</td>
+<td headers="lp" class="gt_row gt_center">...</td>
+<td headers="solved" class="gt_row gt_center">...</td>
+</tr>
 <tr>
-<td style="text-align:center;"> 37 </td>
-   <td style="text-align:center;"> online </td>
-   <td style="text-align:center;"> 85 </td>
-   <td style="text-align:center;"> 0 </td>
-   <td style="text-align:center;"> 23.298 </td>
-   <td style="text-align:center;"> 35 </td>
-  </tr>
+<td headers="id" class="gt_row gt_center">37</td>
+<td headers="class" class="gt_row gt_center">online</td>
+<td headers="studyh" class="gt_row gt_center">85</td>
+<td headers="class_c" class="gt_row gt_center">0</td>
+<td headers="lp" class="gt_row gt_center">23.298</td>
+<td headers="solved" class="gt_row gt_center">35</td>
+</tr>
 <tr>
-<td style="text-align:center;"> 38 </td>
-   <td style="text-align:center;"> inperson </td>
-   <td style="text-align:center;"> 55 </td>
-   <td style="text-align:center;"> 1 </td>
-   <td style="text-align:center;"> 43.213 </td>
-   <td style="text-align:center;"> 43 </td>
-  </tr>
+<td headers="id" class="gt_row gt_center">38</td>
+<td headers="class" class="gt_row gt_center">inperson</td>
+<td headers="studyh" class="gt_row gt_center">55</td>
+<td headers="class_c" class="gt_row gt_center">1</td>
+<td headers="lp" class="gt_row gt_center">43.213</td>
+<td headers="solved" class="gt_row gt_center">43</td>
+</tr>
 <tr>
-<td style="text-align:center;"> 39 </td>
-   <td style="text-align:center;"> online </td>
-   <td style="text-align:center;"> 80 </td>
-   <td style="text-align:center;"> 0 </td>
-   <td style="text-align:center;"> 22.167 </td>
-   <td style="text-align:center;"> 26 </td>
-  </tr>
+<td headers="id" class="gt_row gt_center">39</td>
+<td headers="class" class="gt_row gt_center">online</td>
+<td headers="studyh" class="gt_row gt_center">80</td>
+<td headers="class_c" class="gt_row gt_center">0</td>
+<td headers="lp" class="gt_row gt_center">22.167</td>
+<td headers="solved" class="gt_row gt_center">26</td>
+</tr>
 <tr>
-<td style="text-align:center;"> 40 </td>
-   <td style="text-align:center;"> inperson </td>
-   <td style="text-align:center;"> 77 </td>
-   <td style="text-align:center;"> 1 </td>
-   <td style="text-align:center;"> 53.788 </td>
-   <td style="text-align:center;"> 54 </td>
-  </tr>
+<td headers="id" class="gt_row gt_center">40</td>
+<td headers="class" class="gt_row gt_center">inperson</td>
+<td headers="studyh" class="gt_row gt_center">77</td>
+<td headers="class_c" class="gt_row gt_center">1</td>
+<td headers="lp" class="gt_row gt_center">53.788</td>
+<td headers="solved" class="gt_row gt_center">54</td>
+</tr>
 </tbody>
 </table>
+</div>
 </div>
 </div>
 </section><section id="missing-important-variables-in-the-model-1" class="slide level2"><h2>Missing important variables in the model</h2>
 <p>We can also have a look at the data:</p>
 
-<img data-src="03-poisson-glm_files/figure-revealjs/unnamed-chunk-23-1.svg" width="576" class="r-stretch quarto-figure-center"></section><section id="missing-important-variables-in-the-model-2" class="slide level2"><h2>Missing important variables in the model</h2>
+<img data-src="03-poisson-glm_files/figure-revealjs/unnamed-chunk-25-1.svg" width="576" class="r-stretch quarto-figure-center"></section><section id="missing-important-variables-in-the-model-2" class="slide level2"><h2>Missing important variables in the model</h2>
 <p>Now let’s fit the model considering only <code>studyh</code> and ignoring the group:</p>
 <div class="cell" data-layout-align="center">
 <div class="sourceCode" id="cb25"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">fit</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/glm.html">glm</a></span><span class="op">(</span><span class="va">solved</span> <span class="op">~</span> <span class="va">studyh</span>, data <span class="op">=</span> <span class="va">dat</span>, family <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/family.html">poisson</a></span><span class="op">(</span>link <span class="op">=</span> <span class="st">"log"</span><span class="op">)</span><span class="op">)</span></span>
@@ -898,7 +2220,7 @@ V(\hat y_i) = \sqrt{\hat y_i}
 </section><section id="missing-important-variables-in-the-model-3" class="slide level2"><h2>Missing important variables in the model</h2>
 <p>Essentially, we are fitting an average relationship across groups but the model ignore that the two groups differs, thus the observed variance is definitely higher because we need two separate means to explain the <code>class</code> effect.</p>
 
-<img data-src="03-poisson-glm_files/figure-revealjs/unnamed-chunk-25-1.svg" width="576" class="r-stretch quarto-figure-center"></section><section id="missing-important-variables-in-the-model-4" class="slide level2"><h2>Missing important variables in the model</h2>
+<img data-src="03-poisson-glm_files/figure-revealjs/unnamed-chunk-27-1.svg" width="576" class="r-stretch quarto-figure-center"></section><section id="missing-important-variables-in-the-model-4" class="slide level2"><h2>Missing important variables in the model</h2>
 <p>By fitting the appropriate model, the overdispersion is no longer a problem:</p>
 <div class="cell" data-layout-align="center">
 <div class="sourceCode" id="cb27"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">fit2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/glm.html">glm</a></span><span class="op">(</span><span class="va">solved</span> <span class="op">~</span> <span class="va">studyh</span> <span class="op">+</span> <span class="va">class</span>, data <span class="op">=</span> <span class="va">dat</span>, family <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/family.html">poisson</a></span><span class="op">(</span>link <span class="op">=</span> <span class="st">"log"</span><span class="op">)</span><span class="op">)</span></span>
@@ -950,7 +2272,7 @@ V(\hat y_i) = \sqrt{\hat y_i}
 </section><section id="missing-important-variables-in-the-model-6" class="slide level2"><h2>Missing important variables in the model</h2>
 <p>Also the residuals plot clearly improved after including all relevant predictors:</p>
 
-<img data-src="03-poisson-glm_files/figure-revealjs/unnamed-chunk-29-1.svg" width="576" class="r-stretch quarto-figure-center"></section><section id="why-worring-about-overdispersion" class="slide level2"><h2>Why worring about overdispersion?</h2>
+<img data-src="03-poisson-glm_files/figure-revealjs/unnamed-chunk-31-1.svg" width="576" class="r-stretch quarto-figure-center"></section><section id="why-worring-about-overdispersion" class="slide level2"><h2>Why worring about overdispersion?</h2>
 <p>Before analyzing the two main strategies to deal with overdispersion, it is important to understand why it is very problematic.</p>
 <p>Despite the estimated parameters are not affected by overdispersion, the standard error are very underestimated as a function of the degree of overdispersion.</p>
 <p>Underestimated standard errors produce unrealistic precise parameters estimations inflating the type-1 error (i.e., parameters tends to be more significant than when overdispersion is considered)</p>
@@ -981,7 +2303,7 @@ V(\hat y_i) = \sqrt{\hat y_i}
 </section><section id="why-worring-about-overdispersion-2" class="slide level2"><h2>Why worring about overdispersion?</h2>
 <p>By using multiple values for <span class="math inline">\(\phi\)</span> we can see the impact on the standard error:</p>
 
-<img data-src="03-poisson-glm_files/figure-revealjs/unnamed-chunk-31-1.svg" width="576" class="r-stretch quarto-figure-center"></section></section><section><section id="dealing-with-overdispersion" class="title-slide slide level1 section center"><h1>Dealing with overdispersion</h1>
+<img data-src="03-poisson-glm_files/figure-revealjs/unnamed-chunk-33-1.svg" width="576" class="r-stretch quarto-figure-center"></section></section><section><section id="dealing-with-overdispersion" class="title-slide slide level1 section center"><h1>Dealing with overdispersion</h1>
 
 </section><section id="dealing-with-overdispersion-1" class="slide level2"><h2>Dealing with overdispersion</h2>
 <p>If all the variables are included and there are no outliers, the phenomenon itself contains more variability compared to what predicted by the Poisson. There are two main approaches to deal with the situation:</p>
@@ -1024,7 +2346,7 @@ V(\hat y_i) = \sqrt{\hat y_i}
 </section><section id="quasi-poisson-model-2" class="slide level2"><h2>Quasi-poisson model</h2>
 <p>Here we compare the expected variance (<span class="math inline">\(\pm 2\sqrt{V(y_i)}\)</span>) of the Quasi-Poisson and Poisson models:</p>
 
-<img data-src="03-poisson-glm_files/figure-revealjs/unnamed-chunk-33-1.svg" width="576" class="r-stretch quarto-figure-center"></section><section id="problems-of-quasi--model" class="slide level2"><h2>Problems of Quasi-* model</h2>
+<img data-src="03-poisson-glm_files/figure-revealjs/unnamed-chunk-35-1.svg" width="576" class="r-stretch quarto-figure-center"></section><section id="problems-of-quasi--model" class="slide level2"><h2>Problems of Quasi-* model</h2>
 <p>The main problem of quasi-* models is that they are not a specific distribution family and there is not a likelihood function. For this reason, we cannot perform model comparison the standard AIC/BIC. See <span class="citation" data-cites="Ver_Hoef2007-jc">(<a href="#/references" role="doc-biblioref" onclick="">Ver Hoef &amp; Boveng, 2007</a>)</span> for an overview.</p>
 </section><section id="negative-binomial-model" class="slide level2"><h2>Negative-binomial model</h2>
 <p>A negative binomial model is a separated random component with two parameters: the mean as in standard poisson model and the dispersion parameter. Similarly to the quasi-poisson model it estimates a dispersion parameter.</p>
@@ -1046,13 +2368,13 @@ p(y; \mu, \theta) = \frac{\Gamma(y + \theta)}{\Gamma(\theta)\Gamma(y + 1)}\left(
 <aside><ol class="aside-footnotes"><li id="fn1"><p>There are multiple parametrizations of the negative-binomial distribution. The one used by <code>MASS</code> is in terms of poisson-gamma mixture see https://mc-stan.org/docs/2_20/functions-reference/nbalt.html</p></li></ol></aside></section><section id="negative-binomial-model-2" class="slide level2"><h2>Negative-binomial model</h2>
 <p>Compared to the Poisson model, the negative binomial allows for overdispersion estimating the parameter <span class="math inline">\(\theta\)</span> and compared to the quasi-poisson model the variance is not a linear increase of the mean (<span class="math inline">\(V(\mu) = \theta\mu\)</span>) but have a quadratic relationship <span class="math inline">\(V(\mu) = \mu + \mu^2/\theta\)</span></p>
 
-<img data-src="03-poisson-glm_files/figure-revealjs/unnamed-chunk-34-1.svg" width="576" class="r-stretch quarto-figure-center"></section><section id="negative-binomial-model-3" class="slide level2"><h2>Negative-binomial model</h2>
+<img data-src="03-poisson-glm_files/figure-revealjs/unnamed-chunk-36-1.svg" width="576" class="r-stretch quarto-figure-center"></section><section id="negative-binomial-model-3" class="slide level2"><h2>Negative-binomial model</h2>
 <p>We can use the <code>MASS</code> package to implement the negative binomial distribution using the <code><a href="https://rdrr.io/pkg/MASS/man/rnegbin.html">MASS::rnegbin()</a></code>:</p>
 
-<img data-src="03-poisson-glm_files/figure-revealjs/unnamed-chunk-35-1.svg" width="576" class="r-stretch quarto-figure-center"></section><section id="negative-binomial-model-4" class="slide level2"><h2>Negative-binomial model</h2>
+<img data-src="03-poisson-glm_files/figure-revealjs/unnamed-chunk-37-1.svg" width="576" class="r-stretch quarto-figure-center"></section><section id="negative-binomial-model-4" class="slide level2"><h2>Negative-binomial model</h2>
 <p>The <span class="math inline">\(\theta\)</span> parameter is the estimated dispersion. To note, is not the same as <span class="math inline">\(\phi\)</span> in the quasi-poisson model. As <span class="math inline">\(\theta\)</span> increase, the overdispersion is reduced and the model is similar to a standard Poisson model.</p>
 
-<img data-src="03-poisson-glm_files/figure-revealjs/unnamed-chunk-36-1.svg" width="576" class="r-stretch quarto-figure-center"></section><section id="negative-binomial-model-5" class="slide level2"><h2>Negative-binomial model</h2>
+<img data-src="03-poisson-glm_files/figure-revealjs/unnamed-chunk-38-1.svg" width="576" class="r-stretch quarto-figure-center"></section><section id="negative-binomial-model-5" class="slide level2"><h2>Negative-binomial model</h2>
 <p>For fitting a negative-binomial model we cannot use the <code>glm</code> function but we need to use the <code><a href="https://rdrr.io/pkg/MASS/man/glm.nb.html">MASS::glm.nb()</a></code> function. The syntax is almost the same but we do not need to specify the family because this function only fit negative-binomial models. Let’s simulate some data coming from a negative binomial distribution with <span class="math inline">\(\theta = 10\)</span></p>
 <div class="cell" data-layout-align="center">
 <div class="sourceCode" id="cb41"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">theta</span> <span class="op">&lt;-</span> <span class="fl">10</span></span>
@@ -1066,45 +2388,486 @@ p(y; \mu, \theta) = \frac{\Gamma(y + \theta)}{\Gamma(\theta)\Gamma(y + 1)}\left(
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 
-<table data-quarto-disable-processing="true" class="table table-condensed table-striped" style="font-size: 25px; width: auto !important; margin-left: auto; margin-right: auto;">
-<thead><tr>
-<th style="text-align:center;"> id </th>
-   <th style="text-align:center;"> x </th>
-   <th style="text-align:center;"> y </th>
-  </tr></thead>
-<tbody>
+<div id="rhoqkiyghr" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#rhoqkiyghr table {
+  font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#rhoqkiyghr thead, #rhoqkiyghr tbody, #rhoqkiyghr tfoot, #rhoqkiyghr tr, #rhoqkiyghr td, #rhoqkiyghr th {
+  border-style: none;
+}
+
+#rhoqkiyghr p {
+  margin: 0;
+  padding: 0;
+}
+
+#rhoqkiyghr .gt_table {
+  display: table;
+  border-collapse: collapse;
+  line-height: normal;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  background-color: #FFFFFF;
+  width: auto;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+#rhoqkiyghr .gt_caption {
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+#rhoqkiyghr .gt_title {
+  color: #333333;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+#rhoqkiyghr .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 3px;
+  padding-bottom: 5px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+#rhoqkiyghr .gt_heading {
+  background-color: #FFFFFF;
+  text-align: center;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#rhoqkiyghr .gt_bottom_border {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#rhoqkiyghr .gt_col_headings {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#rhoqkiyghr .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+#rhoqkiyghr .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+#rhoqkiyghr .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+#rhoqkiyghr .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+#rhoqkiyghr .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+#rhoqkiyghr .gt_spanner_row {
+  border-bottom-style: hidden;
+}
+
+#rhoqkiyghr .gt_group_heading {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  text-align: left;
+}
+
+#rhoqkiyghr .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#rhoqkiyghr .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+#rhoqkiyghr .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+#rhoqkiyghr .gt_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#rhoqkiyghr .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#rhoqkiyghr .gt_stub_row_group {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+  vertical-align: top;
+}
+
+#rhoqkiyghr .gt_row_group_first td {
+  border-top-width: 2px;
+}
+
+#rhoqkiyghr .gt_row_group_first th {
+  border-top-width: 2px;
+}
+
+#rhoqkiyghr .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#rhoqkiyghr .gt_first_summary_row {
+  border-top-style: solid;
+  border-top-color: #D3D3D3;
+}
+
+#rhoqkiyghr .gt_first_summary_row.thick {
+  border-top-width: 2px;
+}
+
+#rhoqkiyghr .gt_last_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#rhoqkiyghr .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#rhoqkiyghr .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+#rhoqkiyghr .gt_last_grand_summary_row_top {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: double;
+  border-bottom-width: 6px;
+  border-bottom-color: #D3D3D3;
+}
+
+#rhoqkiyghr .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+#rhoqkiyghr .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#rhoqkiyghr .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#rhoqkiyghr .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#rhoqkiyghr .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#rhoqkiyghr .gt_sourcenote {
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#rhoqkiyghr .gt_left {
+  text-align: left;
+}
+
+#rhoqkiyghr .gt_center {
+  text-align: center;
+}
+
+#rhoqkiyghr .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#rhoqkiyghr .gt_font_normal {
+  font-weight: normal;
+}
+
+#rhoqkiyghr .gt_font_bold {
+  font-weight: bold;
+}
+
+#rhoqkiyghr .gt_font_italic {
+  font-style: italic;
+}
+
+#rhoqkiyghr .gt_super {
+  font-size: 65%;
+}
+
+#rhoqkiyghr .gt_footnote_marks {
+  font-size: 75%;
+  vertical-align: 0.4em;
+  position: initial;
+}
+
+#rhoqkiyghr .gt_asterisk {
+  font-size: 100%;
+  vertical-align: 0;
+}
+
+#rhoqkiyghr .gt_indent_1 {
+  text-indent: 5px;
+}
+
+#rhoqkiyghr .gt_indent_2 {
+  text-indent: 10px;
+}
+
+#rhoqkiyghr .gt_indent_3 {
+  text-indent: 15px;
+}
+
+#rhoqkiyghr .gt_indent_4 {
+  text-indent: 20px;
+}
+
+#rhoqkiyghr .gt_indent_5 {
+  text-indent: 25px;
+}
+</style>
+<table class="gt_table" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
+<thead><tr class="gt_col_headings">
+<th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" style="font-weight: bold;" scope="col" id="id">id</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" style="font-weight: bold;" scope="col" id="x">x</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" style="font-weight: bold;" scope="col" id="y">y</th>
+    </tr></thead>
+<tbody class="gt_table_body">
 <tr>
-<td style="text-align:center;"> 1 </td>
-   <td style="text-align:center;"> 0.22 </td>
-   <td style="text-align:center;"> 8 </td>
-  </tr>
+<td headers="id" class="gt_row gt_center">1</td>
+<td headers="x" class="gt_row gt_center">0.427</td>
+<td headers="y" class="gt_row gt_center">11</td>
+</tr>
 <tr>
-<td style="text-align:center;"> 2 </td>
-   <td style="text-align:center;"> 0.427 </td>
-   <td style="text-align:center;"> 21 </td>
-  </tr>
+<td headers="id" class="gt_row gt_center">2</td>
+<td headers="x" class="gt_row gt_center">0.365</td>
+<td headers="y" class="gt_row gt_center">13</td>
+</tr>
 <tr>
-<td style="text-align:center;"> ... </td>
-   <td style="text-align:center;"> ... </td>
-   <td style="text-align:center;"> ... </td>
-  </tr>
+<td headers="id" class="gt_row gt_center">...</td>
+<td headers="x" class="gt_row gt_center">...</td>
+<td headers="y" class="gt_row gt_center">...</td>
+</tr>
 <tr>
-<td style="text-align:center;"> 99 </td>
-   <td style="text-align:center;"> 0.619 </td>
-   <td style="text-align:center;"> 37 </td>
-  </tr>
+<td headers="id" class="gt_row gt_center">99</td>
+<td headers="x" class="gt_row gt_center">0.966</td>
+<td headers="y" class="gt_row gt_center">41</td>
+</tr>
 <tr>
-<td style="text-align:center;"> 100 </td>
-   <td style="text-align:center;"> 0.966 </td>
-   <td style="text-align:center;"> 41 </td>
-  </tr>
+<td headers="id" class="gt_row gt_center">100</td>
+<td headers="x" class="gt_row gt_center">0.154</td>
+<td headers="y" class="gt_row gt_center">12</td>
+</tr>
 </tbody>
 </table>
 </div>
 </div>
+</div>
 </section><section id="negative-binomial-model-6" class="slide level2"><h2>Negative-binomial model</h2>
 
-<img data-src="03-poisson-glm_files/figure-revealjs/unnamed-chunk-39-1.svg" width="576" class="r-stretch quarto-figure-center"></section><section id="negative-binomial-model-7" class="slide level2"><h2>Negative-binomial model</h2>
+<img data-src="03-poisson-glm_files/figure-revealjs/unnamed-chunk-41-1.svg" width="576" class="r-stretch quarto-figure-center"></section><section id="negative-binomial-model-7" class="slide level2"><h2>Negative-binomial model</h2>
 <p>Then we can fit the model:</p>
 <div class="cell" data-layout-align="center">
 <div class="sourceCode" id="cb42"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">fit_nb</span> <span class="op">&lt;-</span> <span class="fu">MASS</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/MASS/man/glm.nb.html">glm.nb</a></span><span class="op">(</span><span class="va">y</span> <span class="op">~</span> <span class="va">x</span>, data <span class="op">=</span> <span class="va">dat</span><span class="op">)</span></span>
@@ -1112,38 +2875,38 @@ p(y; \mu, \theta) = \frac{\Gamma(y + \theta)}{\Gamma(\theta)\Gamma(y + 1)}\left(
 <div class="cell-output cell-output-stdout">
 <pre><code>## 
 ## Call:
-## MASS::glm.nb(formula = y ~ x, data = dat, init.theta = 15.26306425, 
+## MASS::glm.nb(formula = y ~ x, data = dat, init.theta = 11.32327809, 
 ##     link = log)
 ## 
 ## Coefficients:
 ##             Estimate Std. Error z value Pr(&gt;|z|)    
-## (Intercept)  2.26925    0.07651   29.66   &lt;2e-16 ***
-## x            1.55794    0.12481   12.48   &lt;2e-16 ***
+## (Intercept)  2.17693    0.08282   26.28   &lt;2e-16 ***
+## x            1.82119    0.13811   13.19   &lt;2e-16 ***
 ## ---
 ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ## 
-## (Dispersion parameter for Negative Binomial(15.2631) family taken to be 1)
+## (Dispersion parameter for Negative Binomial(11.3233) family taken to be 1)
 ## 
-##     Null deviance: 255.646  on 99  degrees of freedom
-## Residual deviance:  94.579  on 98  degrees of freedom
-## AIC: 672.73
+##     Null deviance: 273.823  on 99  degrees of freedom
+## Residual deviance:  98.035  on 98  degrees of freedom
+## AIC: 696.14
 ## 
 ## Number of Fisher Scoring iterations: 1
 ## 
 ## 
-##               Theta:  15.26 
-##           Std. Err.:  3.49 
+##               Theta:  11.32 
+##           Std. Err.:  2.38 
 ## 
-##  2 x log-likelihood:  -666.733</code></pre>
+##  2 x log-likelihood:  -690.143</code></pre>
 </div>
 </div>
 </section><section id="negative-binomial-model-8" class="slide level2"><h2>Negative-binomial model</h2>
 <p>Here we compare the expected variance (<span class="math inline">\(\pm 2\sqrt{V(y_i)}\)</span>) of the Negative binomial and Poisson models:</p>
 
-<img data-src="03-poisson-glm_files/figure-revealjs/unnamed-chunk-41-1.svg" width="576" class="r-stretch quarto-figure-center"></section><section id="negative-binomial-model-9" class="slide level2"><h2>Negative-binomial model</h2>
+<img data-src="03-poisson-glm_files/figure-revealjs/unnamed-chunk-43-1.svg" width="576" class="r-stretch quarto-figure-center"></section><section id="negative-binomial-model-9" class="slide level2"><h2>Negative-binomial model</h2>
 <p>Here we compare the expected variance (<span class="math inline">\(\pm 2\sqrt{V(y_i)}\)</span>) of the three models:</p>
 
-<img data-src="03-poisson-glm_files/figure-revealjs/unnamed-chunk-42-1.svg" width="576" class="r-stretch quarto-figure-center"></section><section id="negative-binomial-model-10" class="slide level2"><h2>Negative-binomial model</h2>
+<img data-src="03-poisson-glm_files/figure-revealjs/unnamed-chunk-44-1.svg" width="576" class="r-stretch quarto-figure-center"></section><section id="negative-binomial-model-10" class="slide level2"><h2>Negative-binomial model</h2>
 <p>We can compare the coefficients fitting the Poisson, the Quasi-Poisson and the Negative-binomial model:</p>
 <div class="cell" data-layout-align="center">
 <div class="sourceCode" id="cb44"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">fit_p</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/glm.html">glm</a></span><span class="op">(</span><span class="va">y</span> <span class="op">~</span> <span class="va">x</span>, data <span class="op">=</span> <span class="va">dat</span>, family <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/family.html">poisson</a></span><span class="op">(</span>link <span class="op">=</span> <span class="st">"log"</span><span class="op">)</span><span class="op">)</span></span>
@@ -1151,17 +2914,17 @@ p(y; \mu, \theta) = \frac{\Gamma(y + \theta)}{\Gamma(\theta)\Gamma(y + 1)}\left(
 <span><span class="fu">car</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/car/man/compareCoefs.html">compareCoefs</a></span><span class="op">(</span><span class="va">fit_nb</span>, <span class="va">fit_p</span>, <span class="va">fit_qp</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>## Calls:
-## 1: MASS::glm.nb(formula = y ~ x, data = dat, init.theta = 15.26306425, link 
+## 1: MASS::glm.nb(formula = y ~ x, data = dat, init.theta = 11.32327809, link 
 ##   = log)
 ## 2: glm(formula = y ~ x, family = poisson(link = "log"), data = dat)
 ## 3: glm(formula = y ~ x, family = quasipoisson(link = "log"), data = dat)
 ## 
 ##             Model 1 Model 2 Model 3
-## (Intercept)  2.2692  2.2703  2.2703
-## SE           0.0765  0.0537  0.0874
+## (Intercept)  2.1769  2.2043  2.2043
+## SE           0.0828  0.0534  0.0970
 ##                                    
-## x            1.5579  1.5561  1.5561
-## SE           0.1248  0.0807  0.1312
+## x            1.8212  1.7723  1.7723
+## SE           0.1381  0.0802  0.1456
 ## </code></pre>
 </div>
 </div>
@@ -1194,7 +2957,7 @@ R^2 = 1 - \frac{D_{current}}{D_{null}}
 <div class="cell" data-layout-align="center">
 <div class="sourceCode" id="cb50"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fl">1</span> <span class="op">-</span> <span class="va">fit_p</span><span class="op">$</span><span class="va">deviance</span><span class="op">/</span><span class="va">fit_p</span><span class="op">$</span><span class="va">null.deviance</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>## [1] 0.6078928</code></pre>
+<pre><code>## [1] 0.6229535</code></pre>
 </div>
 </div>
 <aside><ol class="aside-footnotes"><li id="fn3"><p>https://en.wikipedia.org/wiki/Pseudo-R-squared</p></li></ol></aside></section><section id="mcfaddens-pseudo-r2" class="slide level2"><h2>McFadden’s pseudo-<span class="math inline">\(R^2\)</span>
@@ -1208,8 +2971,8 @@ R^2 = 1 - \frac{\log(\mathcal{L_{current}})}{\log(\mathcal{L_{null}})}
 <div class="sourceCode" id="cb52"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">performance</span><span class="fu">::</span><span class="fu"><a href="https://easystats.github.io/performance/reference/r2_mcfadden.html">r2_mcfadden</a></span><span class="op">(</span><span class="va">fit_p</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>## # R2 for Generalized Linear Regression
-##        R2: 0.349
-##   adj. R2: 0.348</code></pre>
+##        R2: 0.396
+##   adj. R2: 0.394</code></pre>
 </div>
 </div>
 </section><section id="nagelkerkes-pseudo-r2" class="slide level2"><h2>Nagelkerke’s pseudo-<span class="math inline">\(R^2\)</span>
@@ -1223,7 +2986,7 @@ R^2 = 1 - \left(\frac{\mathcal{L_{null}}}{\mathcal{L_{current}}}\right)^{\frac{2
 <div class="sourceCode" id="cb54"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">performance</span><span class="fu">::</span><span class="fu"><a href="https://easystats.github.io/performance/reference/r2_nagelkerke.html">r2_nagelkerke</a></span><span class="op">(</span><span class="va">fit_p</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>## Nagelkerke's R2 
-##       0.9827151</code></pre>
+##       0.9950421</code></pre>
 </div>
 </div>
 </section></section><section><section id="extra" class="title-slide slide level1 center"><h1>Extra</h1>
@@ -1240,7 +3003,7 @@ R^2 = 1 - \left(\frac{\mathcal{L_{null}}}{\mathcal{L_{current}}}\right)^{\frac{2
 <span>              method.args <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>family <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/family.html">poisson</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 
 </div>
-<img data-src="03-poisson-glm_files/figure-revealjs/unnamed-chunk-48-1.svg" width="576" class="r-stretch quarto-figure-center"></section><section id="interaction-poisson-vs-linear-1" class="slide level2"><h2>Interaction, Poisson vs Linear</h2>
+<img data-src="03-poisson-glm_files/figure-revealjs/unnamed-chunk-50-1.svg" width="576" class="r-stretch quarto-figure-center"></section><section id="interaction-poisson-vs-linear-1" class="slide level2"><h2>Interaction, Poisson vs Linear</h2>
 <p>Let’s fit a linear model and the Poisson GLM with the interaction term:</p>
 <div class="cell" data-layout-align="center">
 <div class="sourceCode" id="cb57"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">fit_lm</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/lm.html">lm</a></span><span class="op">(</span><span class="va">y</span> <span class="op">~</span> <span class="va">x</span> <span class="op">*</span> <span class="va">g</span>, data <span class="op">=</span> <span class="va">dat</span><span class="op">)</span></span>
@@ -1298,7 +3061,7 @@ R^2 = 1 - \left(\frac{\mathcal{L_{null}}}{\mathcal{L_{current}}}\right)^{\frac{2
 <div class="sourceCode" id="cb61"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="fu">ggeffect</span><span class="op">(</span><span class="va">fit_glm</span>, terms <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"x"</span>, <span class="st">"g"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">|</span> <span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="fu">ggeffect</span><span class="op">(</span><span class="va">fit_lm</span>, terms <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"x"</span>, <span class="st">"g"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 
 </div>
-<img data-src="03-poisson-glm_files/figure-revealjs/unnamed-chunk-50-1.svg" width="576" class="r-stretch quarto-figure-center"></section><section id="references" class="slide level2 smaller scrollable"><h2>References</h2>
+<img data-src="03-poisson-glm_files/figure-revealjs/unnamed-chunk-52-1.svg" width="576" class="r-stretch quarto-figure-center"></section><section id="references" class="slide level2 smaller scrollable"><h2>References</h2>
 <div class="footer footer-default">
 
 </div>

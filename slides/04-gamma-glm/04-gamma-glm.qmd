@@ -7,8 +7,7 @@ author:
     twitter: fgambarota
     github: filippogambarota
 format:
-  quarto-revealjs-mclean-revealjs:
-    theme: "../../files/style.scss"
+  quarto-slides-revealjs:
     incremental: false
     code-link: true
     code-line-numbers: false
@@ -32,7 +31,7 @@ knitr::opts_chunk$set(echo = TRUE,
                       fig.width = 6,
                       fig.asp = 0.618,
                       fig.align = "center",
-                      comment = "##")
+                      comment = "#>")
 ```
 
 ```{r packages, include=FALSE}

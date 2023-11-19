@@ -19,6 +19,7 @@ format:
       - code-fullscreen
 from: markdown+emoji
 date: last-modified
+date-format: "YYYY"
 final-slide: false
 bibliography: "`r filor::fil()$bib`"
 csl: "`r filor::fil()$csl`"
@@ -33,7 +34,7 @@ knitr::opts_chunk$set(echo = TRUE,
                       fig.width = 6,
                       fig.asp = 0.618,
                       fig.align = "center",
-                      comment = "##")
+                      comment = "#>")
 ```
 
 ```{r packages, include=FALSE}
@@ -51,12 +52,29 @@ funs <- filor::get_funs(here("R", funs_files))
 
 ```{r}
 #| label: ggplot
+#| include: false
 
 mytheme <- function(size = 15){
   theme_minimal(size)
 }
 
 theme_set(mytheme())
+```
+
+```{r}
+#| label: gt
+#| include: false
+qtab <- function(data, digits = 3){
+  require(gt)
+  data |> 
+    gt::gt() |> 
+    gt::cols_align(align = "center") |> 
+    gt::tab_style(
+      style = cell_text(weight = "bold"),
+      locations = cells_column_labels()
+    ) |> 
+    gt::fmt_number(decimals = digits)
+}
 ```
 
 
@@ -177,12 +195,13 @@ dat <- data.frame(id = 1:n, studyh = x, passed = y)
 
 dat |> 
     filor::trim_df() |> 
-    mytab()
+    qtab()
 ```
 
 ::::
 :::: column
-```{r, echo = FALSE}
+```{r}
+#| code-fold: false
 dat |> 
   summarise(n = n(),
             npass = sum(passed),
@@ -218,7 +237,7 @@ exam_plot +
 
 . . .
 
-Do you see something strange?
+**Do you see something strange?**
 
 ## Should we use a linear model for these variables?
 
@@ -247,7 +266,7 @@ dat <- data.frame(id = 1:n, nattended = x, nsolved = y)
 
 dat |> 
     filor::trim_df() |> 
-    mytab()
+    qtab()
 ```
 
 ## Should we use a linear model for these variables?
@@ -457,7 +476,7 @@ The **systematic component** or *linear predictor* ($\eta$) of a GLM is $\beta_0
 \eta = \beta_0 + \beta_1x_1 + ... + \beta_px_p
 \end{align*}
 
-This part is invariant to the type of model and is the combination of explanatory variables to predict the expected value $\mu$ (i.e. mean) of the distribution.
+This part is invariant to the type of model and is the combination of explanatory variables to predict the expected value $\mu$ (i.e. the mean) of the distribution.
 
 ## Link Function
 
@@ -478,20 +497,18 @@ Thus, the relationship between $\mu$ and $\eta$ is linear only when the **link f
 The simplest **link function** is the **identity link** where $g(\mu) = \mu$ and correspond to the standard linear model. In fact, the linear regression is just a GLM with a **Gaussian random component** and the **identity** link function.
 
 ```{r}
-#| results: asis
 #| echo: false
 #| tbl-cap: Main distributions and link functions
-fam <- c("gaussian", "gamma", "binomial", "binomial", "poisson")
+fam <- c("`gaussian`", "`gamma`", "`binomial`", "`binomial`", "`poisson`")
 link <- c("identity", "log", "logit", "probit", "log")
-range <- c("$(-\\infty,+\\infty)$", "$(0,+\\infty)$",
-           "$\\frac{0, 1, ..., n_{i}}{n_{i}}$",
-           "$\\frac{0, 1, ..., n_{i}}{n_{i}}$",
-           "$0, 1, 2, ...$")
+range <- c("$$(-\\infty,+\\infty)$$", "$$(0,+\\infty)$$",
+           "$$\\frac{0, 1, ..., n_{i}}{n_{i}}$$",
+           "$$\\frac{0, 1, ..., n_{i}}{n_{i}}$$",
+           "$$0, 1, 2, ...$$")
 
-linktab <- data.frame(Family = code(fam), Link = link, Range = range)
+linktab <- data.frame(Family = fam, Link = link, Range = range)
 linktab |> 
-  mytab() |> 
-  cat()
+  qtab()
 ```
 
 # Relevant distributions {.section}
@@ -554,6 +571,7 @@ dat |>
 
 ```{r}
 #| code-fold: false
+#| collapse: true
 # generate k (success)
 n <- 50 # number of trials
 p <- 0.7 # probability of success
@@ -561,17 +579,13 @@ rbinom(1, n, p)
 
 # let's do several experiments (e.g., participants)
 rbinom(10, n, p)
-```
 
-```{r}
 # calculate the probability density given k successes
 n <- 50
 k <- 25
 p <- 0.5
 dbinom(k, n, p)
-```
 
-```{r}
 # calculate the probability of doing 0, 1, 2, up to k successes
 n <- 50
 k <- 25
@@ -587,13 +601,38 @@ The Bernoulli distributions is used as **random component** when we have a binar
 - Patients recovered or not after a treatment
 - People passing or not the exam
 
-## Binomial GLM
+. . .
 
-The Bernoulli distributions is used as **random component** when we have a binary dependent variable or the number of successes over the total number of trials:
+The Bernoulli or the Binomial distributions can be used as **random component** when we have a binary dependent variable or the number of successes over the total number of trials.
 
 . . .
 
 When fitting a GLM with the binomial distribution we are including linear predictors on the expected value $\mu$ i.e. the probability of success.
+
+## Binomial GLM
+
+Most of the GLM models deal with a mean-variance relationship:
+
+```{r}
+#| fig-width: 10
+
+p <- seq(0, 1, 0.01)
+par(mfrow = c(1,2))
+curve(plogis(x), 
+      -4, 4, 
+      ylab = "Probability", 
+      xlab = "x", 
+      lwd = 2,
+      main = "Logistic Distribution")
+plot(p, 
+     p * (1 - p), 
+     xlim = c(0, 1),
+     xlab = latex("\\mu = p"), 
+     ylab = latex("V = p(1 - p)"),
+     type = "l",
+     lwd = 2,
+     main = "Mean-Variance Relationship")
+```
 
 ## Poisson distribution
 
@@ -617,6 +656,8 @@ As $\lambda$ increases, the distribution is well approximated by a Gaussian dist
 ## Poisson distribution in R
 
 ```{r}
+#| code-fold: false
+#| collapse: false
 n <- 1000
 x <- rpois(n, lambda = 30)
 
@@ -625,6 +666,17 @@ var(x)
 ```
 
 We can also use all the other functions such as the `dpois()`, `qpois()` and `ppois()`
+
+## Poisson distribution in R
+
+The mean-variance relationship can be easily seen with a continuous predictor:
+
+```{r}
+x <- rnorm(1000)
+y <- rpois(1000, exp(log(10) + log(1.8)*x))
+
+plot(x, y, pch = 19)
+```
 
 ## Gamma distribution
 
@@ -643,7 +695,7 @@ ggamma(mean = c(10, 20, 30), sd = c(10, 10, 10), show = "ss")
 
 ## Gamma $\mu$ and $\sigma^2$
 
-The expected value and variance are defined as:
+The mean and variance are defined as:
 
 - $\mu = k \theta$ and $\sigma^2 = k \theta^2$ with the **shape-scale** parametrization
 - $\mu = \frac{\alpha}{\beta}$ and $\frac{\alpha}{\beta^2}$ with the **shape-rate** parametrization
@@ -651,6 +703,15 @@ The expected value and variance are defined as:
 . . .
 
 Another important quantity is the **coefficient of variation** defined as $\frac{\sigma}{\mu}$ or $\frac{1}{\sqrt{k}}$ (or $\frac{1}{\sqrt{\alpha}}$).
+
+## Gamma distribution
+
+Again, we can see the mean-variance relationship:
+
+```{r}
+ggamma(shape = c(5, 5), scale = c(10, 20), show = "ss")
+```
+
 
 ## Gamma parametrization
 
@@ -694,4 +755,4 @@ fam$linkinv() # inverse of the link function, from eta to probability
 
 We are going to see the specific arguments, but this tricks works for any family and links, even if you do not remember the specific function or formula.
 
-## References
+## References {.refs}

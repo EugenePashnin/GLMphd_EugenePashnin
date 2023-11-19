@@ -47,6 +47,44 @@ library(ggeffects)
 funs <- filor::get_funs(here("R", "utils-glm.R"))
 ```
 
+
+```{r}
+#| label: gt
+#| include: false
+qtab <- function(data, digits = 3){
+  require(gt)
+  data |> 
+    gt::gt() |> 
+    gt::cols_align(align = "center") |> 
+    gt::tab_style(
+      style = cell_text(weight = "bold"),
+      locations = cells_column_labels()
+    ) |> 
+    gt::fmt_number(decimals = digits)
+}
+```
+
+```{r}
+#| label: ggplot2
+#| include: false
+mtheme <- function(size = 15){
+  theme_minimal(base_size = size, 
+                base_family = "sans") +
+  theme(legend.position = "bottom",
+        plot.title = element_text(hjust = 0.5),
+        strip.text = element_text(face = "bold"),
+        panel.grid.minor = element_blank())
+}
+
+theme_set(mtheme())
+
+# palettes
+options(ggplot2.continuous.colour="viridis")
+options(ggplot2.continuous.fill = "viridis")
+scale_colour_discrete <- scale_colour_viridis_d
+scale_fill_discrete <- scale_fill_viridis_d
+```
+
 ## Poisson GLM
 
 Everything that we discussed for the binomial GLM is also relevant for the Poisson GLM. We are gonna focus on specificity of the Poisson model in particular:
@@ -85,7 +123,6 @@ ggplot() +
     geom_point(aes(x = x, y = dx),
                size = 4) +
     geom_line(aes(x = x, y = dx)) +
-    mytheme() +
     ylab("Density") +
     xlab("y") +
     ggtitle(latex2exp::TeX("$y \\sim Poisson(\\lambda = 5)$"))
@@ -115,8 +152,7 @@ dat |>
                    color = "black") +
     facet_wrap(~namef, scales = "free", labeller = label_parsed) +
     xlab("y") +
-    ylab("Density") +
-    mytheme()
+    ylab("Density")
 ```
 
 ## Poisson distribution
@@ -130,7 +166,6 @@ dat |>
     geom_point() +
     stat_smooth(method = "glm", method.args = list(family = poisson(link = "log")),
                 se = FALSE) +
-    mytheme() +
     ggtitle(latex2exp::TeX("y = 0.69 + 2.71*x"))
 ```
 
@@ -159,7 +194,7 @@ dat <- dat |>
 
 dat |> 
     filor::trim_df() |> 
-    mytab()
+    qtab()
 ```
 
 ## An example...
@@ -171,7 +206,6 @@ dat |>
 dat |> 
     ggplot(aes(x = studyh, y = solved)) +
     geom_point() +
-    mytheme() +
     xlab("Hours of study") +
     ylab("Solved exercises")
 ```
@@ -208,8 +242,7 @@ dat |>
     facet_wrap(~name, scales = "free") +
     geom_point() +
     ylab("Solved") +
-    xlab("Hours of studying") +
-    mytheme()
+    xlab("Hours of studying")
 ```
 
 ## Parameters intepretation
@@ -242,7 +275,7 @@ dat <- rename(dat, "solved" = y)
 dat |> 
     select(-lp) |> 
     filor::trim_df() |> 
-    mytab()
+    qtab()
 ```
 
 ## Parameters intepretation - Categorical variable
@@ -254,8 +287,7 @@ dat |>
     geom_boxplot(aes(fill = class),
                  show.legend = FALSE) +
     ylab("Solved exercises") +
-    theme(axis.title.x = element_blank()) +
-    mytheme()
+    theme(axis.title.x = element_blank())
 ```
 
 ## Parameters intepretation - Categorical variable
@@ -350,7 +382,6 @@ plot_fit_pois <- dat |>
     ylim(c(-5, 5)) +
     geom_hline(yintercept = c(-1, 1),
                linetype = "dashed") +
-    mytheme() +
     ylab("Pearson residuals") +
     xlab("Fitted") +
     ggtitle("No overdispersion") +
@@ -365,7 +396,6 @@ plot_fit_over <- dat |>
     ylim(c(-5, 5)) +
     geom_hline(yintercept = c(-1, 1),
                linetype = "dashed") +
-    mytheme() +
     ylab("Pearson residuals") +
     xlab("Fitted") +
     ggtitle("Overdispersion") +
@@ -407,8 +437,7 @@ dat |>
                aes(x = y, y = d),
                size = 3) +
     geom_line(data = dd,
-              aes(x = y, y = d)) +
-    mytheme()
+              aes(x = y, y = d))
 ```
 
 ## Causes of overdispersion
@@ -444,7 +473,6 @@ p <- datout |>
     geom_segment(aes(x = x, xend = x, y = yi, yend = y)) +
     geom_point(aes(x = x, y = y, color = g),
                size = 5) +
-    mytheme() +
     theme(legend.position = "bottom",
           legend.title = element_blank()) +
     stat_smooth(aes(x = x, y = y),
@@ -488,7 +516,7 @@ dat <- rename(dat, "solved" = y)
 
 dat |> 
     filor::trim_df() |> 
-    mytab()
+    qtab()
 ```
 
 ## Missing important variables in the model
@@ -498,13 +526,11 @@ We can also have a look at the data:
 ```{r, echo = FALSE}
 class_eff <- dat |> 
     ggplot(aes(x = class, y = solved, fill = class)) +
-    geom_boxplot(show.legend = FALSE) +
-    mytheme()
+    geom_boxplot(show.legend = FALSE)
 
 studyh_eff <- dat |> 
     ggplot(aes(x = studyh, y = solved, color = class)) +
-    geom_point(size = 3) +
-    mytheme()
+    geom_point(size = 3)
 
 class_eff + studyh_eff
 ```
@@ -530,8 +556,7 @@ dat |>
     geom_line(aes(x = studyh, y = fit)) +
     geom_ribbon(aes(ymin = fit - 2*sqrt(fit),
                     ymax = fit + 2*sqrt(fit)),
-                alpha = 0.5) +
-    mytheme()
+                alpha = 0.5)
 ```
 
 ## Missing important variables in the model
@@ -558,7 +583,7 @@ performance::check_overdispersion(fit2)
 Also the residuals plot clearly improved after including all relevant predictors:
 
 ```{r, echo = FALSE}
-(plot_resid(fit, type = "pearson") + mytheme()) + (plot_resid(fit2, type = "pearson") + mytheme())
+(plot_resid(fit, type = "pearson")) + (plot_resid(fit2, type = "pearson"))
 ```
 
 ## Why worring about overdispersion?
@@ -600,7 +625,6 @@ phid |>
                         ymax = Estimate +2*Std..Error)) +
     facet_wrap(~param, scales = "free") +
     scale_x_continuous(breaks = seq(1, 20, 2)) +
-    mytheme() +
     xlab(latex2exp::TeX("$\\phi$"))
 ```
 
@@ -648,7 +672,6 @@ dat |>
     geom_line(aes(x = studyh, color = "Poisson", y = yi - 2*sqrt(yi))) +
     geom_line(aes(x = studyh, color = "Quasi-Poisson", y = yi + 2*sqrt(yi * phi))) +
     geom_line(aes(x = studyh, color = "Quasi-Poisson", y = yi - 2*sqrt(yi * phi))) +
-    mytheme() +
     theme(legend.title = element_blank(),
           legend.position = "bottom")
 ```
@@ -704,7 +727,6 @@ temp |>
     mutate(name = ifelse(name == "vnb", "Negative Binomial", "Quasi-Poisson")) |> 
     ggplot(aes(x = mu, y = value, color = name)) +
     geom_line() +
-    mytheme() +
     xlab(latex2exp::TeX("$\\mu$")) +
     ylab(latex2exp::TeX("$\\V(\\mu)$")) +
     theme(legend.title = element_blank(),
@@ -739,8 +761,7 @@ nb |>
     geom_histogram(bins = 15, aes(y = ..density..)) +
     facet_wrap(~facet, labeller = label_parsed, scales = "free") +
     geom_line(aes(x = y, y = yp), color = "red") +
-    xlab("x") +
-    mytheme()
+    xlab("x")
 ```
 
 ## Negative-binomial model
@@ -759,7 +780,6 @@ temp |>
     geom_line() +
     xlab(latex2exp::TeX("$\\theta$")) +
     ggtitle(latex2exp::TeX("$\\mu = 10$")) +
-    mytheme() +
     scale_y_continuous(
         # Features of the first axis
         name = latex2exp::TeX("$V(\\mu)$"),
@@ -786,7 +806,7 @@ dat$y <- with(dat, MASS::rnegbin(n, lp, theta))
 dat |> 
     select(id, x, y) |> 
     filor::trim_df(2) |> 
-    mytab()
+    qtab()
 ```
 
 ## Negative-binomial model
@@ -800,13 +820,11 @@ left <- dat |>
     ggplot(aes(x = y)) +
     geom_histogram(fill = "lightblue",
                    color = "black") +
-    mytheme() +
     xlab("y") +
     ylab("Count")
 right <- dat |> 
     ggplot(aes(x = x, y = y)) +
-    geom_point(size = 3) +
-    mytheme()
+    geom_point(size = 3)
 
 left + right
 ```
@@ -843,7 +861,6 @@ dat |>
     geom_line(aes(x = x, y = yp - 2*sqrt(yp), color = "Poisson"), linewidth = 1) +
     geom_line(aes(x = x, y = ynb + 2*sqrt(vnb), color = "Negative Binomial"), linewidth = 1) +
     geom_line(aes(x = x, y = ynb - 2*sqrt(vnb), color = "Negative Binomial"), linewidth = 1) +
-    mytheme() +
     theme(legend.position = "bottom",
           legend.title = element_blank())
 ```
@@ -862,7 +879,6 @@ dat |>
     geom_line(aes(x = x, y = ynb - 2*sqrt(vnb), color = "Negative Binomial"), linewidth = 1) +
     geom_line(aes(x = x, y = ynb + 2*sqrt(vqp), color = "Quasi-Poisson"), linewidth = 1) +
     geom_line(aes(x = x, y = ynb - 2*sqrt(vqp), color = "Quasi-Poisson"), linewidth = 1) +
-    mytheme() +
     theme(legend.position = "bottom",
           legend.title = element_blank())
 ```

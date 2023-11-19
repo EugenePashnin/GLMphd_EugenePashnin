@@ -1,6 +1,6 @@
 ---
 title: Binomial GLM
-institute: "University of Pafdova"
+institute: "University of Padova"
 author: 
   - name: "Filippo Gambarota"
     email: filippo.gambarota@unipd.it
@@ -17,6 +17,7 @@ format:
       - code-fullscreen
 from: markdown+emoji
 date: last-modified
+date-format: "YYYY"
 final-slide: false
 df-print: tibble
 bibliography: "`r filor::fil()$bib`"
@@ -27,10 +28,10 @@ csl: "`r filor::fil()$csl`"
 #| label: setup
 knitr::opts_chunk$set(echo = TRUE,
                       dev = "svg",
-                      fig.width = 6,
+                      fig.width = 7,
                       fig.asp = 0.618,
                       fig.align = "center",
-                      comment = "##")
+                      comment = "#>")
 ```
 
 ```{r packages, include=FALSE}
@@ -40,6 +41,7 @@ library(kableExtra)
 library(patchwork)
 library(here)
 library(ggeffects)
+select <- dplyr::select
 ```
 
 ```{r}
@@ -83,8 +85,6 @@ qtab <- function(data, digits = 3){
 funs <- filor::get_funs(here("R", "utils-glm.R"))
 ```
 
-# Binomial GLM {.section}
-
 ## Example: Passing the exam
 
 We want to measure the impact of **watching tv-shows** on the probability of **passing the statistics exam**.
@@ -112,7 +112,8 @@ fit <- glm(exam ~ tv_shows, data = dat, family = binomial(link = "logit"))
 ```
 
 ```{r}
-head(dat)
+#| echo: false
+filor::trim_df(dat)
 ```
 
 ## Example: Passing the exam
@@ -152,6 +153,7 @@ For the `exam` example:
 ```{r}
 odds <- function(p) p / (1 - p)
 p11 <- mean(with(dat, exam[tv_shows == 1])) # passing exam | tv_shows
+p11
 odds(p11)
 ```
 
@@ -172,6 +174,8 @@ $$
 odds_ratio <- function(p1, p2) odds(p1) / odds(p2)
 p11 <- mean(with(dat, exam[tv_shows == 1])) # passing exam | tv_shows
 p10 <- mean(with(dat, exam[tv_shows == 0])) # passing exam | not tv_shows
+p11
+p10
 odds_ratio(p11, p10)
 ```
 
@@ -273,6 +277,7 @@ teddy_plot +
 ... and check the residuals, pretty bad right?
 
 ```{r, echo = FALSE}
+#| fig-width: 10
 par(mfrow = c(2,2))
 plot(fit_lm)
 ```
@@ -333,7 +338,7 @@ teddy_plot +
 - The **systematic component** is a linear combination of predictors and coefficients $\boldsymbol{\beta X}$
 - The **link function** is a function that map probabilities into the $[-\infty, +\infty]$ range.
 
-## Binomial GLM - Logit Link
+## Logit Link
 
 The **logit** link is the most common link function when using a binomial GLM:
 
@@ -347,7 +352,7 @@ $$
 \pi = \frac{e^{\beta_0 + \beta_{1}X_{1} + ...\beta_pX_p}}{1 + e^{\beta_0 + \beta_{1}X_{1} + ...\beta_pX_p}}  
 $$
 
-## Binomial GLM - Logit Link
+## Logit Link
 
 Thus with a single numerical predictor $x$ the relationship between $x$ and $\pi$ in non-linear on the probability scale but linear on the logit scale.
 
@@ -371,7 +376,7 @@ dat |>
     theme(axis.title.y = element_blank())
 ```
 
-## Binomial GLM - Logit Link
+## Logit Link
 
 The problem is that effects are non-linear, thus is more difficult to interpret and report model results
 
@@ -447,7 +452,7 @@ plot_invlogit <- ggplot() +
 plot_logit | plot_invlogit
 ```
 
-## Binomial GLM - Model fitting in R
+## Model fitting in R
 
 ```{r, echo = FALSE}
 knitr::include_graphics("img/glm-fitting-R.png")
@@ -460,7 +465,7 @@ knitr::include_graphics("img/big-picture.png")
 ```
 
 
-## Binomial GLM - Model fitting in R
+## Model fitting in R
 
 We can model the contingency table presented before. We put data in **binary form**:
 
@@ -500,7 +505,7 @@ dat |>
 ::::
 :::
 
-## Binomial GLM - Intercept only model
+## Intercept only model
 
 Let's start from the simplest model (often called null model) where there are no predictors:
 
@@ -509,7 +514,7 @@ fit0 <- glm(exam ~ 1, data = dat, family = binomial(link = "logit"))
 summary(fit0)
 ```
 
-## Binomial GLM - Intercept only model
+## Intercept only model
 
 When fitting an intercept-only model, the parameter is the average value of the `y` variable:
 
@@ -518,7 +523,7 @@ When fitting an intercept-only model, the parameter is the average value of the 
 \pi = \frac{e^{\beta_0}}{1 + e^{\beta_0}}
 \end{align*}
 
-## Binomial GLM - Intercept only model
+## Intercept only model
 
 In R, the $logit(\pi)$ is computed using `qlogis()` that is the `q` + `logis` combination of functions to work with probability distributions. The $logit^{-1}$ thus the inverse of the logit function is `plogis()`:
 
@@ -531,7 +536,7 @@ c("logit" = coef(fit0)[1],
 )
 ```
 
-## Binomial GLM - Link function (TIPS)
+## Link function (TIPS)
 
 If you are not sure about how to transform using the link function you can directly access the `family()` object in R that contains the appropriate link function and the corresponding inverse.
 
@@ -541,7 +546,7 @@ bin$linkfun() # the same as plogis
 bin$linkinv() # the same as qlogis
 ```
 
-## Binomial GLM - Model with X
+## Model with X
 
 Now we can add the `tv_shows` predictor. Now the model has two coefficients. Given that the `tv_shows` is a binary variable, the intercept is the average `y` when `tv_shows` is 0, and the `tv_shows` coefficient is the increase in `y` for a unit increase in `tv_shows`:
 
@@ -550,14 +555,14 @@ fit <- glm(exam ~ tv_shows, data = dat, family = binomial(link = "logit"))
 summary(fit)
 ```
 
-## Binomial GLM - Model with X
+## Model with X
 
 Thinking about our data, the `(Intercept)` is the probability of passing the exam without watching tv-shows. The `tv_shows` (should be) the difference in the probability of passing the exam between people who watched or did not watched tv-shows, BUT:
 
 - we are on the logit scale. Thus we are modelling **log(odds)** and not probabilities
 - a difference on the **log** scale is a ratio on the raw scale. Thus taking the exponential of `tv_shows` we obtain the ratio of odds of passing the exam watching vs non-watching tv-shows. Do you remember something?
 
-## Binomial GLM - Model with $X_1$
+## Model with $X_1$
 
 The `tv_shows` is exactly the Odds Ratio that we calculated on the contingency table:
 
@@ -570,30 +575,31 @@ odds_ratio(mean(dat$exam[dat$tv_shows == 1]),
            mean(dat$exam[dat$tv_shows == 0]))
 ```
 
-# Binomial GLM - Parameter Intepretation {.section}
+# Parameter Intepretation {.section}
 
-## Binomial GLM - Model Intepretation
+## Model Intepretation
 
-Given the non-linearity and the link function, parameter intepretation is not easy for GLMs. In the case of the Binomial GLM we will se:
+Given the non-linearity and the link function, parameter intepretation is not easy for GLMs. In the case of the Binomial GLM we will see:
 
 - interpreting model coefficients on the linear and logit scale
 - odds ratio (already introduced)
 - the divide by 4 rule [@Gelman2020-tg; @Gelman2006-pc]
 - marginal effects
 - predicted probabilities
+- converting to common effect sizes
 
-## Binomial GLM - Intepreting model coefficients
+## Intepreting model coefficients
 
-Models coeffiecients are intepreted in the same way as standard regression models. The big difference concerns:
+Models coefficients are interpreted in the same way as standard regression models. The big difference concerns:
 
 - numerical predictors
 - categorical predictors
 
-Using contrast coding and centering/standardizing we can make model coeffiecients more intepretable or tailored to our research question.
+Using **contrast coding** and **centering/standardizing** we can make model coefficients easier to intepret.
 
-## Binomial GLM - Categorical predictors
+## Categorical predictors
 
-We we use a categorical predictor with $p$ levels, the model will estimate $p - 1$ parameters. The interpretation of these parameters is controlled by the contrast coding. In R the default is the treatment coding (or dummy coding). Essentially R create $p - 1$ dummy variables (0 and 1) where 0 is the reference level (usually the first category) and 1 is the current level. We can see the coding scheme using the `model.matrix()` function that return the $\boldsymbol{X}$ matrix:
+We use a categorical predictor with $p$ levels, the model will estimate $p - 1$ parameters. The interpretation of these parameters is controlled by the contrast coding. In R the default is the treatment coding (or dummy coding). Essentially R create $p - 1$ dummy variables (0 and 1) where 0 is the reference level (usually the first category) and 1 is the current level. We can see the coding scheme using the `model.matrix()` function that return the $\boldsymbol{X}$ matrix:
 
 ```{r, echo = FALSE}
 model.matrix(fit) |>
@@ -601,7 +607,7 @@ model.matrix(fit) |>
     filor::trim_df()
 ```
 
-## Binomial GLM - Categorical predictors
+## Categorical predictors
 
 In the simple case of the `exam` dataset, the intercept ($\beta_0$) is the reference level (default to 0 because is the first) and $\beta_0$ is the difference between the actual level and the reference level. If we change the order of the levels we could change the intercept value while $\beta_1$ will be the same. As an example we could use the so-called sum to zero coding where instead of assigning 0 and 1 we use different values. For example assigning -0.5 and 0.5 will make the intercept the grand-mean:
 
@@ -615,9 +621,11 @@ mean(c(mean(dat$exam[dat$tv_shows == 1]), mean(dat$exam[dat$tv_shows == 0])))
 plogis(coef(fit)[1])
 ```
 
-## Binomial GLM - Categorical predictors
+## Categorical predictors
 
-```{r, echo = FALSE}
+```{r}
+#| echo: false
+#| fig-width: 10
 fit <- glm(exam ~ tv_shows, data = dat, family = binomial(link = "logit"))
 
 dat_coding <- dat |>
@@ -680,9 +688,9 @@ sum0 <- dat_coding |>
 dummy + sum0
 ```
 
-## Binomial GLM - Numerical predictors
+## Numerical predictors
 
-With numerical predictors the idea is the same as categorical predictors. In fact, categorical predictors are converted into numbers (e.e., 0 and 1 or -0.5 and 0.5). The only caveat is that the effects are linear only the **logit** scale. Thus $\beta_1$ is interpreted in the same way as standard linear models only on the link-function scale. For the **binomial** 
+With numerical predictors the idea is the same as categorical predictors. In fact, categorical predictors are converted into numbers (i.e., 0 and 1 or -0.5 and 0.5). The only caveat is that the effects are linear only the **logit** scale. Thus $\beta_1$ is interpreted in the same way as standard linear models only on the link-function scale. For the **binomial** 
 
 GLM the $\beta_1$ is the increase in the $log(odds(\pi))$ for a unit-increase in the $x$. In the response (probability) scale, the $\beta_1$ is the multiplicative increase in the odds of $y = 1$ for a unit increase in the predictor.
 
@@ -690,7 +698,7 @@ GLM the $\beta_1$ is the increase in the $log(odds(\pi))$ for a unit-increase in
 plot_logit | plot_invlogit
 ```
 
-## Binomial GLM - Numerical predictors
+## Numerical predictors
 
 With numerical predictors we could mean-center and or standardize the predictors. With centering (similarly to the categorical example) we change the interpretation of the intercept. Standardizing is helpful to have more meaningful $\beta$ values. The $\beta_i$ of a centered predictor is the increase in $y$ for a increase in one standard deviation of $x$.
 
@@ -702,7 +710,7 @@ $$
 x_{z} = \frac{x_i - \hat x}{\sigma_x}
 $$
 
-## Binomial GLM - Numerical predictors
+## Numerical predictors
 
 ```{r, echo = FALSE}
 x <- runif(100, 0, 1)
@@ -752,7 +760,7 @@ centered <- dat |>
 raw | centered
 ```
 
-## Binomial GLM - Numerical predictors
+## Numerical predictors
 
 Let's return to our teddy child example and fitting the proper model:
 
@@ -761,7 +769,7 @@ fit_glm <- glm(Depression_pp01 ~ Parental_stress, data = teddy, family = binomia
 summary(fit_glm)
 ```
 
-## Binomial GLM - Numerical predictors
+## Numerical predictors
 
 The `(Intercept)` ($\beta_0$) is the probability of having post-partum depression for a mother with parental stress zero (maybe better centering?)
 
@@ -773,7 +781,7 @@ $$
 plogis(coef(fit_glm)["(Intercept)"])
 ```
 
-## Binomial GLM - Numerical predictors
+## Numerical predictors
 
 The `Parental_stress` ($\beta_1$) is the increase in the $log(odds)$ of having the post-partum depression for a unit increase in the parental stress index. If we take the exponential of $\beta_1$ we obtain the increase in the $odds$ of having post-partum depression for a unit increase in parental stress index.
 
@@ -781,7 +789,7 @@ The `Parental_stress` ($\beta_1$) is the increase in the $log(odds)$ of having t
 exp(coef(fit_glm)["Parental_stress"])
 ```
 
-## Binomial GLM - Numerical predictors
+## Numerical predictors
 
 The problem is that, as shown before, the effects are non-linear on the probability scale while are linear on the logit scale. On the logit scale, all differences are constant:
 
@@ -798,7 +806,7 @@ predictions
 sapply(predictions, diff)
 ```
 
-## Binomial GLM - Numerical predictors
+## Numerical predictors
 
 While on the probability scale, the differences are not the same. This is problematic when interpreting the results of a Binomial GLM with a numerical predictor.
 
@@ -808,15 +816,17 @@ While on the probability scale, the differences are not the same. This is proble
 sapply(predictions, diff)
 ```
 
-## Binomial GLM - Divide by 4 rule
+## Divide by 4 rule
 
-The **divide by 4 rule** is a very easy way to evaluate the effect of a continous predictor on the probability. 
+The **divide by 4 rule** is a very easy way to evaluate the effect of a continuous predictor.
 
-Given the non-linearity, the derivative of the logistic function (i.e., the slope) is maximal when predicts probabilities around ~0.5. 
+Given the non-linearity, the derivative of the logistic function (i.e., the slope) is maximal for probabilities around ~$0.5$.
 
 In fact, $\beta_i \pi (1 - \pi)$ is maximized when $\pi = 0.5$ turning into $\beta_i 0.25$ (i.e., dividing by 4).
 
-## Binomial GLM - Divide by 4 rule
+Dividing $\beta/4$ we obtain the maximal difference for a unit increase in $x$
+
+## Divide by 4 rule
 
 ```{r, echo = FALSE}
 x <- runif(100, 0, 10)
@@ -842,7 +852,7 @@ dat |>
     ylab("Probability")
 ```
 
-## Binomial GLM - Predicted probabilities
+## Predicted probabilities
 
 In a similar way we can use the inverse logit function to find the predicted probability specific values of $x$. For example, the difference between $p(y = 1|x = 2.5) - p(y = 1|x = 5)$ can be calculated using the model equation:
 
@@ -855,7 +865,7 @@ coefs <- coef(fit)
 plogis(coefs[1] + coefs[2]*5) - plogis(coefs[1] + coefs[2]*2.5)
 ```
 
-## Binomial GLM - Predicted probabilities
+## Predicted probabilities
 
 In R we can use directly the `predict()` function with the argument `type = "response"` to return the predicted probabilities instead of the logits:
 
@@ -865,7 +875,7 @@ preds
 preds[2] - preds[1]
 ```
 
-## Binomial GLM - Predicted probabilities
+## Predicted probabilities
 
 I have written the `epredict()` function that extend the `predict()` function giving some useful messages when computing predictions. you can use it with every model and also with multiple predictors.
 
@@ -873,7 +883,7 @@ I have written the `epredict()` function that extend the `predict()` function gi
 epredict(fit, values = list(x = c(2.5, 5)), type = "response")
 ```
 
-## Binomial GLM - Marginal effects
+## Marginal effects
 
 A marginal effect measures the association between a change in a predictor ($x$), and a change in the response $y$.
 
@@ -900,7 +910,7 @@ ggplot(pr, aes(x = x, y = pr)) +
   xlab("x")
 ```
 
-## Binomial GLM - Marginal effects
+## Marginal effects
 
 The divide-by-4 rule is the maximal marginal effects. The average marginal effects is the average of all slopes. This can be easily done with the `marginaleffects` package:
 
@@ -911,7 +921,11 @@ library(marginaleffects)
 
 # all marginal effects
 slopes(fit)
+```
 
+## Marginal effects
+
+```{r}
 # marginal effects when x = 5
 slopes(fit, newdata = data.frame(x = 5))
 
@@ -919,7 +933,7 @@ slopes(fit, newdata = data.frame(x = 5))
 avg_slopes(fit)
 ```
 
-## Binomial GLM - Marginal effects
+## Marginal effects
 
 With multiple variables, marginal effects are also useful to see the effect of one predictor fixing the level of others. Let's simulate a model with two predictors:
 
@@ -930,7 +944,7 @@ fit <- glm(y ~ x1 + x2, data = dat, family = binomial(link = "logit"))
 plot(ggeffect(fit)$x1) | plot(ggeffect(fit)$x2)
 ```
 
-## Binomial GLM - Marginal effects
+## Marginal effects
 
 We can see the marginal effects (each, average or marginal) for the $x1$ while fixing $x2$ to the mean:
 
@@ -938,11 +952,11 @@ We can see the marginal effects (each, average or marginal) for the $x1$ while f
 slopes(fit, newdata = data.frame(x1 = dat$x1, x2 = mean(dat$x2)))
 ```
 
-## Binomial GLM - Inverse estimation^[see also the [`investr`](https://cran.r-project.org/web/packages/investr/vignettes/introduction.pdf) package]
+## Inverse estimation^[see also the [`investr`](https://cran.r-project.org/web/packages/investr/vignettes/introduction.pdf) package]
 
 Sometimes it is useful to do what is called **inverse estimation**, thus predicting the $x_i$ level associated with a certain $y$. In this case the $x_i$ producing a certain $p$ of response.
 
-Sometimes this is called **median effective dose** when finding the $x$ level producing $50%$ of correct responses.
+Sometimes this is called **median effective dose** when finding the $x$ level producing $50\%$ of correct responses.
 
 We can use the `MASS::dose.p()` function:
 
@@ -950,9 +964,9 @@ We can use the `MASS::dose.p()` function:
 MASS::dose.p(fit, p = c(0.25, 0.5, 0.8))
 ```
 
-# Binomial GLM - Inference {.section}
+# Inference {.section}
 
-## Binomial GLM - Wald tests
+## Wald tests
 
 ```{r, echo = FALSE}
 n <- 100
@@ -979,9 +993,9 @@ $$
 z = \frac{\beta_i - \beta_0}{\sigma_{\beta_i}}
 $$
 
-Calculating the p-value based on a standard normal distribution.
+Where $\beta$ is the regression coefficients, $\beta_0$ is the value under the null hypothesis (generally 0) and $\sigma_{\beta_i}$ is the standard error. P-values and confidence intervals can be calculated based on a standard normal distribution.
 
-## Binomial GLM - Wald-type confidence intervals
+## Wald-type confidence intervals
 
 Wald-type confidence interval (directly from model summary), where $\Phi$ is the cumulative Gaussian function `qnorm()`:
 
@@ -995,7 +1009,7 @@ $$
 summ$Estimate + qnorm(c(0.025, 0.95))*summ$Std..Error
 ```
 
-## Binomial GLM - Profile likelihood confidence intervals
+## Profile likelihood confidence intervals
 
 The computation is a little bit different and they are not always symmetric:
 
@@ -1004,15 +1018,15 @@ The computation is a little bit different and they are not always symmetric:
 confint(fit)
 ```
 
-## Binomial GLM - Profile likelihood confidence intervals
+## Profile likelihood confidence intervals
 
-Again we can use the `plot_param()` function:
+You can use the `plot_param()` function (quite overkilled):
 
 ```{r}
 plot_param(fit, "tv_shows")
 ```
 
-## Binomial GLM - Confidence intervals
+## Confidence intervals
 
 When calculating confidence intervals it is important to consider the link function. In the same way as we compute the inverse logit function on the parameter value, we could revert also the confidence intervals. **IMPORTANT, do not apply the inverse logit on the standard error and then compute the confidence interval**.
 
@@ -1040,7 +1054,7 @@ fits <- broom::tidy(fit) # extract parameters as dataframe
 fits
 ```
 
-## Binomial GLM - Confidence intervals
+## Confidence intervals
 
 ```{r}
 b <- fits$estimate[2]
@@ -1056,7 +1070,7 @@ exp(confint(fit, "tv_shows"))
 c(b = exp(b), lower = exp(b) - 2*exp(se), upper = exp(b) + 2*exp(se))
 ```
 
-## Binomial GLM - Confidence intervals
+## Confidence intervals
 
 The same principle holds for predicted probabilities. First compute the intervals on the logit scale and then transform-back on the probability scale:
 
@@ -1073,7 +1087,7 @@ fits$upper <- plogis(with(fits, fit + 2*se.fit))
 fits
 ```
 
-## Binomial GLM - Anova
+## Anova
 
 With multiple predictors, especially with categorical variables with more than 2 levels, we can compute the an anova-like analysis individuating the effect of each predictor. In R we can do this using the `car::Anova()` function. Let's simulate a model with a 2x2 interaction:
 
@@ -1088,19 +1102,16 @@ dat <- sim_data(dat, plogis(qlogis(b0) + b1*x1_c + b2*x2_c + b3*x1_c*x2_c), "bin
 head(dat |> select(-x1_c, -x2_c, -lp))
 ```
 
-We can fit the most complex model containing the two main effects and the interaction^[I set the contrasts for the two factors as `contr.sum()/2` that are required for a proper analysis of factorial designs]:
+## Anova
+
+We can fit the most complex model containing the two main effects and the interaction. I set the contrasts for the two factors as `contr.sum()/2` that are required for a proper analysis of factorial designs:
 
 ```{r}
 fit_max <- glm(y ~ x1 + x2 + x1:x2, data = dat, family = binomial(link = "logit")) # same as x1 * x2
-```
-
-## Binomial GLM - Anova
-
-```{r}
 summary(fit_max)
 ```
 
-## Binomial GLM - Anova
+## Anova
 
 Then using `car::Anova()`. For each effect we have the $\chi^2$ statistics and the associated p-value. The null hypothesis is that the specific factor did not contribute in reducing the residual deviance.
 
@@ -1108,7 +1119,7 @@ Then using `car::Anova()`. For each effect we have the $\chi^2$ statistics and t
 car::Anova(fit_max)
 ```
 
-## Binomial GLM - Model comparison
+## Model comparison
 
 The table obtained with `car::Anova()` is essentially a model comparison using the Likelihood Ratio test. This can be done using the `anova(...)` function.
 
@@ -1117,7 +1128,7 @@ D = 2 (log(\mathcal{L}_{full}) - log(\mathcal{L}_{reduced})) \\
 D \sim \chi^2_{df_{full} - df_{reduced}}
 \end{align*}
 
-## Binomial GLM - Model comparison
+## Model comparison
 
 To better understanding, the `x2` effect reported in the `car::Anova()` table is a model comparison between a model with `y ~ x1 + x2` and a model without `x2`. The difference between these two model is the unique contribution of `x2` after controlling for `x1`:
 
@@ -1128,7 +1139,7 @@ fit0 <- glm(y ~ x1, data = dat, family = binomial(link = "logit"))
 anova(fit0, fit, test = "LRT") # ~ same as car::Anova(fit_max)
 ```
 
-## Binomial GLM - Model comparison
+## Model comparison
 
 The model comparison using `anova()` (i.e., likelihood ratio tests) is limited to nested models thus models that differs only for one term. For example:
 
@@ -1140,14 +1151,14 @@ fit3 <- glm(y ~ x1 + x2, data = dat, family = binomial(link = "logit"))
 
 `fit1` and `fit2` are non-nested because we have the same number of predictors (thus degrees of freedom). `fit3` and `fit1`/`fit2` are nested because `fit3` is more complex and removing one term we can obtain the less complex models.
 
-## Binomial GLM - Model comparison
+## Model comparison
 
 ```{r}
 anova(fit1, fit2, test = "LRT") # do not works properly
 anova(fit1, fit3, test = "LRT") # same anova(fit2, fit3)
 ```
 
-## Binomial GLM - Information Criteria
+## Information Criteria
 
 As for standard linear models I can use the Akaike Information Criteria (AIC) or the Bayesian Information Criteria (BIC) to compare non-nested models. The downside is not having a properly hypothesis testing setup.
 
@@ -1159,9 +1170,64 @@ data.frame(AIC(fit1, fit2, fit3)) |>
     arrange(AIC)
 ```
 
-# Binomial GLM - Plotting effects {.section}
+## Marginal Means
 
-## Binomial GLM - Marginal effects
+For post-hoc contrasts you can use the `emmeans` package both for numerical but especially categorical predictors. Let's simulate a 2x2 interaction:
+
+```{r}
+dat <- sim_design(100, cx = list(x1 = c("a", "b"), x2 = c("c", "d")), contrasts = contr.sum2)
+dat <- sim_data(dat, plogis(qlogis(0.25) + 0 * x1_c + 2 * x2_c + 2 * x1_c * x2_c))
+fit <- glm(y ~ x1 * x2, data = dat, family = binomial(link = "logit"))
+summary(fit)
+```
+
+## Marginal Means
+
+```{r}
+plot(ggeffects::ggeffect(fit, terms = c("x1", "x2")))
+```
+
+## Marginal Means
+
+`emmeans` is a very powerful and complicate package ([documentation]( https://cran.r-project.org/web/packages/emmeans/index.html)). Firstly we can estimate the marginal means of the conditions:
+
+```{r}
+library(emmeans)
+emmeans(fit, ~ x1 + x2)
+```
+
+## Marginal Means
+
+We can also calculate the marginal means on the response scale:
+
+```{r}
+library(emmeans)
+emmeans(fit, ~ x1 + x2, type = "response")
+```
+
+## Marginal Means
+
+Crucially we can compute the contrasts (i.e., the post-hoc tests). Notice that they are computed on the link-function scale:
+
+```{r}
+#| collapse: true
+emmeans(fit, pairwise ~ x1 | x2)$contrasts
+emmeans(fit, pairwise ~ x1 | x2, type = "response")$contrasts
+```
+
+## Marginal Means
+
+Notice the order of the terms to change the actual type of contrasts:
+
+```{r}
+#| collapse: true
+emmeans(fit, pairwise ~ x2 | x1)$contrasts
+emmeans(fit, pairwise ~ x2 | x1, type = "response")$contrasts
+```
+
+# Plotting effects {.section}
+
+## Marginal effects
 
 When plotting a binomial GLM the most useful way is plotting the marginal probabilities and standard errors/confidence intervals for a given combination of predictors. Let's make an example for:
 
@@ -1169,7 +1235,7 @@ When plotting a binomial GLM the most useful way is plotting the marginal probab
 - GLM with 2 numerical/categorical predictors
 - GLM with interaction between numerical and categorical predictors
 
-## Binomial GLM - Marginal effects
+## Marginal effects
 
 A general workflow could be:
 
@@ -1184,7 +1250,7 @@ Everything can be simplified using some packages to perform each step and return
 - `ggeffect()` from the `ggeffect()` package (return a `ggplot2` object)
 - `plot_model` from the `sjPlot` package (similar to `ggeffect()`)
    
-## Binomial GLM - 1 categorical predictor
+## 1 categorical predictor
 
 In this situation we can just plot the marginal probabilities for each level of the categorical predictor. Plotting our exam dataset:
 
@@ -1224,7 +1290,7 @@ fits |>
     ggtitle("Predicted probabilities")
 ```
 
-## Binomial GLM - 1 numerical predictor
+## 1 numerical predictor
 
 ```{r, echo = FALSE}
 x <- runif(100, 0, 1)
@@ -1244,7 +1310,7 @@ dat2 |>
     ylab("Probability")
 ```
 
-## Binomial GLM - `allEffects()`
+## `allEffects()`
 
 ::: columns
 :::: column
@@ -1259,13 +1325,13 @@ plot(effects::allEffects(fit))
 ::::
 :::
 
-## Binomial GLM - `ggeffect()`/`plot_model()`
+## `ggeffect()`/`plot_model()`
 
 ```{r, echo = FALSE}
 plot(ggeffects::ggeffect(fit)[[1]]) + plot(ggeffects::ggeffect(fit2)[[1]])
 ```
 
-## Binomial GLM - Plotting coefficients
+## Plotting coefficients
 
 ::: columns
 :::: column
@@ -1295,13 +1361,14 @@ The diagnostic for GLM is similar to standard linear models. Some areas are more
 
 ## Likelihood
 
-The likelihood is the joint probability of the observed data viewed as a function of the parameters of a statistical model.
+The likelihood is the joint probability of the observed data viewed as a function of the parameters.
 
 $$
 \log \mathcal{L}(\mu|x) = \sum^n_{i = 1} \log(\mu|x_i)
 $$
 
 ```{r}
+#| collapse: true
 x <- rnorm(10) # data from normal distribution
 
 # data
@@ -1318,7 +1385,9 @@ sum(log(dnorm(x, 0, 1)))
 
 By summing the logarithm all the red segments we obtain the log likelihood of the model given the observed data.
 
-```{r, echo = FALSE}
+```{r}
+#| echo: false
+#| fig-width: 10
 dat <- data.frame(x)
 
 ll1 <- sum(log(dnorm(x, 0, 1)))
@@ -1515,7 +1584,7 @@ Notice that the difference between the two residual deviances is the test statis
 ## Deviance - Likelihood Ratio Test
 
 ```{r, echo = FALSE}
-knitr::include_graphics("img/lrt.pdf")
+knitr::include_graphics("img/lrt.svg")
 ```
 
 ## Deviance^[Adapted from https://bookdown.org/egarpor/SSS2-UC3M/logreg-deviance.html]
@@ -1594,7 +1663,7 @@ We can calculate the null deviance:
 deviance(fit0)
 ```
 
-## Binomial GLM - $R^2$
+## $R^2$
 
 Compared to the standard linear regression, there are multiple ways to calculate an $R^2$ like measure for GLMs and there is no consensus about the most appropriate method. There are some useful resources:
 
@@ -1602,7 +1671,7 @@ Compared to the standard linear regression, there are multiple ways to calculate
 
 To note, some measures are specific for the binomial GLM while other measures can be applied also to other GLMs (e.g., the poisson)
 
-## Binomial GLM - $R^2$
+## $R^2$
 
 We will se:
 
@@ -1637,11 +1706,12 @@ R^2 = |\pi_1 - \pi_2|
 performance::r2_tjur(fit2)
 ```
 
-## Binomial GLM - Residuals
+## Residuals
 
 The main problem of GLM is that the mean and the variance are linked. For example, the mean of a binomial distribution is $np$ and the variance is $np(1-p)$. In the standard linear model we have two parameters, $\mu$ and the residual $\sigma$ that are independent.
 
 ```{r}
+#| code-fold: true
 x <- rnorm(1000)
 y <- 0.1 + 0.6 * x + rnorm(1000)
 fit <- lm(y ~ x)
@@ -1651,11 +1721,12 @@ plot(ri_lm, fitted(fit),
      xlab = "Standardized Residuals")
 ```
 
-## Binomial GLM - Residuals
+## Residuals
 
 When using a linear model (thus assuming a constant $\sigma$ and independence between mean and variance) the residuals pattern is very different:
 
 ```{r}
+#| code-fold: true
 x <- rnorm(1000)
 y <- rpois(1000, exp(log(10) + log(1.5) * x))
 fit_poi <- lm(y ~ x)
@@ -1665,7 +1736,7 @@ plot(rstandard(fit_poi), fitted(fit_poi),
      ylab = "Fitted Values")
 ```
 
-## Binomial GLM - Residuals
+## Residuals
 
 As for standard linear models there are different types of residuals:
 
@@ -1751,7 +1822,7 @@ ggplot(data = dat_temp, aes(x = x, y = y)) +
     ylim(c(-10, 90))
 ```
 
-## Binomial GLM - Binned (raw) Residuals
+## Binned (raw) Residuals
 
 Gelman and colleagues [@Gelman2020-tg, @Gelman2006-pc] proposed a type of residuals called **binned residuals** to solve the problem of the previous plot for Binomial GLMs:
 
@@ -1760,19 +1831,25 @@ Gelman and colleagues [@Gelman2020-tg, @Gelman2006-pc] proposed a type of residu
 - for each bin we can compute the standard error as $SE = \frac{\hat p_j (1 - p_j)}{n_j}$ where $p_j$ is the average fitted probability and $n_j$ is the number of observation in the bin $j$
 - Then we can plot each bin and the confidence intervals (e.g., as $\pm 2*SE$) where ~95% of binned residuals should be within the CI if the model is true
 
-## Binomial GLM - Binned (raw) Residuals
+## Binned (raw) Residuals
 
-We can use the `performance::binned_residuals(model = , n_bins = )` function to automatically create and plot the binned residuals:
+We can use the `arm::binnedplot()` function to automatically create and plot the binned residuals:
 
 ```{r}
-bres <- performance::binned_residuals(fit, n_bins = 10) # 10 is the default
-head(data.frame(bres))
+#| echo: false
+library(arm)
+data(lalonde)
+fit <- glm(treat ~ re74 + re75 + educ + black + hisp + married 
+           + nodegr + u74 + u75, data = lalonde, family = binomial(link="logit"))
+x <- predict(fit)
+y <- resid(fit)
 ```
 
-## Binomial GLM - Binned (raw) Residuals
-
 ```{r}
-plot(bres)
+#| code-fold: true
+par(mfrow = c(1,2))
+plot(x, y, xlab = "Expected Values", ylab = "Raw Residual", main = "Raw Residual Plot")
+binnedplot(x,y)
 ```
 
 ## Pearson residuals
@@ -1796,7 +1873,7 @@ fit_temp <- glm(y ~ x, data = sim, family = poisson(link = "log"))
 (plot_resid(fit_temp, type = "response")) + (plot_resid(fit_temp, type = "pearson"))
 ```
 
-## Binomial GLM - Pearson residuals
+## Pearson residuals
 
 For the Binomial (Bernoulli) GLM, the variance is calculated as $\hat \pi(1 - \hat \pi)$ where $\hat \pi$ is the residual value.
 
@@ -1820,7 +1897,7 @@ r_i = sign(y_i - \hat y_i) \sqrt{-2[\log \mathcal{L}y_{i_{current}} - \log \math
 $$
 Where $sign$ is the sign of the raw residual $i$. For the Bernoulli model the $\log \mathcal{L}y_{i_{saturated}}$ is always 0.
 
-## Binomial GLM - Deviance Residuals
+## Deviance Residuals
 
 ```{r, echo = FALSE}
 dat <- data.frame(x = runif(1e5))
@@ -1865,7 +1942,7 @@ res <- ggplot(dats, aes(x = yi, y = ri)) +
 res_logis | res
 ```
 
-## Binomial GLM - Deviance Residuals 
+## Deviance Residuals 
 
 To calculate and demonstrate manually the deviance residuals we can compute them manually in R:
 
@@ -1938,7 +2015,7 @@ rstandard(fit, type = "pearson")[1:5]
 rstandard(fit, type = "deviance")[1:5]
 ```
 
-## Binomial GLM Standardized Residuals {.allowframebreaks}
+## Standardized Residuals {.allowframebreaks}
 
 We can try to manually calculate the residuals to better understand.
 
@@ -1956,7 +2033,7 @@ pis[1:5]
 rstandard(fit, type = "pearson")[1:5]
 ```
 
-## Binomial GLM Standardized Residuals {.allowframebreaks}
+## Standardized Residuals {.allowframebreaks}
 
 ```{r}
 # deviance (for binomial GLM the loglik of the saturated model is 0)
@@ -2013,7 +2090,7 @@ qres2 <- temp |>
 qres1 + qres2
 ```
 
-## Binomial GLM - Quantile residuals
+## Quantile residuals
 
 **Quantile residuals** are very useful especially for Discrete GLMs (binomial and poisson) and are exactly normally distributed (under respected model assumptions) compared to **deviance** and **pearson** residuals [@Dunn1996-yd]. They can be calculated using the `statmod::qresid(fit)` function. Authors suggest to run the function 4 times to disentagle between the randomization and the systematic component.
 
@@ -2022,7 +2099,7 @@ statmod::qresid(fit)[1:5]
 statmod::qresid(fit)[1:5] # different every time
 ```
 
-## Binomial GLM - Quantile residuals 
+## Quantile residuals 
 
 ```{r, echo = FALSE}
 dat <- data.frame(ri = statmod::qresid(fit))
@@ -2043,7 +2120,7 @@ qres_fitted <- dat |>
 qres_hist + qres_fitted
 ```
 
-## Binomial GLM - Classification accuracy/Error rate
+## Classification accuracy/Error rate
 
 The **error rate** (ER) is defined as the proportion of cases for which the deterministic prediction i.e. guessing $y_i = 1$ if $logit^{-1}(\hat y_i) > 0.5$ and guessing $y_i = 0$ if $logit^{-1}(\hat y_i) > 0.5$ is wrong. Clearly, $1 - ER$ is the **classification accuracy**.
 
@@ -2053,7 +2130,7 @@ I wrote the `error_rate` function that simply compute the error rate of a given 
 filor::print_fun(funs$error_rate)
 ```
 
-## Binomial GLM - Classification accuracy/Error rate
+## Classification accuracy/Error rate
 
 ```{r}
 error_rate(fit)
@@ -2071,7 +2148,7 @@ er_ratio = error_rate(fit0)/error_rate(fit)
 
 The **error rate** of the null model is `r round(er_ratio, 3)` times greater than the actual model.
 
-## Binomial GLM - Outliers and influential observations
+## Outliers and influential observations
 
 Identification of influential observation and outliers of GLMs is very similar to standard regression models. We will briefly see:
 
@@ -2079,7 +2156,7 @@ Identification of influential observation and outliers of GLMs is very similar t
 - Cook Distances
 - DFBETAs
 
-## Binomial GLM - Cook Distances
+## Cook Distances
 
 The Cook Distance of an observation $i$ measured the impact of that observation on the overall model fit. If removing the observation $i$ has an high impact, the observation $i$ is likely an influential observation. For GLMs they are defined as:
 
@@ -2089,7 +2166,7 @@ D_i = \frac{r_i^2}{\phi p} \frac{h_{ii}}{1 - h_{ii}}
 
 Where $p$ is the number of model parameters, $r_i$ are the standardized pearson residuals (`rstandard(fit, type = "pearson")`) and $h_{ii}$ are the hatvalues (leverages). $\phi$ is the dispersion parameter of the GLM that for binomial and poisson models is fixed to 1 (see Dunn (2018, Table 5.1)) Usually an observation is considered influential if $D_i > \frac{4}{n}$ where $n$ is the sample size.
 
-## Binomial GLM - DFBETAs
+## DFBETAs
 
 DFBETAs measure the impact of the observation $i$ on the estimated parameter $beta_j$:
 
@@ -2099,7 +2176,7 @@ DFBETAS_i = \frac{\beta_j - \beta_{j(i))}}{\sigma_{\beta_{j(i)}}}
 
 Where $i$ denote the parameters and standard error on a model fitted without the $i$ observation. Usually an observation is considered influential if $|DFBETAs_{i}| > \frac{2}{\sqrt{n}}$ where $n$ is the sample size.
 
-## Binomial GLM - Extracting influence measures
+## Extracting influence measures
 
 In R we can use the `influence.measures()` function to calculate each influence measure explained before^[The function actually computes also other influence measures, see Dunn (2018, section 8.8.3) for other details].
 
@@ -2112,7 +2189,7 @@ infl <- influence.measures(fit)$infmat
 head(infl)
 ```
 
-## Binomial GLM - Plotting influence measures
+## Plotting influence measures
 
 I wrote the `cook_plot()` function to easily plot the cook distances along with the identification of influential observations:
 
@@ -2124,7 +2201,7 @@ cook_plot(fit)
 cook_plot(fit)
 ```
 
-## Binomial GLM - Plotting influence measures
+## Plotting influence measures
 
 I wrote the `dfbeta_plot()` function to easily plot the cook distances along with the identification of influential observations:
 
@@ -2307,6 +2384,8 @@ bin_to_binary(datc, nc, nt) |>
     filor::trim_df()
 ```
 
+## Binomial vs Binary: data structure
+
 ```{r}
 # from binary to binomial
 bin_to_binary(datc, nc, nt)  |>
@@ -2376,18 +2455,13 @@ fit0_binary <- update(fit_binary, . ~ -x) # null binary model
 fit0_binomial <- update(fit_binomial, . ~ -x) # null binary model
 ```
 
-::: columns
-:::: column
+## Binomial vs Binary: residuals and residual deviance
+
 ```{r}
+#| collapse: true
 anova(fit_binomial, fit0_binomial, test = "Chisq")
-```
-::::
-:::: column
-```{r}
 anova(fit_binary, fit0_binary, test = "Chisq")
 ```
-::::
-:::
 
 ## Binomial vs Binary: type of predictors 
 
@@ -2444,14 +2518,14 @@ dat |>
 - On the other side, the *question difficulty example* can only be modelled using a binary regression because each trial (0/1) has a different value for the predictor
 - To include both predictors or to model multiple participants on the *question difficulty example* we need a mixed-effects (or multilevel) model where both levels together with the repeated-measures can be handled.
 
-# Binomial GLM - Probit link
+# Probit link {.section}
 
-## Binomial GLM - Probit link
+## Probit link
 
 - The mostly used *link function* when using a binomial GLM is the **logit link**. The **probit** link is another *link function* that can be used. The overall approach is the same between **logit** and **probit** models. The only difference is the parameter interpretation (i.e., no odds ratios) and the specific link function (and the inverse) to use.
 - The **probit** model use the **cumulative normal distribution** but the actual difference with a **logit** functions is neglegible.
 
-## Binomial GLM - Probit link
+## Probit link
 
 ```{r, echo=FALSE}
 ggplot() +
@@ -2466,7 +2540,7 @@ ggplot() +
     ylab("Probability")
 ```
 
-## Binomial GLM - Probit link
+## Probit link
 
 When using the **probit link** the parameters are interpreted as difference in *z-scores* associated with a unit increase in the predictors. In fact probabilities are mapped into *z-scores* using the comulative normal distribution.
 
@@ -2481,7 +2555,7 @@ log(odds_ratio(p1, p2)) # ~ beta1, logit link
 pnorm(p1) - pnorm(p2) # ~beta1, probit link
 ```
 
-## Binomial GLM - Probit link
+## Probit link
 
 ```{r, echo = FALSE}
 probit_cum <- ggplot() +

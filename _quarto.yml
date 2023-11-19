@@ -1,0 +1,6 @@
+project:
+  title: "Test"
+  render:
+    - "slides/"
+execute:
+  freeze: auto  # re-render only when source changes
