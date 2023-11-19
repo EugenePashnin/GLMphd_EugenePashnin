@@ -303,7 +303,7 @@ sim_data <- function(data, linpred, model = c("binomial", "poisson")){
 #' @param y name of the response (binary) variable
 #' @param x name of the numeric predictor
 #' @param c vector of cutoffs
-#' @param na.rm logical indicating whether NA should be removed or not. Default to \code{FALSE} 
+#' @param na.rm logical indicating whether NA should be removed or not. Default to \code{FALSE}
 #'
 #' @return a dataframe with several classification metrics
 #' @export
@@ -311,22 +311,22 @@ sim_data <- function(data, linpred, model = c("binomial", "poisson")){
 classify <- function(data, y, x, c, na.rm = FALSE){
   xn <- deparse(substitute(x))
   yn <- deparse(substitute(y))
-  
+
   if(na.rm){
     data <- data[complete.cases(data[, c(xn, yn)]), ]
   }
-  
+
   confusion <- lapply(c, function(cr){
     # classify based on c
     yp <- ifelse(data[[xn]] >= cr, 1, 0)
-    
+
     out <- data.frame(
       tp = sum(data[[yn]] == 1 & yp == 1),
       fp = sum(data[[yn]] == 0 & yp == 1),
       tn = sum(data[[yn]] == 0 & yp == 0),
       fn = sum(data[[yn]] == 1 & yp == 0)
     )
-    
+
     # rates
     out$tpr <- with(out, tp / (tp + fn))
     out$fpr <- with(out, fp / (fp + tn))
@@ -339,7 +339,7 @@ classify <- function(data, y, x, c, na.rm = FALSE){
     out$npv <- with(out, tn / (tn + fn))
     out
   })
-  
+
   do.call(rbind, confusion)
 }
 # apply the contrast function f (e.g., contr.treatment) to each
@@ -401,51 +401,51 @@ theta_from_vmr <- function(mu, vmr){
 
 # plotting different type of residuals for (g)lm models
 
-plot_resid <- function(fit,
-                       x = NULL,
-                       type = c("response",
-                                "pearson",
-                                "deviance",
-                                "student"),
-                       standard = FALSE){
-    require(ggplot2)
-    type <- match.arg(type)
-
-    if(type %in% c("deviance", "pearson") & standard){
-        resids <- rstandard(fit, type = type)
-        yl <- paste(type, "standardized residuals")
-    }else if(type == "student"){
-        if(standard) warning("The 'standard' argument is not relevant for studentized residuals")
-        resids <- rstudent(fit)
-        yl <- "studentized residuals"
-    }else{
-        resids <- residuals(fit, type = type)
-        yl <- paste(type, "residuals")
-    }
-
-    res <- data.frame(
-        residuals = resids
-    )
-
-    if(!is.null(x)){
-        res$x <- fit$data[[x]]
-        xl <- x
-    }else{
-        res$x <- fitted(fit)
-        xl <- "fitted(fit)"
-    }
-
-    ggplot(res,
-           aes(x = x, y = residuals)) +
-        geom_hline(yintercept = 0, linetype = "dashed", col = "red") +
-        geom_point(size = 2.5,
-                   alpha = 0.7) +
-        xlab(xl) +
-        ylab(yl) +
-        geom_smooth(formula = y ~ x,
-                    method = "loess",
-                    se = FALSE)
-}
+# plot_resid <- function(fit,
+#                        x = NULL,
+#                        type = c("response",
+#                                 "pearson",
+#                                 "deviance",
+#                                 "student"),
+#                        standard = FALSE){
+#     require(ggplot2)
+#     type <- match.arg(type)
+#
+#     if(type %in% c("deviance", "pearson") & standard){
+#         resids <- rstandard(fit, type = type)
+#         yl <- paste(type, "standardized residuals")
+#     }else if(type == "student"){
+#         if(standard) warning("The 'standard' argument is not relevant for studentized residuals")
+#         resids <- rstudent(fit)
+#         yl <- "studentized residuals"
+#     }else{
+#         resids <- residuals(fit, type = type)
+#         yl <- paste(type, "residuals")
+#     }
+#
+#     res <- data.frame(
+#         residuals = resids
+#     )
+#
+#     if(!is.null(x)){
+#         res$x <- fit$data[[x]]
+#         xl <- x
+#     }else{
+#         res$x <- fitted(fit)
+#         xl <- "fitted(fit)"
+#     }
+#
+#     ggplot(res,
+#            aes(x = x, y = residuals)) +
+#         geom_hline(yintercept = 0, linetype = "dashed", col = "red") +
+#         geom_point(size = 2.5,
+#                    alpha = 0.7) +
+#         xlab(xl) +
+#         ylab(yl) +
+#         geom_smooth(formula = y ~ x,
+#                     method = "loess",
+#                     se = FALSE)
+# }
 
 
 add_numeric_contrast <- function(data, append = TRUE){

@@ -2,5 +2,6 @@ project:
   title: "Test"
   render:
     - "slides/"
+    - "labs/"
 execute:
   freeze: auto  # re-render only when source changes

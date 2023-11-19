@@ -17,6 +17,7 @@ format:
     filters:
       - nutshell
       - code-fullscreen
+    slide-number: true
 from: markdown+emoji
 date: last-modified
 date-format: "YYYY"

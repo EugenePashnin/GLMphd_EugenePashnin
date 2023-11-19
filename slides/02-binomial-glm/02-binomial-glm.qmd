@@ -800,8 +800,6 @@ predictions <- lapply(pr, function(x) {
     predict(fit_glm, newdata = data.frame(Parental_stress = x))
 })
 
-predictions
-
 # notice that the difference is exactly the Parental_stress parameter
 sapply(predictions, diff)
 ```
@@ -1773,10 +1771,10 @@ The problem is that in GLMs the mean and the variance of the distribution are no
 
 ## Raw Residuals
 
-We can use the custom function `plot_residuals()` to plot different type of residuals against fitted values:
+We can use the function `car::residualPlot()` to plot different type of residuals against fitted values:
 
 ```{r}
-plot_resid(fit, type = "response")
+car::residualPlot(fit, type = "response")
 ```
 
 ## Why raw residuals are problematic?
@@ -1867,10 +1865,13 @@ We can see the difference for a Poisson model^[We are using a Poisson model only
 ```{r, echo = FALSE}
 set.seed(2025)
 sim <- sim_design(ns = 100, nx = list(x = runif(100)))
+
 sim <- sim_data(sim, exp(log(5) + log(10)*x), model = "poisson")
 fit_temp <- glm(y ~ x, data = sim, family = poisson(link = "log"))
 
-(plot_resid(fit_temp, type = "response")) + (plot_resid(fit_temp, type = "pearson"))
+par(mfrow = c(1, 2))
+car::residualPlot(fit_temp, type = "response")
+car::residualPlot(fit_temp, type = "pearson", variable = "fitted")
 ```
 
 ## Pearson residuals
@@ -1959,7 +1960,11 @@ y <- fit$y # actual values
 
 # the likelihood is dbinom
 ri_dev <- sign(y - yhat) * sqrt(-2*(log(dbinom(y, 1, yhat)) - log(dbinom(y, 1, y))))
+```
 
+## Deviance Residuals 
+
+```{r}
 # notice that the log lik of the saturated model log(dbinom(y, 1, y)) is 0
 log(dbinom(y, 1, y))
 
@@ -2211,96 +2216,6 @@ dfbeta_plot(fit)
 
 ```{r, echo = FALSE}
 dfbeta_plot(fit)
-```
-
-## Residuals vs Fitted plot
-
-The **residual vs fitted** plot is very useful to identify pattern in residuals and heteroskedasticity. Let's generate some data where the true model is $y_i = \beta_0 + \beta_1x + \beta_2x^2$ and fit a model with and without the quadratic term^[Adapted from Dunn (2018, Figure 8.4)].
-
-```{r, echo = FALSE}
-n <- 50
-x <- seq(0, 1, 0.01)
-
-dat <- data.frame(x)
-dat$y <- rbinom(nrow(dat), n, plogis(qlogis(0.01) + 5*dat$x + 10*(dat$x)^2))
-dat$n <- n
-fit <- glm(cbind(y, n - y) ~ x, data = dat, family = binomial(link = "logit"))
-fit2 <- glm(cbind(y, n - y) ~ poly(x, 2), data = dat, family = binomial(link = "logit"))
-
-res <- data.frame(
-    x, rd = rstandard(fit, type = "deviance"), rq = statmod::qresid(fit),
-    rd2 = rstandard(fit2, type = "deviance"), rq2 = statmod::qresid(fit2),
-    yi = fitted(fit), yi2 = fitted(fit2)
-)
-
-head(dat) # the real relationship is y ~ x + x^2
-```
-
-```{r, eval = FALSE}
-fit_wrong <- glm(cbind(y, n - y) ~ x, data = dat, family = binomial(link = "logit"))
-# poly 2 is a shortcut for fitting a quadratic term
-fit_real <- glm(cbind(y, n - y) ~ poly(x, 2), data = dat, family = binomial(link = "logit")) 
-```
-
-## Residuals vs Fitted plot
-
-```{r, echo = FALSE}
-n <- 50
-x <- seq(0, 1, 0.01)
-
-dat <- data.frame(x)
-dat$y <- rbinom(nrow(dat), n, plogis(qlogis(0.01) + 5*dat$x + 10*(dat$x)^2))
-dat$n <- n
-fit <- glm(cbind(y, n - y) ~ x, data = dat, family = binomial(link = "logit"))
-fit2 <- glm(cbind(y, n - y) ~ poly(x, 2), data = dat, family = binomial(link = "logit"))
-
-res <- data.frame(
-    x, rd = rstandard(fit, type = "deviance"), rq = statmod::qresid(fit),
-    rd2 = rstandard(fit2, type = "deviance"), rq2 = statmod::qresid(fit2),
-    yi = fitted(fit), yi2 = fitted(fit2)
-)
-
-res_y <- ggplot(res,
-                aes(x = yi, y = rd)) +
-    geom_point() +
-    geom_smooth(se = FALSE) +
-    xlab("Fitted") +
-    ylab("Std. Deviance Residuals") +
-    ggtitle(latex2exp::TeX("$y = \\beta_0 + \\beta_1x$"))
-
-res_y2 <- ggplot(res,
-                 aes(x = yi2, y = rd2)) +
-    geom_point() +
-    geom_smooth(se = FALSE) +
-    xlab("Fitted") +
-    ylab("Std. Deviance Residuals") +
-    ggtitle(latex2exp::TeX("$y = \\beta_0 + \\beta_1x + \\beta_2x^2$"))
-
-res_y + res_y2
-```
-
-## Residuals vs predictors
-
-Another useful visual method is plotting residuals against each predictor $x_j$. In this case we have only one $x$:
-
-```{r, echo = FALSE}
-res_x <- ggplot(res,
-       aes(x = x, y = rd)) +
-    geom_point() +
-    geom_smooth(se = FALSE) +
-    xlab("x") +
-    ylab("Std. Deviance Residuals") +
-    ggtitle(latex2exp::TeX("$y = \\beta_0 + \\beta_1x$"))
-
-res_x2 <- ggplot(res,
-                aes(x = x, y = rd2)) +
-    geom_point() +
-    geom_smooth(se = FALSE) +
-    xlab("x") +
-    ylab("Std. Deviance Residuals") +
-    ggtitle(latex2exp::TeX("$y = \\beta_0 + \\beta_1x + \\beta_2x^2$"))
-
-res_x + res_x2
 ```
 
 ## Binomial vs Binary

@@ -583,7 +583,9 @@ performance::check_overdispersion(fit2)
 Also the residuals plot clearly improved after including all relevant predictors:
 
 ```{r, echo = FALSE}
-(plot_resid(fit, type = "pearson")) + (plot_resid(fit2, type = "pearson"))
+par(mfrow = c(1,2))
+car::residualPlot(fit)
+car::residualPlot(fit2)
 ```
 
 ## Why worring about overdispersion?
