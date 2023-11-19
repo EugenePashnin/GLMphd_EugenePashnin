@@ -26,3 +26,7 @@ folder) you can use `devtools::load_all()`. This is the same as doing
 | 28-11-2023 | 14:30-16:30 |  4N  | GLM - Part A |
 | 04-12-2023 | 09:00-12:00 |  4T  | GLM - Part B |
 | 05-12-2023 | 09:00-11:00 |  4T  | GLM - Part B |
+
+# Material
+
+## Slides

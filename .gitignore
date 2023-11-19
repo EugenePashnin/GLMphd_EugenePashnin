@@ -1,6 +1,4 @@
-
-
-# History files
+s# History files
 .Rhistory
 .Rapp.history
 
@@ -51,3 +49,5 @@ po/*~
 rsconnect/
 
 /.quarto/
+
+.DS_Store
