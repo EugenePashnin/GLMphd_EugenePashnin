@@ -15,9 +15,9 @@
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 <meta charset="utf-8">
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" rel="stylesheet">
-<meta name="generator" content="quarto-1.3.361">
+<meta name="generator" content="quarto-1.3.450">
 <meta name="author" content="Filippo Gambarota">
-<meta name="dcterms.date" content="2023-11-19">
+<meta name="dcterms.date" content="2023-11-20">
 <title>Signal Detection Theory and GLM</title>
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -399,7 +399,7 @@
 <section id="title-slide" class="center"><h1 class="title">Signal Detection Theory and GLM</h1>
   <p class="author">Filippo Gambarota</p>
   <p class="institute">@event | Place</p>
-  <p class="date">2023-11-19</p>
+  <p class="date">2023-11-20</p>
 </section><section id="TOC"><nav role="doc-toc"><h2 id="toc-title">Contents</h2>
 <ul>
 <li><a href="#/why-monte-carlo-simulations" id="/toc-why-monte-carlo-simulations">Why Monte Carlo Simulations?</a></li>
@@ -433,7 +433,7 @@
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="op">?</span><span class="va">Distributions</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section><section id="random-numbers-in-r-2" class="slide level2"><h2>Random numbers in R</h2>
-<p>However, it is always possible to include other distributions with packages. For example the <code><a href="https://rdrr.io/pkg/MASS/man/mvrnorm.html">MASS::mvrnorm()</a></code> implement the multivariate normal distribution or the <code>extraDistr::rhcauchy()</code> for a series of truncated distributions.</p>
+<p>However, it is always possible to include other distributions with packages. For example the <code><a href="https://rdrr.io/pkg/MASS/man/mvrnorm.html">MASS::mvrnorm()</a></code> implement the multivariate normal distribution or the <code><a href="https://rdrr.io/pkg/extraDistr/man/HalfCauchy.html">extraDistr::rhcauchy()</a></code> for a series of truncated distributions.</p>
 </section><section id="random-numbers-in-r-3" class="slide level2"><h2>Random numbers in R</h2>
 <p>The general pattern is always the same. There are 4 functions called <code>r</code>, <code>p</code>, <code>q</code> and <code>d</code> combined with a distribution e.g.&nbsp;<code>norm</code> creating several utilities. For example, <code><a href="https://rdrr.io/r/stats/Normal.html">rnorm()</a></code> generate number from a normal distribution.</p>
 <div class="cell" data-layout-align="center">
@@ -458,11 +458,11 @@
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html">rnorm</a></span><span class="op">(</span><span class="fl">100</span>, mean <span class="op">=</span> <span class="fl">10</span>, sd <span class="op">=</span> <span class="fl">5</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="co"># mean</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>#&gt; [1] 9.730939</code></pre>
+<pre><code>#&gt; [1] 10.23282</code></pre>
 </div>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/sd.html">sd</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">/</span> <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html">sqrt</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span> <span class="co"># se</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>#&gt; [1] 0.5096639</code></pre>
+<pre><code>#&gt; [1] 0.441814</code></pre>
 </div>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fl">5</span> <span class="op">/</span> <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html">sqrt</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span> <span class="co"># analytically, assuming s = 5</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -492,7 +492,7 @@
 
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/sd.html">sd</a></span><span class="op">(</span><span class="va">mx</span><span class="op">)</span> <span class="co"># the standard error</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>#&gt; [1] 0.5020528</code></pre>
+<pre><code>#&gt; [1] 0.5035612</code></pre>
 </div>
 </div>
 <img data-src="binomial-glm-power_files/figure-revealjs/unnamed-chunk-9-1.svg" width="672" class="r-stretch quarto-figure-center"></section></section><section><section id="simulating-glm" class="title-slide slide level1 center"><h1>Simulating GLM</h1>
@@ -543,13 +543,13 @@
 <span><span class="va">X</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/model.matrix.html">model.matrix</a></span><span class="op">(</span><span class="op">~</span><span class="va">x</span>, data <span class="op">=</span> <span class="va">dat</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">X</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>#&gt;   (Intercept)          x
-#&gt; 1           1  0.5347115
-#&gt; 2           1 -0.9740337
-#&gt; 3           1 -1.5795100
-#&gt; 4           1 -1.3320136
-#&gt; 5           1  0.2890146
-#&gt; 6           1  1.6968633</code></pre>
+<pre><code>#&gt;   (Intercept)            x
+#&gt; 1           1 0.0001375615
+#&gt; 2           1 0.6609695616
+#&gt; 3           1 0.7243879626
+#&gt; 4           1 0.0300655993
+#&gt; 5           1 1.0144824307
+#&gt; 6           1 0.0433328404</code></pre>
 </div>
 </div>
 </section><section id="example-with-a-linear-model-2" class="slide level2"><h2>Example with a linear model</h2>
@@ -583,22 +583,18 @@
 #&gt; Call:
 #&gt; glm(formula = y ~ x, family = gaussian(link = "identity"), data = dat)
 #&gt; 
-#&gt; Deviance Residuals: 
-#&gt;     Min       1Q   Median       3Q      Max  
-#&gt; -2.4443  -0.5828   0.1325   0.5631   2.2872  
-#&gt; 
 #&gt; Coefficients:
 #&gt;             Estimate Std. Error t value Pr(&gt;|t|)    
-#&gt; (Intercept)  0.03886    0.09017   0.431    0.667    
-#&gt; x            0.63523    0.08392   7.570 2.07e-11 ***
+#&gt; (Intercept) -0.10937    0.09566  -1.143    0.256    
+#&gt; x            0.60650    0.09975   6.080 2.31e-08 ***
 #&gt; ---
 #&gt; Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 #&gt; 
-#&gt; (Dispersion parameter for gaussian family taken to be 0.8088145)
+#&gt; (Dispersion parameter for gaussian family taken to be 0.914725)
 #&gt; 
-#&gt;     Null deviance: 125.611  on 99  degrees of freedom
-#&gt; Residual deviance:  79.264  on 98  degrees of freedom
-#&gt; AIC: 266.55
+#&gt;     Null deviance: 123.462  on 99  degrees of freedom
+#&gt; Residual deviance:  89.643  on 98  degrees of freedom
+#&gt; AIC: 278.85
 #&gt; 
 #&gt; Number of Fisher Scoring iterations: 2</code></pre>
 </div>
@@ -646,13 +642,13 @@
 <span><span class="va">X</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/model.matrix.html">model.matrix</a></span><span class="op">(</span><span class="op">~</span> <span class="va">group</span> <span class="op">+</span> <span class="va">x</span>, data <span class="op">=</span> <span class="va">dat</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">X</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>#&gt;   (Intercept) groupb          x
-#&gt; 1           1      0  0.3026874
-#&gt; 2           1      0 -0.8250273
-#&gt; 3           1      0 -0.6346112
-#&gt; 4           1      0 -0.7991411
-#&gt; 5           1      0  0.9297599
-#&gt; 6           1      0  1.5238188</code></pre>
+<pre><code>#&gt;   (Intercept) groupb           x
+#&gt; 1           1      0 -0.64521743
+#&gt; 2           1      0  0.76820010
+#&gt; 3           1      0 -0.06795569
+#&gt; 4           1      0 -1.43123397
+#&gt; 5           1      0 -0.36131023
+#&gt; 6           1      0  1.22609991</code></pre>
 </div>
 </div>
 </section><section id="example-with-a-linear-model-7" class="slide level2"><h2>Example with a linear model</h2>
@@ -692,19 +688,19 @@
 #&gt; 
 #&gt; Residuals:
 #&gt;      Min       1Q   Median       3Q      Max 
-#&gt; -2.44156 -0.64662  0.00562  0.54363  2.25686 
+#&gt; -2.67292 -0.62073 -0.04178  0.54230  2.88802 
 #&gt; 
 #&gt; Coefficients:
 #&gt;             Estimate Std. Error t value Pr(&gt;|t|)    
-#&gt; (Intercept) 0.009116   0.103947   0.088     0.93    
-#&gt; groupb      1.025829   0.146981   6.979 4.42e-11 ***
-#&gt; x           0.570706   0.074628   7.647 8.85e-13 ***
+#&gt; (Intercept)  0.13523    0.09148   1.478    0.141    
+#&gt; groupb       0.87088    0.12963   6.718 1.93e-10 ***
+#&gt; x            0.70927    0.06757  10.497  &lt; 2e-16 ***
 #&gt; ---
 #&gt; Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 #&gt; 
-#&gt; Residual standard error: 1.039 on 197 degrees of freedom
-#&gt; Multiple R-squared:  0.355,  Adjusted R-squared:  0.3484 
-#&gt; F-statistic: 54.21 on 2 and 197 DF,  p-value: &lt; 2.2e-16</code></pre>
+#&gt; Residual standard error: 0.9128 on 197 degrees of freedom
+#&gt; Multiple R-squared:  0.4625, Adjusted R-squared:  0.457 
+#&gt; F-statistic: 84.75 on 2 and 197 DF,  p-value: &lt; 2.2e-16</code></pre>
 </div>
 </div>
 </section></section><section><section id="generalized-linear-models" class="title-slide slide level1 center"><h1>Generalized Linear Models</h1>
@@ -723,13 +719,13 @@
 <span><span class="va">dat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span>id <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="va">ns</span>, x <span class="op">=</span> <span class="va">x</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">dat</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>#&gt;   id         x
-#&gt; 1  1 0.9621556
-#&gt; 2  2 0.4033242
-#&gt; 3  3 0.3738179
-#&gt; 4  4 0.1502386
-#&gt; 5  5 0.5476731
-#&gt; 6  6 0.8989439</code></pre>
+<pre><code>#&gt;   id          x
+#&gt; 1  1 0.46905652
+#&gt; 2  2 0.10587801
+#&gt; 3  3 0.06072083
+#&gt; 4  4 0.29234806
+#&gt; 5  5 0.23472965
+#&gt; 6  6 0.26936989</code></pre>
 </div>
 </div>
 </section><section id="glm-example-1" class="slide level2"><h2>GLM example</h2>
@@ -760,13 +756,13 @@
 <div class="sourceCode" id="cb31"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">dat</span><span class="op">$</span><span class="va">y</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Binomial.html">rbinom</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span><span class="op">(</span><span class="va">dat</span><span class="op">)</span>, size <span class="op">=</span> <span class="fl">1</span>, prob <span class="op">=</span> <span class="va">dat</span><span class="op">$</span><span class="va">p</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">dat</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>#&gt;   id         x        lp           p y
-#&gt; 1  1 0.9621556  2.714802 0.937894418 1
-#&gt; 2  2 0.4033242 -2.873512 0.053478583 0
-#&gt; 3  3 0.3738179 -3.168576 0.040365555 0
-#&gt; 4  4 0.1502386 -5.404369 0.004476761 0
-#&gt; 5  5 0.5476731 -1.430024 0.193094920 0
-#&gt; 6  6 0.8989439  2.082684 0.889208771 1</code></pre>
+<pre><code>#&gt;   id          x        lp           p y
+#&gt; 1  1 0.46905652 -2.216190 0.098306055 0
+#&gt; 2  2 0.10587801 -5.847975 0.002877434 0
+#&gt; 3  3 0.06072083 -6.299547 0.001833769 0
+#&gt; 4  4 0.29234806 -3.983274 0.018284027 0
+#&gt; 5  5 0.23472965 -4.559458 0.010359290 0
+#&gt; 6  6 0.26936989 -4.213056 0.014585192 1</code></pre>
 </div>
 </div>
 </section><section id="glm-example-4" class="slide level2"><h2>GLM example</h2>
@@ -790,24 +786,20 @@
 #&gt; Call:
 #&gt; glm(formula = y ~ x, family = fam, data = dat)
 #&gt; 
-#&gt; Deviance Residuals: 
-#&gt;     Min       1Q   Median       3Q      Max  
-#&gt; -2.3013  -0.4078  -0.1025   0.3413   1.9190  
-#&gt; 
 #&gt; Coefficients:
 #&gt;             Estimate Std. Error z value Pr(&gt;|z|)    
-#&gt; (Intercept)   -7.201      1.534  -4.696 2.66e-06 ***
-#&gt; x             10.295      2.247   4.583 4.59e-06 ***
+#&gt; (Intercept)   -9.240      2.092  -4.416  1.0e-05 ***
+#&gt; x             13.460      2.983   4.513  6.4e-06 ***
 #&gt; ---
 #&gt; Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 #&gt; 
 #&gt; (Dispersion parameter for binomial family taken to be 1)
 #&gt; 
-#&gt;     Null deviance: 116.652  on 99  degrees of freedom
-#&gt; Residual deviance:  59.462  on 98  degrees of freedom
-#&gt; AIC: 63.462
+#&gt;     Null deviance: 128.21  on 99  degrees of freedom
+#&gt; Residual deviance:  48.76  on 98  degrees of freedom
+#&gt; AIC: 52.76
 #&gt; 
-#&gt; Number of Fisher Scoring iterations: 6</code></pre>
+#&gt; Number of Fisher Scoring iterations: 7</code></pre>
 </div>
 </div>
 </section></section><section><section id="power-analysis" class="title-slide slide level1 center"><h1>Power analysis</h1>
@@ -837,13 +829,13 @@
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">dat</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>#&gt;   id         x        lp           p y
-#&gt; 1  1 0.9621556 -6.034176 0.937894418 0
-#&gt; 2  2 0.4033242 -6.540980 0.053478583 0
-#&gt; 3  3 0.3738179 -6.567739 0.040365555 0
-#&gt; 4  4 0.1502386 -6.770503 0.004476761 0
-#&gt; 5  5 0.5476731 -6.410070 0.193094920 0
-#&gt; 6  6 0.8989439 -6.091503 0.889208771 0</code></pre>
+<pre><code>#&gt;   id          x        lp           p y
+#&gt; 1  1 0.46905652 -6.481368 0.098306055 0
+#&gt; 2  2 0.10587801 -6.810734 0.002877434 0
+#&gt; 3  3 0.06072083 -6.851687 0.001833769 0
+#&gt; 4  4 0.29234806 -6.641624 0.018284027 0
+#&gt; 5  5 0.23472965 -6.693879 0.010359290 0
+#&gt; 6  6 0.26936989 -6.662463 0.014585192 0</code></pre>
 </div>
 </div>
 </section><section id="power-analysis-4" class="slide level2"><h2>Power analysis</h2>
@@ -912,15 +904,15 @@
 <span>  <span class="fu">filor</span><span class="fu">::</span><span class="fu"><a href="https://filippogambarota.github.io/filor/reference/trim_df.html">trim_df</a></span><span class="op">(</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>#&gt;    id    b0i
-#&gt; 1   1 -0.475
-#&gt; 2   2  0.255
-#&gt; 3   3  0.413
-#&gt; 4   4 -0.151
+#&gt; 1   1 -0.133
+#&gt; 2   2 -0.019
+#&gt; 3   3   -0.2
+#&gt; 4   4  0.695
 #&gt; 5 ...    ...
-#&gt; 6  97 -1.376
-#&gt; 7  98 -1.401
-#&gt; 8  99  1.427
-#&gt; 9 100 -0.352</code></pre>
+#&gt; 6  97 -1.002
+#&gt; 7  98  1.353
+#&gt; 8  99 -0.589
+#&gt; 9 100  1.144</code></pre>
 </div>
 </div>
 </section><section id="random-effects-3" class="slide level2"><h2>Random-effects</h2>

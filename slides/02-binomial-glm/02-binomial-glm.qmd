@@ -911,7 +911,7 @@ ggplot(pr, aes(x = x, y = pr)) +
 
 ## Marginal effects
 
-The divide-by-4 rule is the maximal marginal effects. The average marginal effects is the average of all slopes. This can be easily done with the `marginaleffects` package:
+The divide-by-4 rule is the maximal marginal effect. The average marginal effects is the average of all slopes. This can be easily done with the `marginaleffects` package:
 
 ```{r}
 #| collapse: true
@@ -961,6 +961,62 @@ We can use the `MASS::dose.p()` function:
 
 ```{r}
 MASS::dose.p(fit, p = c(0.25, 0.5, 0.8))
+```
+
+## Inverse estimation and Psychophysics
+
+In Psychophysics it is common to do the inverse estimation to estimate the detection or performance threshold. For example, estimating the $x$ level associated with a certain probability of success e.g. 50%.
+
+```{r}
+#| code-fold: true
+curve(plogis(x, 0.7, 1/8), 
+      ylim = c(0, 1),
+      xlab = "Stimulus Contrast",
+      ylab = "Probability of Detection",
+      lwd = 2)
+segments(x0 = 0.7, y0 = 0, x1 = 0.7, 0.5, lty = 2)
+segments(x0 = 0, y0 = 0.5, x1 = 0.7, 0.5, lty = 2)
+points(x = 0.7, y = 0.5, pch = 19, col = "firebrick", cex = 2)
+```
+
+## Inverse estimation and Psychophysics
+
+Let's simulate and ideal observer that respond to stimuli with different contrast:
+
+```{r}
+#| code-fold: true
+th <- 0.7 # -(b0/b1)
+slope <- 1/8
+
+b1 <- 1/slope
+b0 <- -th*b1
+
+x <- rep(seq(0, 1, 0.1), each = 20)
+
+p <- plogis(b0 + b1 * x)
+y <- rbinom(length(x), 1, p)
+
+yp <- tapply(y, x, mean)
+xc <- unique(x)
+
+plot(xc, yp, type = "b", ylim = c(0, 1), xlab = "Contrast", ylab = "Probability of Detection")
+curve(plogis(x, th, slope), add = TRUE, col = "firebrick", lwd = 2)
+```
+
+## Inverse estimation and Psychophysics
+
+```{r}
+fit <- glm(y ~ x, family = binomial(link = "logit"))
+summary(fit)
+```
+
+## Inverse estimation and Psychophysics
+
+We can estimate the threshold and slope of the psychometric function using the equations from @Knoblauch2012-to.
+
+```{r}
+-(coef(fit)[1]/coef(fit)[2]) # threshold
+MASS::dose.p(fit, p = 0.5) # with inverse estimation
 ```
 
 # Inference {.section}
@@ -1715,7 +1771,7 @@ x <- rnorm(1000)
 y <- 0.1 + 0.6 * x + rnorm(1000)
 fit <- lm(y ~ x)
 ri_lm <- residuals(fit) / sigma(fit)
-plot(ri_lm, fitted(fit), 
+plot(fitted(fit), ri_lm, 
      ylab = "Fitted Values",
      xlab = "Standardized Residuals")
 ```
@@ -1730,7 +1786,7 @@ x <- rnorm(1000)
 y <- rpois(1000, exp(log(10) + log(1.5) * x))
 fit_poi <- lm(y ~ x)
 
-plot(rstandard(fit_poi), fitted(fit_poi),
+plot(fitted(fit_poi), rstandard(fit_poi),
      xlab = "Standardized Residuals",
      ylab = "Fitted Values")
 ```
