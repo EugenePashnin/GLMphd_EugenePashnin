@@ -35,8 +35,8 @@ version.
 
 ## Slides
 
-| Topic                                  | qmd                                               | html                                                |
-|:---------------------------------------|:--------------------------------------------------|:----------------------------------------------------|
-| slides/00-intro-course/00-intro-course | [qmd](slides/00-intro-course/00-intro-course.qmd) | [html](slides/00-intro-course/00-intro-course.html) |
-| slides/01-intro-glm/01-intro-glm       | [qmd](slides/01-intro-glm/01-intro-glm.qmd)       | [html](slides/01-intro-glm/01-intro-glm.html)       |
-| slides/02-binomial-glm/02-binomial-glm | [qmd](slides/02-binomial-glm/02-binomial-glm.qmd) | [html](slides/02-binomial-glm/02-binomial-glm.html) |
+| Topic                                  | qmd                                                                          | html                                                                           |
+|:---------------------------------------|:-----------------------------------------------------------------------------|:-------------------------------------------------------------------------------|
+| slides/00-intro-course/00-intro-course | <a href="slides/00-intro-course/00-intro-course.qmd" target="_blank">qmd</a> | <a href="slides/00-intro-course/00-intro-course.html" target="_blank">html</a> |
+| slides/01-intro-glm/01-intro-glm       | <a href="slides/01-intro-glm/01-intro-glm.qmd" target="_blank">qmd</a>       | <a href="slides/01-intro-glm/01-intro-glm.html" target="_blank">html</a>       |
+| slides/02-binomial-glm/02-binomial-glm | <a href="slides/02-binomial-glm/02-binomial-glm.qmd" target="_blank">qmd</a> | <a href="slides/02-binomial-glm/02-binomial-glm.html" target="_blank">html</a> |

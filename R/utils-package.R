@@ -6,7 +6,7 @@ make_slide_index <- function(exclude = c("extra")){
   #html <- gsub("slides/", "", html)
   data.frame(
     Topic = tools::file_path_sans_ext(qmd),
-    qmd = sprintf("[qmd](%s)", qmd),
-    html = sprintf("[html](%s)", html)
+    qmd = sprintf('<a href="%s" target="_blank">qmd</a>', qmd),
+    html = sprintf('<a href="%s" target="_blank">html</a>', html)
   )
 }
