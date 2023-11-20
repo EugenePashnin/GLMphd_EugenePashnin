@@ -26,6 +26,7 @@ bibliography: "`r filor::fil()$bib`"
 csl: "`r filor::fil()$csl`"
 nocite: |
   @Gelman2020-tg, @Agresti2018-oh, @Agresti2015-cz, @Dunn2018-ww, @Fox2015-ps, @Faraway2016-py
+updated: "*Last Update: `r Sys.Date()`*"
 ---
 
 ```{r}

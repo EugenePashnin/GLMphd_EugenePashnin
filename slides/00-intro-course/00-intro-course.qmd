@@ -19,7 +19,9 @@ format:
       - code-fullscreen
 from: markdown+emoji
 date: last-modified
+date-format: "YYYY"
 final-slide: false
+updated: "*Last Update: `r Sys.Date()`*"
 ---
 
 ```{r}

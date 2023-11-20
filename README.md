@@ -27,6 +27,16 @@ folder) you can use `devtools::load_all()`. This is the same as doing
 | 04-12-2023 | 09:00-12:00 |  4T  | GLM - Part B |
 | 05-12-2023 | 09:00-11:00 |  4T  | GLM - Part B |
 
-# Material
+# Materials
+
+The materials (slides, exercises, code, etc.) are constantly updated.
+Check the current version of the materials to have the most up-to-date
+version.
 
 ## Slides
+
+| Topic                           | qmd                                        | html                                         |
+|:--------------------------------|:-------------------------------------------|:---------------------------------------------|
+| 00-intro-course/00-intro-course | [qmd](00-intro-course/00-intro-course.qmd) | [html](00-intro-course/00-intro-course.html) |
+| 01-intro-glm/01-intro-glm       | [qmd](01-intro-glm/01-intro-glm.qmd)       | [html](01-intro-glm/01-intro-glm.html)       |
+| 02-binomial-glm/02-binomial-glm | [qmd](02-binomial-glm/02-binomial-glm.qmd) | [html](02-binomial-glm/02-binomial-glm.html) |

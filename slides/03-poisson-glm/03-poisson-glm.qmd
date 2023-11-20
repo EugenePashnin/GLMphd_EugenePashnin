@@ -22,6 +22,7 @@ final-slide: false
 df-print: tibble
 bibliography: "`r filor::fil()$bib`"
 csl: "`r filor::fil()$csl`"
+updated: "*Last Update: `r Sys.Date()`*"
 ---
 
 ```{r}

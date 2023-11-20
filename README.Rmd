@@ -28,3 +28,17 @@ Then you can open the `GLMphd.Rproj` file and R Studio will be opened on the cor
 | 04-12-2023 | 09:00-12:00 |  4T  | GLM - Part B |
 | 05-12-2023 | 09:00-11:00 |  4T  | GLM - Part B |
 
+# Materials
+
+The materials (slides, exercises, code, etc.) are constantly updated. Check the current version of the materials to have the most up-to-date version.
+
+## Slides
+
+```{r}
+#| output: asis
+#| echo: false
+#| message: false
+
+make_slide_index(exclude = c("extra", "poisson", "gamma")) |> 
+  kable(format = "markdown")
+```

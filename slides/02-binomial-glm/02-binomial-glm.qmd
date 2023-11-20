@@ -22,6 +22,7 @@ final-slide: false
 df-print: tibble
 bibliography: "`r filor::fil()$bib`"
 csl: "`r filor::fil()$csl`"
+updated: "*Last Update: `r Sys.Date()`*"
 ---
 
 ```{r}
@@ -546,7 +547,7 @@ bin$linkfun() # the same as plogis
 bin$linkinv() # the same as qlogis
 ```
 
-## Model with X
+## Model with $X$
 
 Now we can add the `tv_shows` predictor. Now the model has two coefficients. Given that the `tv_shows` is a binary variable, the intercept is the average `y` when `tv_shows` is 0, and the `tv_shows` coefficient is the increase in `y` for a unit increase in `tv_shows`:
 
@@ -555,14 +556,14 @@ fit <- glm(exam ~ tv_shows, data = dat, family = binomial(link = "logit"))
 summary(fit)
 ```
 
-## Model with X
+## Model with $X$
 
 Thinking about our data, the `(Intercept)` is the probability of passing the exam without watching tv-shows. The `tv_shows` (should be) the difference in the probability of passing the exam between people who watched or did not watched tv-shows, BUT:
 
 - we are on the logit scale. Thus we are modelling **log(odds)** and not probabilities
 - a difference on the **log** scale is a ratio on the raw scale. Thus taking the exponential of `tv_shows` we obtain the ratio of odds of passing the exam watching vs non-watching tv-shows. Do you remember something?
 
-## Model with $X_1$
+## Model with $X$
 
 The `tv_shows` is exactly the Odds Ratio that we calculated on the contingency table:
 
