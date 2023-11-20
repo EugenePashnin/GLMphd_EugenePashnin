@@ -128,7 +128,7 @@ xtabs(~exam + tv_shows, data = dat) |>
 
 ## Example: Passing the exam
 
-Each cell probability $\pi_{ij}$ is computed as $\pi_{ij}/n$
+Each cell probability $p_{ij}$ is computed as $p_{ij}/n$
 
 ```{r}
 (xtabs(~exam + tv_shows, data = dat)/n) |> 
@@ -140,8 +140,8 @@ Each cell probability $\pi_{ij}$ is computed as $\pi_{ij}/n$
 The most common way to analyze a 2x2 contingency table is using the **odds ratio** (OR). Firsly let's define *the odds of success* as:
 
 \begin{align*}
-odds = \frac{\pi}{1 - \pi} \\
-\pi = \frac{odds}{odds + 1}
+odds = \frac{p}{1 - p} \\
+p = \frac{odds}{odds + 1}
 \end{align*}
 
 - the **odds** are non-negative, ranging between 0 and $+\infty$
@@ -163,7 +163,7 @@ odds(p11)
 The OR is a ratio of odds:
 
 $$
-OR = \frac{\frac{\pi_1}{1 - \pi_1}}{\frac{\pi_2}{1 - \pi_2}}
+OR = \frac{\frac{p_1}{1 - p_1}}{\frac{p_2}{1 - p_2}}
 $$
 
 - OR ranges between 0 and $+\infty$. When $OR = 1$ the odds for the two conditions are equal
@@ -182,7 +182,7 @@ odds_ratio(p11, p10)
 
 ## Why using these measure?
 
-The odds have an interesting property when taking the logarithm. We can express a probability $\pi$ using a scale ranging $[-\infty, +\infty]$
+The odds have an interesting property when taking the logarithm. We can express a probability $p$ using a scale ranging $[-\infty, +\infty]$
 
 ```{r, echo = FALSE}
 p1 <- seq(0, 1, 0.001)
@@ -201,12 +201,12 @@ ord |>
                col = "firebrick2",
                linewidth = 0.5) +
     geom_line(linewidth = 1) +
-    ylab(latex2exp::TeX("$log(\\frac{\\pi}{1 - \\pi})$")) +
+    ylab(latex2exp::TeX("$log(\\frac{p}{1 - p})$")) +
     scale_x_continuous(
-        latex2exp::TeX("$\\pi$"),
+        latex2exp::TeX("$p$"),
         sec.axis = dup_axis(
             trans = .~rev(.),
-            name = latex2exp::TeX("$1 - \\pi$")
+            name = latex2exp::TeX("$1 - p$")
         )
     )
 ```
@@ -335,7 +335,7 @@ teddy_plot +
 
 ## Binomial GLM
 
-- The **random component** of a Binomial GLM the binomial distribution with parameter $\pi$
+- The **random component** of a Binomial GLM the binomial distribution with parameter $p$
 - The **systematic component** is a linear combination of predictors and coefficients $\boldsymbol{\beta X}$
 - The **link function** is a function that map probabilities into the $[-\infty, +\infty]$ range.
 
@@ -344,18 +344,18 @@ teddy_plot +
 The **logit** link is the most common link function when using a binomial GLM:
 
 $$
-log \left(\frac{\pi}{1 - \pi}\right) = \beta_0 + \beta_{1}X_{1} + ...\beta_pX_p  
+log \left(\frac{p}{1 - p}\right) = \beta_0 + \beta_{1}X_{1} + ...\beta_pX_p  
 $$
 
 The inverse of the **logit** maps again the probability into the $[0, 1]$ range:
 
 $$
-\pi = \frac{e^{\beta_0 + \beta_{1}X_{1} + ...\beta_pX_p}}{1 + e^{\beta_0 + \beta_{1}X_{1} + ...\beta_pX_p}}  
+p = \frac{e^{\beta_0 + \beta_{1}X_{1} + ...\beta_pX_p}}{1 + e^{\beta_0 + \beta_{1}X_{1} + ...\beta_pX_p}}  
 $$
 
 ## Logit Link
 
-Thus with a single numerical predictor $x$ the relationship between $x$ and $\pi$ in non-linear on the probability scale but linear on the logit scale.
+Thus with a single numerical predictor $x$ the relationship between $x$ and $p$ in non-linear on the probability scale but linear on the logit scale.
 
 ```{r, echo = FALSE}
 x <- seq(0, 1, 0.001)
@@ -367,8 +367,8 @@ dat$lp <- log(odds(dat$p))
 dat |> 
     pivot_longer(c(p, lp)) |> 
     mutate(name = factor(name, 
-                         labels = c(latex2exp::TeX("$log \\left(\\frac{\\pi}{1-\\pi}\\right)$"),
-                                    latex2exp::TeX("$\\pi$")))) |> 
+                         labels = c(latex2exp::TeX("$log(\\frac{p}{1-p})$"),
+                                    latex2exp::TeX("$p$")))) |> 
     ggplot(aes(x = x*100, y = value)) +
     facet_wrap(~name, scales = "free",
                labeller = label_parsed) +
@@ -422,7 +422,7 @@ plot_logit <- ggplot() +
                  linetype = "dashed",
                  linewidth = 0.3) +
     xlab(latex2exp::TeX("$X_1$")) +
-    ylab(latex2exp::TeX("$logit(\\pi)$")) +
+    ylab(latex2exp::TeX("$logit(p)$")) +
     theme(aspect.ratio=1)
 
 plot_invlogit <- ggplot() +
@@ -448,7 +448,7 @@ plot_invlogit <- ggplot() +
                  linewidth = 0.3) +
     theme(aspect.ratio=1) +
     xlab(latex2exp::TeX("$X_1$")) +
-    ylab(latex2exp::TeX("$logit^{-1}(\\pi)$"))
+    ylab(latex2exp::TeX("$logit^{-1}(p)$"))
 
 plot_logit | plot_invlogit
 ```
@@ -520,13 +520,13 @@ summary(fit0)
 When fitting an intercept-only model, the parameter is the average value of the `y` variable:
 
 \begin{align*}
-\log(\frac{\pi}{1 - \pi}) = \beta_0 \\
-\pi = \frac{e^{\beta_0}}{1 + e^{\beta_0}}
+\log(\frac{p}{1 - p}) = \beta_0 \\
+p = \frac{e^{\beta_0}}{1 + e^{\beta_0}}
 \end{align*}
 
 ## Intercept only model
 
-In R, the $logit(\pi)$ is computed using `qlogis()` that is the `q` + `logis` combination of functions to work with probability distributions. The $logit^{-1}$ thus the inverse of the logit function is `plogis()`:
+In R, the $logit(p)$ is computed using `qlogis()` that is the `q` + `logis` combination of functions to work with probability distributions. The $logit^{-1}$ thus the inverse of the logit function is `plogis()`:
 
 ```{r}
 # average y on the respo nse scale
@@ -693,7 +693,7 @@ dummy + sum0
 
 With numerical predictors the idea is the same as categorical predictors. In fact, categorical predictors are converted into numbers (i.e., 0 and 1 or -0.5 and 0.5). The only caveat is that the effects are linear only the **logit** scale. Thus $\beta_1$ is interpreted in the same way as standard linear models only on the link-function scale. For the **binomial** 
 
-GLM the $\beta_1$ is the increase in the $log(odds(\pi))$ for a unit-increase in the $x$. In the response (probability) scale, the $\beta_1$ is the multiplicative increase in the odds of $y = 1$ for a unit increase in the predictor.
+GLM the $\beta_1$ is the increase in the $log(odds(p))$ for a unit-increase in the $x$. In the response (probability) scale, the $\beta_1$ is the multiplicative increase in the odds of $y = 1$ for a unit increase in the predictor.
 
 ```{r, echo = FALSE, out.width="50%"}
 plot_logit | plot_invlogit
@@ -821,7 +821,7 @@ The **divide by 4 rule** is a very easy way to evaluate the effect of a continuo
 
 Given the non-linearity, the derivative of the logistic function (i.e., the slope) is maximal for probabilities around ~$0.5$.
 
-In fact, $\beta_i \pi (1 - \pi)$ is maximized when $\pi = 0.5$ turning into $\beta_i 0.25$ (i.e., dividing by 4).
+In fact, $\beta_i p (1 - p)$ is maximized when $p = 0.5$ turning into $\beta_i 0.25$ (i.e., dividing by 4).
 
 Dividing $\beta/4$ we obtain the maximal difference for a unit increase in $x$
 
@@ -1696,9 +1696,9 @@ performance::r2_mcfadden(fit)
 This measure is the easiest to interpret and calculate but can only be applied for binomial binary models [@Tjur2009-ml]. Is the absolute value of the difference between the proportions of correctly classifying $y = 1$ and $y = 0$ from the model:
 
 \begin{align*}
-\pi_1 = p(y_i = 1 |\hat y_i = 1) \\
-\pi_2 = p(y_i = 0 |\hat y_i = 0) = 1 - \pi_1 \\
-R^2 = |\pi_1 - \pi_2|
+p_1 = p(y_i = 1 |\hat y_i = 1) \\
+p_2 = p(y_i = 0 |\hat y_i = 0) = 1 - p_1 \\
+R^2 = |p_1 - p_2|
 \end{align*}
 
 ```{r}
@@ -1877,7 +1877,7 @@ car::residualPlot(fit_temp, type = "pearson", variable = "fitted")
 
 ## Pearson residuals
 
-For the Binomial (Bernoulli) GLM, the variance is calculated as $\hat \pi(1 - \hat \pi)$ where $\hat \pi$ is the residual value.
+For the Binomial (Bernoulli) GLM, the variance is calculated as $\hat p(1 - \hat p)$ where $\hat p$ is the residual value.
 
 $$
 r_i = \frac{y_i - \hat y_i}{\sqrt{\hat y_i(1 - \hat y_i)}}
@@ -2479,7 +2479,7 @@ probit_cum <- ggplot() +
     xlim(-4, 4) +
     theme(legend.title = element_blank(),
           legend.position = c(0.9,0.2)) +
-    ylab(latex2exp::TeX("$\\pi = \\Phi^{-1}(z)$")) +
+    ylab(latex2exp::TeX("$p = \\Phi^{-1}(z)$")) +
     xlab("z") +
     geom_segment(aes(x = qnorm(c(p1,p2)),
                      y = c(0, 0),
@@ -2521,7 +2521,7 @@ probit_denp1 <- ggplot() +
               fill = "red",
               xlim = c(-4, qnorm(p1)),
               alpha = 0.5) +
-    xlab(latex2exp::TeX("$\\Phi(\\pi)$"))
+    xlab(latex2exp::TeX("$\\Phi(p)$"))
 
 probit_denp2 <- ggplot() +
     stat_function(fun = dnorm) +
@@ -2541,7 +2541,7 @@ probit_denp2 <- ggplot() +
               fill = "blue",
               xlim = c(-4, qnorm(p2)),
               alpha = 0.5) +
-    xlab(latex2exp::TeX("$\\Phi(\\pi)$"))
+    xlab(latex2exp::TeX("$\\Phi(p)$"))
 
 right_plot <- cowplot::plot_grid(
     probit_denp1 + theme_minimal(base_size = 15), 
