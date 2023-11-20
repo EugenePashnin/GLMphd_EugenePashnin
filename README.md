@@ -35,8 +35,8 @@ version.
 
 ## Slides
 
-| Topic                           | qmd                                        | html                                         |
-|:--------------------------------|:-------------------------------------------|:---------------------------------------------|
-| 00-intro-course/00-intro-course | [qmd](00-intro-course/00-intro-course.qmd) | [html](00-intro-course/00-intro-course.html) |
-| 01-intro-glm/01-intro-glm       | [qmd](01-intro-glm/01-intro-glm.qmd)       | [html](01-intro-glm/01-intro-glm.html)       |
-| 02-binomial-glm/02-binomial-glm | [qmd](02-binomial-glm/02-binomial-glm.qmd) | [html](02-binomial-glm/02-binomial-glm.html) |
+| Topic                                  | qmd                                               | html                                                |
+|:---------------------------------------|:--------------------------------------------------|:----------------------------------------------------|
+| slides/00-intro-course/00-intro-course | [qmd](slides/00-intro-course/00-intro-course.qmd) | [html](slides/00-intro-course/00-intro-course.html) |
+| slides/01-intro-glm/01-intro-glm       | [qmd](slides/01-intro-glm/01-intro-glm.qmd)       | [html](slides/01-intro-glm/01-intro-glm.html)       |
+| slides/02-binomial-glm/02-binomial-glm | [qmd](slides/02-binomial-glm/02-binomial-glm.qmd) | [html](slides/02-binomial-glm/02-binomial-glm.html) |
